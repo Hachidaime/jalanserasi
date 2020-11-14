@@ -1,0 +1,355 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
+a[role="option"],
+textarea,
+input,
+option,
+td,
+.filter-option-inner-inner {
+  font-family: "Fira Code", monospace;
+  font-size: 0.75rem;
+  caret-color: #3e3f3a !important;
+  border-width: 2px !important;
+}
+
+@supports (font-variation-settings: normal) {
+  input[type="text"].form-control,
+  option,
+  textarea,
+  a[role="option"],
+  td,
+  .filter-option-inner-inner {
+    font-family: "Fira Code", monospace;
+    font-size: 0.75rem;
+    border-width: 2px !important;
+  }
+}
+
+.bootstrap-select > .dropdown-toggle {
+  border-width: 2px !important;
+}
+
+/**
+  * * Body
+  */
+body {
+  font-size: 0.875rem;
+  /* background: url('../img/bg-img.png') repeat !important; */
+  background: url("../img/bg-img.png") repeat !important;
+}
+
+.header-banner {
+  margin-top: 36px;
+}
+
+.footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.main-container {
+  margin-top: -37px;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Content
+ */
+.content-gis {
+  margin-top: 40px;
+}
+
+[role="main"] {
+  padding-top: 133px; /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 48px; /* Space for fixed navbar */
+  }
+}
+
+/**
+ * * Navbar
+ */
+
+.navbar .form-control {
+  padding: 0.75rem 1rem;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+/*
+ * Avatar
+ */
+.avatar {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.avatar-lg {
+  width: 250px !important;
+  height: 250px !important;
+}
+
+.avatar-md {
+  width: 150px !important;
+  height: 150px !important;
+}
+
+.avatar-sm {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+/*
+ * Snackbar
+ */
+.snackbar {
+  display: none;
+  min-width: 350px;
+  margin-left: -180px;
+  background-color: transparent;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 99999;
+  left: 50%;
+  right: 50%;
+  top: 50px;
+  font-size: 17px;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    top: 70px;
+    opacity: 0;
+  }
+  to {
+    top: 50px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    top: 70px;
+    opacity: 0;
+  }
+  to {
+    top: 50px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    top: 70px;
+    opacity: 1;
+  }
+  to {
+    top: 50px;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 70px;
+    opacity: 1;
+  }
+  to {
+    top: 50px;
+    opacity: 0;
+  }
+}
+
+.kotakpeta {
+  padding: 5px;
+  margin: 0 auto;
+}
+#map_canvas {
+  width: 100%;
+  height: 500px;
+  border: 0px;
+  padding: 0px;
+  margin: 0 auto;
+}
+
+.map-bg {
+  background-color: #efeeec !important;
+}
+
+.login-wrapper {
+  background: url("../img/main-bg.jpg");
+  background-size: cover;
+  min-height: 350px;
+  height: fit-content;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.login-container {
+  position: absolute;
+  max-width: 300px;
+}
+
+.text-selection-none {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none;
+}
+
+#collapseSearch {
+  height: 496px;
+}
+
+/* The sidepanel menu */
+.sidepanel {
+  display: block;
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  /* overflow-x: hidden; Disable horizontal scroll */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+  background-color: #f0ede5bc;
+}
+
+.map-wrapper {
+  width: 100%;
+}
+
+.map-control-wrapper {
+  width: 100%;
+}
+
+.map-control-viewer {
+  cursor: pointer;
+  outline: none;
+  transition: 0.4s;
+}
+
+.legend-title {
+  font-weight: bold;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .gallery-item {
+    width: 50%;
+  }
+
+  .sidepanel {
+    width: 75% !important;
+  }
+
+  .map-control-wrapper {
+    width: 100%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .gallery-item {
+    width: 50%;
+  }
+
+  .sidepanel {
+    width: 50% !important;
+    margin: 15px 0 0 15px;
+  }
+
+  .map-control-wrapper {
+    width: 40%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .gallery-item {
+    width: 25%;
+  }
+
+  .sidepanel {
+    width: 33% !important;
+    margin: 15px 0 0 15px;
+  }
+
+  .map-control-wrapper {
+    width: 33%;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .gallery-item {
+    width: 25%;
+  }
+
+  .sidepanel {
+    width: 25% !important;
+    margin: 15px 0 0 15px;
+  }
+  .map-control-wrapper {
+    width: 25%;
+  }
+}
+
+.card-2 {
+  /* -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px; */
+  width: 100%;
+  display: table;
+}
+
+.card-2 .card-heading {
+  background: url("../img/main-bg.jpg") top left/cover no-repeat;
+  width: 70%;
+  display: table-cell;
+}
+
+.card-2 .card-body {
+  display: table-cell;
+  padding: 90px 15px;
+}
+
+@media (max-width: 767px) {
+  .card-2 {
+    display: block;
+  }
+  .card-2 .card-heading {
+    width: 100%;
+    display: block;
+    padding-top: 300px;
+    background-position: left center;
+  }
+  .card-2 .card-body {
+    display: block;
+    padding: 60px 15px;
+  }
+}
