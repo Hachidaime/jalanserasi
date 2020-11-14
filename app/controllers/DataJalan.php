@@ -7,7 +7,8 @@ class DataJalan extends Controller
 {
     public function index(string $param1 = null, string $param2 = null)
     {
-        $this->my_model = $this->model('Data_model');
+        $this->my_model = $this->model('DataJalan_model');
+        $this->jalan_model = $this->model('Jalan_model');
 
         switch ($param1) {
             case 'search':
@@ -15,35 +16,46 @@ class DataJalan extends Controller
                 break;
 
             default:
-                $this->DataDefault();
+                $this->DataJalanDefault();
                 break;
         }
     }
 
-    private function DataDefault()
+    private function DataJalanDefault()
     {
-        Functions::setTitle("Data Jalan");
+        Functions::setTitle('Data Jalan');
 
-        $data['thead'] = $this->my_model->getDataThead();
+        $data['thead'] = $this->my_model->getDataJalanThead();
         $data['data'] = Functions::defaultTableData();
         $data['search'] = false;
-        $data['url'] = BASE_URL . "/DataJalan/index/search";
+        $data['url'] = BASE_URL . '/DataJalan/index/search';
         $data['main'][] = $this->dofetch('Layout/Table', $data);
         $this->view('Layout/Default', $data);
     }
 
     private function DataSearch()
     {
-        $list = $this->my_model->getAllDataJalan();
+        // TODO: Search Jalan on database: list & total
+        [$list, $count] = $this->jalan_model->getJalan();
+        $total = $this->jalan_model->totalJalan();
 
-        $jalan = [];
-        foreach ($list['jalan'] as $idx => $row) {
-            $row['koordinat'] = (!empty($row['ori'])) ? $row['ori'] : $row['segmented'];
-            $row['koordinat'] = json_decode($row['koordinat'], true);
-            $jalan[] = $row;
+        // TODO: Load Kepemilikan Options
+        $kepemilikan_opt = $this->options('kepemilikan_opt');
+
+        // TODO: Prepare data to load on template
+        $rows = [];
+        foreach ($list as $idx => $row) {
+            $row['kepemilikan'] = $kepemilikan_opt[$row['kepemilikan']];
+            $row['row'] = Functions::getSearch()['offset'] + $idx + 1;
+            $row['survei_date'] = !is_null($row['survei_date'])
+                ? Functions::formatDatetime($row['survei_date'], 'd/m/Y')
+                : $row['survei_date'];
+
+            array_push($rows, $row);
         }
-        print '<pre>';
-        print_r($jalan);
-        print '</pre>';
+
+        // TODO: Echoing data as JSON
+        Functions::setDataTable($rows, $count, $total);
+        exit();
     }
 }
