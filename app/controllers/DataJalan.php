@@ -320,7 +320,7 @@ class DataJalan extends Controller
                     case 'pdf':
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
-                                "pdf/jalan/{$_POST['no_jalan']}",
+                                "pdf/perawatan/{$_POST['no_jalan']}",
                                 $_POST[$row['name']],
                             );
                         }
@@ -328,7 +328,7 @@ class DataJalan extends Controller
                     case 'video':
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
-                                "video/jalan/{$_POST['no_jalan']}",
+                                "video/perawatan/{$_POST['no_jalan']}",
                                 $_POST[$row['name']],
                             );
                         }
@@ -336,7 +336,7 @@ class DataJalan extends Controller
                     case 'kml':
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
-                                "kml/jalan/{$_POST['no_jalan']}",
+                                "kml/perawatan/{$_POST['no_jalan']}",
                                 $_POST[$row['name']],
                                 true,
                             );
@@ -384,7 +384,7 @@ class DataJalan extends Controller
                         $row['row'] = $idx + 1;
                         if (!empty($row['foto'])) {
                             FileHandler::MoveFromTemp(
-                                "img/jalan/{$_POST['no_jalan']}/{$row['row']}",
+                                "img/perawatan/{$_POST['no_jalan']}/{$row['row']}",
                                 $row['foto'],
                                 false,
                                 true,
@@ -439,7 +439,7 @@ class DataJalan extends Controller
      */
     public function Koordinat(string $param1 = null, string $param2 = null)
     {
-        $this->my_model = $this->model('Jalan_model');
+        $this->my_model = $this->model('Perawatan_model');
         $this->no_jalan = $param2;
 
         switch ($param1) {
@@ -656,6 +656,7 @@ class DataJalan extends Controller
                         ? $coord['segmented']
                         : $coord['ori'];
                     $coordinates = json_decode($coordinates, true);
+
                     $coord = $this->KoordinatBuild($coordinates, true);
                 }
             } else {
