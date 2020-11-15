@@ -1,8 +1,8 @@
 {assign var=active value='text-white'}
 
-<img src="{$smarty.const.SERVER_BASE}/assets/img/header.jpeg" id="header-img" class="img-fluid w-100 header-banner" height="200px">
+<img src="{$smarty.const.SERVER_BASE}/assets/img/header.jpeg" id="header-img" class="img-fluid w-100 header-banner no-print" height="200px">
 
-<nav class="navbar navbar-expand-lg bg-transparent navbar-dark sticky-top shadow-sm p-0">
+<nav class="navbar navbar-expand-lg bg-transparent navbar-dark sticky-top shadow-sm p-0 no-print">
     <div class="container-md d-flex flex-column justify-content-beetween p-0">
         <div class="bg-primary w-100">
             <button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">

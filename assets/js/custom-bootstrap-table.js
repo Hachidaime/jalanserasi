@@ -232,6 +232,7 @@ let setDataJalanModal = (row, modal) => {
   table.classList.add('table-bordered')
   table.classList.add('table-striped')
   table.classList.add('table-sm')
+  table.classList.add('is-print')
 
   rowNoJalan = document.createElement('tr')
   rowNamaJalan = document.createElement('tr')

@@ -39,6 +39,25 @@
 -->
     <link rel="stylesheet" href="{$smarty.const.SERVER_BASE}/assets/css/custom.css?t={$smarty.now|time}">
 
+    <style media="screen">
+        /* .no-print {
+            display: block;
+        } */
+    </style>
+    <style media="print">
+        .is-print {
+            display: block;
+        }
+
+        .no-print, .fixed-table-toolbar, .fixed-table-pagination {
+            display: none;
+        }
+
+        #detail-content {
+            width: 100%;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -52,7 +71,7 @@
         </div>
     </div>
 
-    <div class="footer">
+    <div class="footer no-print">
         <nav class="container-md navbar justify-content-center bg-secondary text-white navbar-dark">
             <ul class="navbar-nav">
                 <li class="nav-item active">
