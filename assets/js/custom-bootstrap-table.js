@@ -163,60 +163,109 @@ window.viewPrintEvents = {
     let title = $table.data('title')
     modal.find('.modal-title').text(`Detail ${title}`)
 
-    let table,
-      rowNoJalan,
-      rowNamaJalan,
-      rowKoordinatAwal,
-      rowKoordinatAkhir,
-      rowPermukaan,
-      rowPermukaanLabel,
-      rowPermukaanValue,
-      rowKondisi,
-      rowKondisiLabel,
-      rowKondisiValue,
-      rowMap,
-      rowJmlJembatan
+    setDataJalanModal(row, modal)
+  },
 
-    table = document.createElement('table')
-    table.setAttribute('width', '100%')
-    table.classList.add('table')
-    table.classList.add('table-bordered')
-    table.classList.add('table-striped')
-    table.classList.add('table-sm')
+  'click .print': function (e, value, row, index) {
+    let modal = $('#myModal')
 
-    rowNoJalan = document.createElement('tr')
-    rowNamaJalan = document.createElement('tr')
-    rowKoordinatAwal = document.createElement('tr')
-    rowKoordinatAkhir = document.createElement('tr')
+    printAnyMaps(row, modal)
+  },
+}
 
-    rowPermukaan = document.createElement('tr')
-    rowPermukaan.innerHTML = /* html */ `
+// printAnyMaps ::
+function printAnyMaps(row, modal) {
+  setDataJalanModal(row, modal)
+  const $body = $('body')
+  const $mapContainer = $('.modal-body')
+  const $mapContainerParent = $mapContainer.parent()
+  const $printContainer = $('<div style="position:relative;">')
+
+  $printContainer
+    .height($mapContainer.height())
+    .append($mapContainer)
+    .prependTo($body)
+
+  const $content = $body.children().not($printContainer).not('script').detach()
+
+  /**
+   * Needed for those who use Bootstrap 3.x, because some of
+   * its `@media print` styles ain't play nicely when printing.
+   */
+  const $patchedStyle = $('<style media="print">')
+    .text(
+      `
+      img { max-width: none !important; }
+      a[href]:after { content: ""; }
+    `
+    )
+    .appendTo('head')
+
+  window.print()
+
+  $body.prepend($content)
+  $mapContainerParent.prepend($mapContainer)
+
+  $printContainer.remove()
+  $patchedStyle.remove()
+}
+
+let setDataJalanModal = (row, modal) => {
+  let table,
+    rowNoJalan,
+    rowNamaJalan,
+    rowKoordinatAwal,
+    rowKoordinatAkhir,
+    rowPermukaan,
+    rowPermukaanLabel,
+    rowPermukaanValue,
+    rowKondisi,
+    rowKondisiLabel,
+    rowKondisiValue,
+    rowMap,
+    rowJmlJembatan
+
+  table = document.createElement('table')
+  table.setAttribute('width', '100%')
+  table.id = 'detail-content'
+  table.classList.add('table')
+  table.classList.add('table-bordered')
+  table.classList.add('table-striped')
+  table.classList.add('table-sm')
+
+  rowNoJalan = document.createElement('tr')
+  rowNamaJalan = document.createElement('tr')
+  rowKoordinatAwal = document.createElement('tr')
+  rowKoordinatAkhir = document.createElement('tr')
+
+  rowPermukaan = document.createElement('tr')
+  rowPermukaan.innerHTML = /* html */ `
       <td align="center" colspan="4">PERMUKAAN</td>
       `
-    rowPermukaanLabel = document.createElement('tr')
-    rowPermukaanLabel.innerHTML = /* html */ `
+  rowPermukaanLabel = document.createElement('tr')
+  rowPermukaanLabel.innerHTML = /* html */ `
       <td align="center" width="25%">ASPAL (km)</td>
       <td align="center" width="25%">BETON (km)</td>
       <td align="center" width="25%">KERIKIL (km)</td>
       <td align="center" width="25%">TANAH (km)</td>
       `
-    rowPermukaanValue = document.createElement('tr')
+  rowPermukaanValue = document.createElement('tr')
 
-    rowKondisi = document.createElement('tr')
-    rowKondisi.innerHTML = /* html */ `
+  rowKondisi = document.createElement('tr')
+  rowKondisi.innerHTML = /* html */ `
       <td align="center" colspan="4">KONDISI</td>
       `
-    rowKondisiLabel = document.createElement('tr')
-    rowKondisiLabel.innerHTML = /* html */ `
+  rowKondisiLabel = document.createElement('tr')
+  rowKondisiLabel.innerHTML = /* html */ `
       <td align="center" width="25%">BAIK (km)</td>
       <td align="center" width="25%">SEDANG (km)</td>
       <td align="center" width="25%">RUSAK RINGAN (km)</td>
       <td align="center" width="25%">RUSAK BERAT (km)</td>
       `
-    rowKondisiValue = document.createElement('tr')
+  rowKondisiValue = document.createElement('tr')
 
-    rowMap = document.createElement('tr')
-    rowMap.innerHTML = /* html */ `
+  rowMap = document.createElement('tr')
+  rowMap.innerHTML = /* html */ `
       <td align="center" colspan="4">
         <div class="kotakpeta">
           <div id="map_canvas" style="width: 600px"></div>
@@ -224,68 +273,67 @@ window.viewPrintEvents = {
       </td>
       `
 
-    rowJmlJembatan = document.createElement('tr')
+  rowJmlJembatan = document.createElement('tr')
 
-    table.append(
-      rowNoJalan,
-      rowNamaJalan,
-      rowKoordinatAwal,
-      rowKoordinatAkhir,
-      rowPermukaan,
-      rowPermukaanLabel,
-      rowPermukaanValue,
-      rowKondisi,
-      rowKondisiLabel,
-      rowKondisiValue,
-      rowMap,
-      rowJmlJembatan
-    )
+  table.append(
+    rowNoJalan,
+    rowNamaJalan,
+    rowKoordinatAwal,
+    rowKoordinatAkhir,
+    rowPermukaan,
+    rowPermukaanLabel,
+    rowPermukaanValue,
+    rowKondisi,
+    rowKondisiLabel,
+    rowKondisiValue,
+    rowMap,
+    rowJmlJembatan
+  )
 
-    modal.find('.modal-body').html(table)
-    initMap2()
+  modal.find('.modal-body').html(table)
+  initMap2()
 
-    loadDataJalan(row.no_jalan)
-    loadKondisi()
-    loadAwal()
-    loadAkhir()
+  loadDataJalan(row.no_jalan)
+  loadKondisi()
+  loadAwal()
+  loadAkhir()
 
-    let jalan = DataJalan.jalan.properties
+  let jalan = DataJalan.jalan.properties
 
-    rowNoJalan.innerHTML = /* html */ `
+  rowNoJalan.innerHTML = /* html */ `
       <td>NO. RUAS JALAN</td>
       <td colspan="3">${jalan.no_jalan}</td>
       `
-    rowNamaJalan.innerHTML = /* html */ `
+  rowNamaJalan.innerHTML = /* html */ `
       <td>NAMA RUAS JALAN</td>
       <td colspan="3">${jalan.nama_jalan}</td>
       `
-    rowKoordinatAwal.innerHTML = /* html */ `
+  rowKoordinatAwal.innerHTML = /* html */ `
       <td>KOORDINAT AWAL</td>
       <td colspan="3">Lat: ${jalan.koordinat_awal[1]} Long: ${jalan.koordinat_awal[0]} </td>
       `
-    rowKoordinatAkhir.innerHTML = /* html */ `
+  rowKoordinatAkhir.innerHTML = /* html */ `
       <td>KOORDINAT AKHIR</td>
       <td colspan="3">Lat: ${jalan.koordinat_akhir[1]} Long: ${jalan.koordinat_akhir[0]} </td>
       `
-    rowPermukaanValue.innerHTML = /* html */ `
+  rowPermukaanValue.innerHTML = /* html */ `
       <td align="center" width="25%">${jalan.perkerasan[1]}</td>
       <td align="center" width="25%">${jalan.perkerasan[2]}</td>
       <td align="center" width="25%">${jalan.perkerasan[3]}</td>
       <td align="center" width="25%">${jalan.perkerasan[4]}</td>
       `
-    rowKondisiValue.innerHTML = /* html */ `
+  rowKondisiValue.innerHTML = /* html */ `
       <td align="center" width="25%">${jalan.kondisi[1]}</td>
       <td align="center" width="25%">${jalan.kondisi[2]}</td>
       <td align="center" width="25%">${jalan.kondisi[3]}</td>
       <td align="center" width="25%">${jalan.kondisi[4]}</td>
       `
-    rowJmlJembatan.innerHTML = /* html */ `
+  rowJmlJembatan.innerHTML = /* html */ `
       <td>JML JEMBATAN</td>
       <td colspan="3">${jalan.jml_jembatan}</td>
       `
 
-    infowindow = false
-  },
+  infowindow = false
 }
 
 window.viewEditEvents = {
