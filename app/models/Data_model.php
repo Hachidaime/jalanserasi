@@ -94,6 +94,10 @@ class Data_model extends Database
                 "{$jalan_table}.no_jalan",
                 "{$jalan_table}.nama_jalan",
                 "{$jalan_table}.kepemilikan",
+                "{$jalan_table}.panjang",
+                "{$jalan_table}.lebar_rata",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
                 "{$jembatan_table}.no_jembatan",
                 "{$jembatan_table}.nama_jembatan",
                 "{$jembatan_table}.latitude",
@@ -117,6 +121,7 @@ class Data_model extends Database
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
             ],
             'sort' => [
                 "{$jembatan_table}.no_jalan ASC",
@@ -219,11 +224,17 @@ class Data_model extends Database
             $row['row'] = $idx + 1;
             $row['panjang_km'] = number_format($row['panjang'] / 1000, 2);
 
-            foreach (json_decode($row['perkerasan'], true) as $key => $value) {
+            foreach (
+                json_decode($row['perkerasan_panjang'], true)
+                as $key => $value
+            ) {
                 $row["perkerasan_{$key}"] = number_format($value / 1000, 2);
             }
 
-            foreach (json_decode($row['kondisi'], true) as $key => $value) {
+            foreach (
+                json_decode($row['kondisi_panjang'], true)
+                as $key => $value
+            ) {
                 $row["kondisi_{$key}"] = number_format($value / 1000, 2);
                 $row["kondisi_{$key}_percent"] = number_format(
                     ($value / $row['panjang']) * 100,

@@ -89,8 +89,8 @@ class Gis extends Controller
 
             $jalan['kepemilikan_text'] =
                 $kepemilikan_opt[$jalan['kepemilikan']];
-            $jalan['lebar'] = $jalan['lebar_rata'];
-            $jalan['panjang'] = $jalan['panjang'];
+            // $jalan['lebar'] = $jalan['lebar_rata'];
+            // $jalan['panjang'] = $jalan['panjang'];
 
             $coord = $jalan['segmented'];
             if (empty($coord)) {

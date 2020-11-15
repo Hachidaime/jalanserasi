@@ -101,6 +101,7 @@ class Gis_model extends Database
             Functions::getParams($data_query),
         );
         $this->execute($query, $bindVar);
+
         [$jalan] = $this->singlearray();
 
         $data_query = [
@@ -148,6 +149,10 @@ class Gis_model extends Database
                 "{$jalan_table}.no_jalan",
                 "{$jalan_table}.nama_jalan",
                 "{$jalan_table}.kepemilikan",
+                "{$jalan_table}.panjang",
+                "{$jalan_table}.lebar_rata",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
                 "{$jembatan_table}.no_jembatan",
                 "{$jembatan_table}.nama_jembatan",
                 "{$jembatan_table}.latitude",
@@ -171,6 +176,7 @@ class Gis_model extends Database
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
             ],
             'sort' => [
                 "{$jembatan_table}.no_jalan ASC",
@@ -183,7 +189,14 @@ class Gis_model extends Database
             Functions::getParams($data_query),
         );
         $this->execute($query, $bindVar);
-        [$jembatan] = $this->multiarray();
+        [$jembatan, $jembatan_count] = $this->multiarray();
+
+        $jalan['jml_jembatan'] = $jembatan_count;
+
+        foreach ($detail as $idx => $row) {
+            $row['jml_jembatan'] = $jembatan_count;
+            $detail[$idx] = $row;
+        }
 
         return [$jalan, $detail, $jembatan];
     }

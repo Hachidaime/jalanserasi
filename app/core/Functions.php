@@ -784,8 +784,19 @@ class Functions
                     ? number_format($data['panjang'] / 1000, 2)
                     : 0,
             'lebar_rata' => $data['lebar_rata'],
-            'perkerasan' => $data['perkerasan_panjang'],
-            'kondisi' => $data['kondisi_panjang'],
+            'perkerasan' => array_map(function ($value) {
+                return !is_null($value)
+                    ? number_format($value / 1000, 2)
+                    : $value;
+            }, json_decode($data['perkerasan_panjang'], true)),
+            'kondisi' => array_map(function ($value) {
+                return !is_null($value)
+                    ? number_format($value / 1000, 2)
+                    : $value;
+            }, json_decode($data['kondisi_panjang'], true)),
+            'jml_jembatan' => !is_null($data['jml_jembatan'])
+                ? $data['jml_jembatan']
+                : 0,
         ];
         $mystyle = str_replace('#', '', $data['style']);
         switch ($simbol) {

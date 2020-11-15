@@ -473,6 +473,8 @@ let borderStyle = (features) => {
 let jalandir = `${server_base}/upload/img/jalan/`
 
 let getFeatureInfo = (param, jenis) => {
+  let jml_jembatan = param.feature.getProperty('jml_jembatan')
+
   let html = [
     /*html*/ `<div style="width:600px;">`,
     /*html*/ `<table class="table table-bordered table-striped table-sm" width="100%">`,
@@ -505,7 +507,16 @@ let getFeatureInfo = (param, jenis) => {
       break
   }
 
-  html = html.concat([/*html*/ `</table>`, /*html*/ `</div>`])
+  html = html.concat([
+    /*html*/ `
+    <tr>
+      <td>JML JEMBATAN</td>
+      <td colspan="3">${jml_jembatan}</td>
+    </tr>
+    `,
+    /*html*/ `</table>`,
+    /*html*/ `</div>`,
+  ])
   // console.log(html);
   return html.join('')
 }
@@ -515,55 +526,87 @@ let jalanInfo = (param) => {
   let nama_jalan = param.feature.getProperty('nama_jalan')
   let panjang = param.feature.getProperty('panjang')
   let lebar_rata = param.feature.getProperty('lebar_rata')
+  let perkerasan = param.feature.getProperty('perkerasan')
+  let kondisi = param.feature.getProperty('kondisi')
 
   return [
     /*html*/ `
       <tr>
-          <td width="25%">No Ruas Jalan</td>
-          <td width="*">${no_jalan}</td>
+          <td width="25%">NO. RUAS JALAN</td>
+          <td width="*" colspan="3">${no_jalan}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Nama Ruas Jalan</td>
-          <td>${nama_jalan}</td>
+          <td>NAMA RUAS JALAN</td>
+          <td colspan="3">${nama_jalan}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Koordinat Awal</td>
-          <td>Lat: Long:</td>
+          <td>KOORDINAT AWAL</td>
+          <td colspan="3">Lat: Long:</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Koordinat Akhir</td>
-          <td>Lat: Long:</td>
+          <td>KOORDINAT AKHIR</td>
+          <td colspan="3">Lat: Long:</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Panjang (km)</td>
-          <td>${panjang}</td>
+          <td>PANJANG (km)</td>
+          <td colspan="3">${panjang}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Lebar Rata-Rata (m)</td>
-          <td>${lebar_rata}</td>
+          <td>LEBAR RATA-RATA (m)</td>
+          <td colspan="3">${lebar_rata}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Permukaan</td>
-          <td></td>
+          <td align="center" colspan="4">PERMUKAAN</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td>Kondisi</td>
-          <td></td>
+          <td align="center" width="25%">ASPAL (km)</td>
+          <td align="center" width="25%">BETON (km)</td>
+          <td align="center" width="25%">KERIKIL (km)</td>
+          <td align="center" width="25%">TANAH (km)</td>
       </tr>
+    `,
+    /*html*/ `
+      <tr>
+          <td align="center" width="25%">${perkerasan[1]}</td>
+          <td align="center" width="25%">${perkerasan[2]}</td>
+          <td align="center" width="25%">${perkerasan[3]}</td>
+          <td align="center" width="25%">${perkerasan[4]}</td>
+      </tr>
+    `,
+    /*html*/ `
+      <tr>
+          <td align="center" colspan="4">KONDISI</td>
+      </tr>
+    `,
+    /*html*/ `
+      <tr>
+        <td align="center" width="25%">BAIK (km)</td>
+        <td align="center" width="25%">SEDANG (km)</td>
+        <td align="center" width="25%">RUSAK RINGAN (km)</td>
+        <td align="center" width="25%">RUSAK BERAT (km)</td>
+      </tr>
+    `,
+    /*html*/ `
+    <tr>
+        <td align="center" width="25%">${kondisi[1]}</td>
+        <td align="center" width="25%">${kondisi[2]}</td>
+        <td align="center" width="25%">${kondisi[3]}</td>
+        <td align="center" width="25%">${kondisi[4]}</td>
+    </tr>
     `,
   ]
 }
@@ -581,14 +624,7 @@ let segmentInfo = (param) => {
   return [
     /*html*/ `
       <tr>
-          <td>Segment</td>
-          <td>${segment}</td>
-      </tr>
-      `,
-    /*html*/ `
-      <tr>
-          <td>Foto</td>
-          <td>${img}</td>
+          <td align="center" colspan="4"><div>SEGMENTASI: ${segment}</div>${img}</td>
       </tr>
       `,
   ]
@@ -607,10 +643,9 @@ let ujungInfo = (param) => {
   console.log(img)
   return [
     /*html*/ `
-    <tr>
-        <td>Foto</td>
-        <td>${img}</td>
-    </tr>
+      <tr>
+        <td align="center" colspan="4">${img}</td>
+      </tr>
     `,
   ]
 }
@@ -623,14 +658,14 @@ let jembatanInfo = (param) => {
   return [
     /*html*/ `
       <tr>
-          <td>No Jembatan</td>
-          <td>${no_point}</td>
+          <td>NO. JEMBATAN</td>
+          <td colspan="3">${no_point}</td>
       </tr>
       `,
     /*html*/ `
       <tr>
-          <td>Nama ${nama_point}</td>
-          <td>${nama_point}</td>
+          <td>NAMA JEMBATAN</td>
+          <td colspan="3">${nama_point}</td>
       </tr>
       `,
   ]
