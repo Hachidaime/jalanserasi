@@ -355,7 +355,13 @@ class Perawatan_model extends Database
             }
             $value = !empty($value) ? $value : null;
             if ($key == 'survei_date') {
-                $value = Functions::formatDatetime($value, 'Y-m-d');
+                $value = !is_null($value)
+                    ? Functions::formatDatetime($value, 'Y-m-d')
+                    : $value;
+            }
+
+            if (in_array($key, ['panjang', 'lebar_rata', 'segmentasi'])) {
+                $value = !is_null($value) ? $value : 0;
             }
             array_push($values, "{$key}=?");
             array_push($bindVar, $value);
@@ -373,6 +379,7 @@ class Perawatan_model extends Database
 
         $query = "INSERT INTO {$this->my_tables['jalan']} SET {$values}, update_dt = NOW()";
         $this->execute($query, $bindVar);
+
         return $this->affected_rows();
     }
 

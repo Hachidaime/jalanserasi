@@ -353,14 +353,14 @@ class DataJalan extends Controller
                     'danger',
                 ]);
                 Functions::setDataSession('alert', [
-                    "{$tag} Jalan success.",
+                    "{$tag} Perawatan Jalan success.",
                     'success',
                 ]);
             } else {
                 $result = $this->DetailProcess();
                 if (!$result) {
                     Functions::setDataSession('alert', [
-                        "{$tag} Detail Jalan gagal.",
+                        "{$tag} Detail Perawatan Jalan gagal.",
                         'danger',
                     ]);
                     Functions::setDataSession('alert', [
@@ -368,12 +368,12 @@ class DataJalan extends Controller
                         'success',
                     ]);
                     Functions::setDataSession('alert', [
-                        "{$tag} Jalan success.",
+                        "{$tag} Perawatan Jalan success.",
                         'success',
                     ]);
                 } else {
                     Functions::setDataSession('alert', [
-                        "{$tag} Jalan success.",
+                        "{$tag} Perawatan Jalan success.",
                         'success',
                     ]);
                     $coord = Functions::getDataSession('coordinates', false);
@@ -396,7 +396,7 @@ class DataJalan extends Controller
             $this->model('Data_model')->generateData();
         } else {
             Functions::setDataSession('alert', [
-                "{$tag} Jalan failed.",
+                "{$tag} Perawatan Jalan failed.",
                 'danger',
             ]);
         }

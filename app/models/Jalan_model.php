@@ -355,7 +355,9 @@ class Jalan_model extends Database
             }
             $value = !empty($value) ? $value : null;
             if ($key == 'survei_date') {
-                $value = Functions::formatDatetime($value, 'Y-m-d');
+                $value = !is_null($value)
+                    ? Functions::formatDatetime($value, 'Y-m-d')
+                    : $value;
             }
             array_push($values, "{$key}=?");
             array_push($bindVar, $value);

@@ -39,12 +39,15 @@ class Database extends Controller
     protected function getSelectQuery(string $table, array $params = [])
     {
         // TODO: Set variable dari parameter
-        $select     = (isset($params['select'])) ? $params['select'] : '*';
-        $join       = (isset($params['join'])) ? $params['join'] : '';
-        $condition  = (isset($params['filter']) && !empty($params['filter'])) ? "WHERE " . $params['filter'] : '';
-        $order      = (isset($params['sort'])) ? "ORDER BY " . $params['sort'] : '';
-        $limit      = (isset($params['limit'])) ? "LIMIT " . $params['limit'] : '';
-        $offset     = (isset($params['offset'])) ? "OFFSET " . $params['offset'] : '';
+        $select = isset($params['select']) ? $params['select'] : '*';
+        $join = isset($params['join']) ? $params['join'] : '';
+        $condition =
+            isset($params['filter']) && !empty($params['filter'])
+                ? 'WHERE ' . $params['filter']
+                : '';
+        $order = isset($params['sort']) ? 'ORDER BY ' . $params['sort'] : '';
+        $limit = isset($params['limit']) ? 'LIMIT ' . $params['limit'] : '';
+        $offset = isset($params['offset']) ? 'OFFSET ' . $params['offset'] : '';
 
         // TODO: Build query
         $query = "SELECT {$select} FROM {$table} {$join} {$condition} {$order} {$limit} {$offset}";
@@ -67,13 +70,17 @@ class Database extends Controller
         $this->stmt = $this->db->execute($query, $bindVar);
 
         // TODO: Build query WHITOUT limit
-        $query_no_limit = strstr($query, "LIMIT", true);
-        $query_no_limit = (strlen($query_no_limit) > 0) ? $query_no_limit : $query;
+        $query_no_limit = strstr($query, 'LIMIT', true);
+        $query_no_limit =
+            strlen($query_no_limit) > 0 ? $query_no_limit : $query;
 
         // TODO: Check Limit
         if (strpos($query_no_limit, 'SELECT') !== false) {
             // TODO: Execute query WITHOUT limit
-            $this->stmt_no_limit = $this->db->execute($query_no_limit, $bindVar);
+            $this->stmt_no_limit = $this->db->execute(
+                $query_no_limit,
+                $bindVar,
+            );
         }
     }
 
@@ -83,7 +90,7 @@ class Database extends Controller
      */
     public function multiarray()
     {
-        return array($this->stmt->getAll(), $this->stmt_no_limit->recordCount());
+        return [$this->stmt->getAll(), $this->stmt_no_limit->recordCount()];
     }
 
     /**
@@ -92,7 +99,7 @@ class Database extends Controller
      */
     public function singlearray()
     {
-        return array($this->stmt->fetchRow(), $this->stmt_no_limit->recordCount());
+        return [$this->stmt->fetchRow(), $this->stmt_no_limit->recordCount()];
     }
 
     /**
@@ -115,7 +122,7 @@ class Database extends Controller
 
     /**
      * * Database::affected_rows
-     * ? Get sum of rows that affected by query 
+     * ? Get sum of rows that affected by query
      */
     public function affected_rows()
     {
@@ -141,16 +148,20 @@ class Database extends Controller
      * @param string $table
      * ? Table name
      * @param int $id
-     * ? ID 
+     * ? ID
      * @param string $field
      * ? Field name
      * @param string $value
      * ? Value
      */
-    public function checkUnique(string $table, int $id, string $field, string $value)
-    {
+    public function checkUnique(
+        string $table,
+        int $id,
+        string $field,
+        string $value
+    ) {
         $params = [];
-        $params['select'] = "COUNT(*)";
+        $params['select'] = 'COUNT(*)';
         $params['filter'] = "id != ? AND {$field} = ?";
         $query = $this->getSelectQuery($table, $params);
         $bindVar = [$id, $value];
