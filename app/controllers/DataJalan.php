@@ -260,14 +260,14 @@ class DataJalan extends Controller
         Functions::clearDataSession('coordinates');
         Functions::setTitle('Tambah Perawatan Jalan');
 
-        $data['url'] = BASE_URL . '/DataJalan/koordinatPerawatan/search';
+        $data['url'] = BASE_URL . '/DataJalan/Koordinat/search';
         $this->perawatanForm($data);
     }
 
     private function perawatanEdit($id)
     {
         Functions::clearDataSession('coordinates');
-        Functions::setTitle('Edit Jalan');
+        Functions::setTitle('Edit Perawatan Jalan');
 
         [$detail, $count] = $this->perawatanDetail($id);
         if ($count <= 0) {
