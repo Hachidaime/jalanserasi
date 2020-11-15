@@ -28,22 +28,80 @@ class Menu_model extends Database
     public function getMenuForm(int $id = null)
     {
         $menu = $this->getMenuOptions();
-        if (!is_null($id)) unset($menu[$id]);
+        if (!is_null($id)) {
+            unset($menu[$id]);
+        }
         Functions::setDataSession('form', ['hidden', 'id', 'id', '', []]);
-        Functions::setDataSession('form', ['text', 'name', 'name', 'Name', [], true, true]);
-        Functions::setDataSession('form', ['select', 'parent', 'parent', 'Parent Menu', $menu, false, false]);
-        Functions::setDataSession('form', ['text', 'class_name', 'class_name', 'Class Name', [], true, false]);
-        Functions::setDataSession('form', ['text', 'method_name', 'method_name', 'Method Name', [], false, false]);
-        Functions::setDataSession('form', ['text', 'sort', 'sort', 'Sort', [], true, false]);
-        Functions::setDataSession('form', ['switch', 'show_website', 'show_website', 'Show on Website', [], false, false]);
-        Functions::setDataSession('form', ['switch', 'show_admin', 'show_admin', 'Show on Admin', [], false, false]);
+        Functions::setDataSession('form', [
+            'text',
+            'name',
+            'name',
+            'Name',
+            [],
+            true,
+            true,
+        ]);
+        Functions::setDataSession('form', [
+            'select',
+            'parent',
+            'parent',
+            'Parent Menu',
+            $menu,
+            false,
+            false,
+        ]);
+        Functions::setDataSession('form', [
+            'text',
+            'class_name',
+            'class_name',
+            'Class Name',
+            [],
+            true,
+            false,
+        ]);
+        Functions::setDataSession('form', [
+            'text',
+            'method_name',
+            'method_name',
+            'Method Name',
+            [],
+            false,
+            false,
+        ]);
+        Functions::setDataSession('form', [
+            'text',
+            'sort',
+            'sort',
+            'Sort',
+            [],
+            true,
+            false,
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'show_website',
+            'show_website',
+            'Show on Website',
+            [],
+            false,
+            false,
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'show_admin',
+            'show_admin',
+            'Show on Admin',
+            [],
+            false,
+            false,
+        ]);
 
         return Functions::getDataSession('form');
     }
 
     public function getMenuOptions()
     {
-        list($system) = $this->getMenu();
+        [$system] = $this->getMenu();
         $system_options = [];
         foreach ($system as $row) {
             $system_options[$row['id']] = $row['name'];
@@ -60,9 +118,24 @@ class Menu_model extends Database
     {
         // TODO: Set column table
         Functions::setDataSession('thead', ['0', 'row', '#']);
-        Functions::setDataSession('thead', ['0', 'name', 'Name', 'data-halign="center" data-align="left"']);
-        Functions::setDataSession('thead', ['0', 'website', 'Show on Website', 'data-halign="center" data-align="center" data-width="200"']);
-        Functions::setDataSession('thead', ['0', 'admin', 'Show on Admin', 'data-halign="center" data-align="center" data-width="200"']);
+        Functions::setDataSession('thead', [
+            '0',
+            'name',
+            'Name',
+            'data-halign="center" data-align="left"',
+        ]);
+        Functions::setDataSession('thead', [
+            '0',
+            'website',
+            'Show on Website',
+            'data-halign="center" data-align="center" data-width="200"',
+        ]);
+        Functions::setDataSession('thead', [
+            '0',
+            'admin',
+            'Show on Admin',
+            'data-halign="center" data-align="center" data-width="200"',
+        ]);
         Functions::setDataSession('thead', ['0', 'operate']);
         return Functions::getDataSession('thead');
     }
@@ -76,9 +149,15 @@ class Menu_model extends Database
         $params = [];
         $search = Functions::getSearch();
 
-        if (!empty($search['search'])) $params['filter'] = "name LIKE '%{$search['search']}%'";
-        if (isset($search['limit'])) $params['limit'] = $search['limit'];
-        if (isset($search['offset'])) $params['offset'] = $search['offset'];
+        if (!empty($search['search'])) {
+            $params['filter'] = "name LIKE '%{$search['search']}%'";
+        }
+        if (isset($search['limit'])) {
+            $params['limit'] = $search['limit'];
+        }
+        if (isset($search['offset'])) {
+            $params['offset'] = $search['offset'];
+        }
 
         $params['sort'] = "{$this->my_tables['menu']}.sort ASC";
 
@@ -106,7 +185,7 @@ class Menu_model extends Database
     public function getMenuDetail(int $id)
     {
         $params = [];
-        $params['filter'] = "id = ?";
+        $params['filter'] = 'id = ?';
         $query = $this->getSelectQuery($this->my_tables['menu'], $params);
         $bindVar = [$id];
 
@@ -126,20 +205,28 @@ class Menu_model extends Database
         $show = ['show_website', 'show_admin'];
 
         foreach ($show as $value) {
-            if (!isset($_POST[$value])) $_POST[$value] = 0;
+            if (!isset($_POST[$value])) {
+                $_POST[$value] = 0;
+            }
         }
 
         foreach ($_POST as $key => $value) {
-            if ($key == 'id') continue;
+            if ($key == 'id') {
+                continue;
+            }
             if (in_array($key, $show)) {
-                $value = ($value === 'on') ? 1 : 0;
+                $value = $value === 'on' ? 1 : 0;
+            }
+
+            if ($key == 'parent') {
+                $value = $value == 0 ? null : $value;
             }
             array_push($values, "{$key}=?");
             array_push($bindVar, $value);
         }
 
-        $values = implode(", ", $values);
-        $values .= ", login_id = ?, remote_ip = ?";
+        $values = implode(', ', $values);
+        $values .= ', login_id = ?, remote_ip = ?';
 
         array_push($bindVar, Auth::User('id'), $_SERVER['REMOTE_ADDR']);
 
@@ -152,7 +239,7 @@ class Menu_model extends Database
      */
     public function createMenu()
     {
-        list($values, $bindVar) = $this->prepareSaveMenu();
+        [$values, $bindVar] = $this->prepareSaveMenu();
 
         $query = "INSERT INTO {$this->my_tables['menu']} SET {$values}, update_dt = NOW()";
 
@@ -166,7 +253,7 @@ class Menu_model extends Database
      */
     public function updateMenu()
     {
-        list($values, $bindVar) = $this->prepareSaveMenu();
+        [$values, $bindVar] = $this->prepareSaveMenu();
         array_push($bindVar, $_POST['id']);
 
         $query = "UPDATE {$this->my_tables['menu']} SET {$values}, update_dt = NOW() WHERE id=?";

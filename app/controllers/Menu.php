@@ -32,7 +32,9 @@ class Menu extends Controller
                 break;
             case 'edit': // ? Menampilkan halaman Edit Menu
                 // TODO: Cek parameter id Menu
-                if (!isset($param2)) Header("Location: " . BASE_URL . "/StaticPage/Error404"); // ! Id Gallery kosong, Redirect ke Error 404
+                if (!isset($param2)) {
+                    Header('Location: ' . BASE_URL . '/StaticPage/Error404');
+                } // ! Id Gallery kosong, Redirect ke Error 404
 
                 $this->MenuEdit($param2);
                 break;
@@ -42,7 +44,8 @@ class Menu extends Controller
             case 'remove': // ? Menghapus Menu
                 $this->MenuRemove($_POST['id']);
                 break;
-            default: // ? Menampilkan halaman Menu
+            default:
+                // ? Menampilkan halaman Menu
                 $this->MenuDefault();
                 break;
         }
@@ -54,7 +57,7 @@ class Menu extends Controller
      */
     private function MenuDefault()
     {
-        Functions::setTitle("Menu");
+        Functions::setTitle('Menu');
 
         // TODO: Menampilkan Toolbar
         $data['toolbar'][] = $this->dofetch('Component/Button', $this->btn_add);
@@ -62,7 +65,7 @@ class Menu extends Controller
         // TODO: Menampilkan Table
         $data['data'] = Functions::defaultTableData();
         $data['thead'] = $this->my_model->getMenuThead();
-        $data['url'] = BASE_URL . "/Menu/index/search";
+        $data['url'] = BASE_URL . '/Menu/index/search';
         $data['main'][] = $this->dofetch('Layout/Table', $data);
 
         // TODO: Menampilkan Template
@@ -76,7 +79,7 @@ class Menu extends Controller
     private function MenuSearch()
     {
         // TODO: Get listing Menu
-        list($list, $count) = $this->my_model->getMenu();
+        [$list, $count] = $this->my_model->getMenu();
         // TODO: Get total Menu
         $total = $this->my_model->totalMenu();
 
@@ -84,14 +87,14 @@ class Menu extends Controller
         $rows = [];
         foreach ($list as $idx => $row) {
             $row['row'] = $idx + 1;
-            $row['website'] = ($row['show_website']) ? 'YES' : 'NO';
-            $row['admin'] = ($row['show_admin']) ? 'YES' : 'NO';
+            $row['website'] = $row['show_website'] ? 'YES' : 'NO';
+            $row['admin'] = $row['show_admin'] ? 'YES' : 'NO';
             array_push($rows, $row);
         }
 
         // TODO: Mengembalikan result
         Functions::setDataTable($rows, $count, $total);
-        exit;
+        exit();
     }
 
     /**
@@ -100,7 +103,7 @@ class Menu extends Controller
      */
     private function MenuAdd()
     {
-        Functions::setTitle("Add Menu");
+        Functions::setTitle('Add Menu');
 
         $data['form'] = $this->my_model->getMenuForm();
         $this->form($data);
@@ -113,16 +116,18 @@ class Menu extends Controller
      */
     private function MenuEdit($id)
     {
-        Functions::setTitle("Edit Menu");
+        Functions::setTitle('Edit Menu');
 
         // TODO: Get Menu dari Database
-        list($detail, $count) = $this->MenuDetail($id);
+        [$detail, $count] = $this->MenuDetail($id);
 
         // TODO: Set detail Menu
         $data['detail'] = $detail;
 
         // TODO: Cek Menu exist
-        if ($count <= 0) Header("Location: " . BASE_URL . "/StaticPage/Error404");
+        if ($count <= 0) {
+            Header('Location: ' . BASE_URL . '/StaticPage/Error404');
+        }
 
         $data['form'] = $this->my_model->getMenuForm($id);
         $this->form($data);
@@ -138,12 +143,14 @@ class Menu extends Controller
         $error = $this->MenuValidate();
 
         // TODO: Cek error
-        if (!$error) { // ? No Error
+        if (!$error) {
+            // ? No Error
             echo json_encode($this->MenuProcess());
-        } else { // ! Error
+        } else {
+            // ! Error
             echo json_encode($error);
         }
-        exit;
+        exit();
     }
 
     /**
@@ -171,21 +178,31 @@ class Menu extends Controller
     private function MenuProcess()
     {
         // TODO: Cek input id
-        if ($_POST['id'] > 0) { // ? Id Menu exist
+        if ($_POST['id'] > 0) {
+            // ? Id Menu exist
             // TODO: Proses edit Menu
             $result = $this->my_model->updateMenu();
-            $tag = "Edit";
-        } else { // ! Id Menu not exist
+            $tag = 'Edit';
+        } else {
+            // ! Id Menu not exist
             // TODO: Proses add Menu
             $result = $this->my_model->createMenu();
-            $tag = "Add";
+            $tag = 'Add';
         }
 
         // TODO: Cek hasil proses
-        if ($result) { // ? Proses success
-            Functions::setDataSession('alert', ["{$tag} Menu success.", 'success']);
-        } else { // ! Proses gagal
-            Functions::setDataSession('alert', ["{$tag} Menu failed.", 'danger']);
+        if ($result) {
+            // ? Proses success
+            Functions::setDataSession('alert', [
+                "{$tag} Menu success.",
+                'success',
+            ]);
+        } else {
+            // ! Proses gagal
+            Functions::setDataSession('alert', [
+                "{$tag} Menu failed.",
+                'danger',
+            ]);
         }
 
         // TODO: Mengembalikan hasil proses
@@ -216,10 +233,18 @@ class Menu extends Controller
         $tag = 'Remove';
 
         // TODO: Cek hasil proses hapus
-        if ($result) { // ? Hapus Menu success
-            Functions::setDataSession('alert', ["{$tag} Menu success.", 'success']);
-        } else { // ! Hapus Menu gagal
-            Functions::setDataSession('alert', ["{$tag} Menu failed.", 'danger']);
+        if ($result) {
+            // ? Hapus Menu success
+            Functions::setDataSession('alert', [
+                "{$tag} Menu success.",
+                'success',
+            ]);
+        } else {
+            // ! Hapus Menu gagal
+            Functions::setDataSession('alert', [
+                "{$tag} Menu failed.",
+                'danger',
+            ]);
         }
 
         // TODO: Mengembalikan hasil proses
