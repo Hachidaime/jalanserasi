@@ -89,8 +89,6 @@ class Gis extends Controller
 
             $jalan['kepemilikan_text'] =
                 $kepemilikan_opt[$jalan['kepemilikan']];
-            // $jalan['lebar'] = $jalan['lebar_rata'];
-            // $jalan['panjang'] = $jalan['panjang'];
 
             $coord = $jalan['segmented'];
             if (empty($coord)) {
@@ -108,6 +106,12 @@ class Gis extends Controller
             $jalan['koordinat'] = $koordinat;
             $jalan['style'] = $style[$jalan['kepemilikan']][0][0];
 
+            $koordinatAwal = $koordinat[0];
+            $koordinatAkhir = $koordinat[count($koordinat) - 1];
+
+            $jalan['koordinat_awal'] = $koordinatAwal;
+            $jalan['koordinat_akhir'] = $koordinatAkhir;
+
             [
                 $segment,
                 $complete,
@@ -118,6 +122,36 @@ class Gis extends Controller
             ] = Functions::getLineFromDetail($detail, $lineStyle, $iconStyle);
             $jembatan = Functions::getPointFromJembatan($jembatan, $iconStyle);
             // var_dump($segment);
+
+            foreach ($segment as $idx => $row) {
+                $row['koordinat_awal'] = $koordinatAwal;
+                $row['koordinat_akhir'] = $koordinatAkhir;
+                $segment[$idx] = $row;
+            }
+
+            foreach ($awal as $idx => $row) {
+                $row['koordinat_awal'] = $koordinatAwal;
+                $row['koordinat_akhir'] = $koordinatAkhir;
+                $awal[$idx] = $row;
+            }
+
+            foreach ($akhir as $idx => $row) {
+                $row['koordinat_awal'] = $koordinatAwal;
+                $row['koordinat_akhir'] = $koordinatAkhir;
+                $akhir[$idx] = $row;
+            }
+
+            foreach ($perkerasan as $idx => $row) {
+                $row['koordinat_awal'] = $koordinatAwal;
+                $row['koordinat_akhir'] = $koordinatAkhir;
+                $perkerasan[$idx] = $row;
+            }
+
+            foreach ($kondisi as $idx => $row) {
+                $row['koordinat_awal'] = $koordinatAwal;
+                $row['koordinat_akhir'] = $koordinatAkhir;
+                $kondisi[$idx] = $row;
+            }
 
             $position = [
                 'koordinat' => $this->GetGeo(),

@@ -25,11 +25,22 @@ class DataJalan extends Controller
     {
         Functions::setTitle('Data Jalan');
 
-        $data['thead'] = $this->my_model->getDataJalanThead();
-        $data['data'] = Functions::defaultTableData();
-        $data['search'] = false;
-        $data['url'] = BASE_URL . '/DataJalan/index/search';
-        $data['main'][] = $this->dofetch('Layout/Table', $data);
+        $data = [
+            'main' => [
+                $this->dofetch('Layout/Table', [
+                    'data' => Functions::defaultTableData(),
+                    'thead' => $this->my_model->getDataJalanThead(),
+                    'url' => BASE_URL . '/DataJalan/index/search',
+                ]),
+            ],
+            'modal' => [
+                [
+                    'modalId' => 'myModal',
+                ],
+            ],
+        ];
+
+        // TODO: Menampilkan Template
         $this->view('Layout/Default', $data);
     }
 

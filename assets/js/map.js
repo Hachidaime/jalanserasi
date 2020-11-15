@@ -64,7 +64,7 @@ let initMap2 = () => {
   map = new google.maps.Map(document.getElementById('map_canvas'), {
     center: new google.maps.LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
     gestureHandling: 'greedy',
-    zoom: 11,
+    zoom: 13,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     mapTypeControl: true,
     mapTypeControlOptions: {
@@ -401,7 +401,7 @@ let getKepemilikan = () => {
   return kepemilikan
 }
 
-let loadData = (map_data, type, jenis, icon = null) => {
+let loadData = (map_data, type, jenis, icon = null, noInfo = false) => {
   features = new google.maps.Data()
   features.addGeoJson(map_data)
 
@@ -409,12 +409,15 @@ let loadData = (map_data, type, jenis, icon = null) => {
     features.addListener('click', function (event) {
       // var myHTML = event.feature.getProperty("nama_jalan");
       // infowindow.setContent("<div style='width:300px;'>" + myHTML + "</div>");
-      let myHTML = getFeatureInfo(event, jenis)
-      infowindow.setContent(myHTML)
+      if (!noInfo) {
+        let myHTML = getFeatureInfo(event, jenis)
 
-      // position the infowindow
-      infowindow.setPosition(event.latLng)
-      infowindow.open(map)
+        infowindow.setContent(myHTML)
+
+        // position the infowindow
+        infowindow.setPosition(event.latLng)
+        infowindow.open(map)
+      }
     })
   }
 
@@ -529,6 +532,8 @@ let jalanInfo = (param) => {
   let lebar_rata = param.feature.getProperty('lebar_rata')
   let perkerasan = param.feature.getProperty('perkerasan')
   let kondisi = param.feature.getProperty('kondisi')
+  let koordinat_awal = param.feature.getProperty('koordinat_awal')
+  let koordinat_akhir = param.feature.getProperty('koordinat_akhir')
 
   return [
     /*html*/ `
@@ -546,13 +551,13 @@ let jalanInfo = (param) => {
     /*html*/ `
       <tr>
           <td>KOORDINAT AWAL</td>
-          <td colspan="3">Lat: Long:</td>
+          <td colspan="3">Lat: ${koordinat_awal[1]} Long: ${koordinat_awal[0]}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
           <td>KOORDINAT AKHIR</td>
-          <td colspan="3">Lat: Long:</td>
+          <td colspan="3">Lat: ${koordinat_akhir[1]} Long: ${koordinat_akhir[0]}</td>
       </tr>
     `,
     /*html*/ `

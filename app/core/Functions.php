@@ -797,6 +797,8 @@ class Functions
             'jml_jembatan' => !is_null($data['jml_jembatan'])
                 ? $data['jml_jembatan']
                 : 0,
+            'koordinat_awal' => $data['koordinat_awal'],
+            'koordinat_akhir' => $data['koordinat_akhir'],
         ];
         $mystyle = str_replace('#', '', $data['style']);
         switch ($simbol) {
