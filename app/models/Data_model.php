@@ -26,8 +26,8 @@ class Data_model extends Database
                 "{$jalan_table}.lebar_rata",
                 "{$koordinat_table}.ori",
                 "{$koordinat_table}.segmented",
-                "{$panjang_table}.perkerasan",
-                "{$panjang_table}.kondisi",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
             ],
             'join' => [
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$jalan_table}.no_jalan",
@@ -55,6 +55,8 @@ class Data_model extends Database
                 "FORMAT({$jalan_table}.panjang/1000, 2) as panjang",
                 "{$jalan_table}.lebar_rata",
                 "{$jalan_table}.segmentasi",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
                 "{$detail_table}.no_detail",
                 "{$detail_table}.latitude",
                 "{$detail_table}.longitude",
@@ -68,6 +70,7 @@ class Data_model extends Database
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$detail_table}.no_jalan",
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$detail_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
                 // "LEFT JOIN {$foto_table} ON ({$foto_table}.latitude = {$detail_table}.latitude AND {$foto_table}.longitude = {$detail_table}.longitude)"
             ],
             'sort' => [

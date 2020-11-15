@@ -779,6 +779,13 @@ class Functions
             'no_jalan' => $data['no_jalan'],
             'nama_jalan' => $data['nama_jalan'],
             'kepemilikan' => $data['kepemilikan_text'],
+            'panjang' =>
+                $data['panjang'] > 0
+                    ? number_format($data['panjang'] / 1000, 2)
+                    : 0,
+            'lebar_rata' => $data['lebar_rata'],
+            'perkerasan' => $data['perkerasan_panjang'],
+            'kondisi' => $data['kondisi_panjang'],
         ];
         $mystyle = str_replace('#', '', $data['style']);
         switch ($simbol) {

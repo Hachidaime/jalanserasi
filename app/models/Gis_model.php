@@ -3,18 +3,58 @@ class Gis_model extends Database
 {
     public function getGisForm()
     {
-        $jalan_opt = $this->model('Jalan_model')->getJalanOptions(["nama_jalan NOT LIKE '%test%'"]);
+        $jalan_opt = $this->model('Jalan_model')->getJalanOptions([
+            "nama_jalan NOT LIKE '%test%'",
+        ]);
         $jalan_opt['semua'] = 'Semua';
 
         // Functions::setDataSession('form', ['select', 'kepemilikan', 'kepemilikan', 'Status Kepemilikan', $this->options('kepemilikan_opt2', true), true, true]);
-        Functions::setDataSession('form', ['select', 'no_jalan', 'no_jalan', 'Ruas Jalan', $jalan_opt, true, true]);
+        Functions::setDataSession('form', [
+            'select',
+            'no_jalan',
+            'no_jalan',
+            'Ruas Jalan',
+            $jalan_opt,
+            true,
+            true,
+        ]);
         // Functions::setDataSession('form', ['switch', 'jalan_provinsi', 'jalan_provinsi', 'Jalan Provinsi']);
-        Functions::setDataSession('form', ['switch', 'perkerasan', 'perkerasan', 'Perkerasan']);
-        Functions::setDataSession('form', ['switch', 'kondisi', 'kondisi', 'Kondisi']);
-        Functions::setDataSession('form', ['switch', 'segmentasi', 'segmentasi', 'Segmentasi']);
-        Functions::setDataSession('form', ['switch', 'awal', 'awal', 'Awal Ruas Jalan']);
-        Functions::setDataSession('form', ['switch', 'akhir', 'akhir', 'Akhir Ruas Jalan']);
-        Functions::setDataSession('form', ['switch', 'jembatan', 'jembatan', 'Jembatan']);
+        Functions::setDataSession('form', [
+            'switch',
+            'perkerasan',
+            'perkerasan',
+            'Perkerasan',
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'kondisi',
+            'kondisi',
+            'Kondisi',
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'segmentasi',
+            'segmentasi',
+            'Segmentasi',
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'awal',
+            'awal',
+            'Awal Ruas Jalan',
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'akhir',
+            'akhir',
+            'Akhir Ruas Jalan',
+        ]);
+        Functions::setDataSession('form', [
+            'switch',
+            'jembatan',
+            'jembatan',
+            'Jembatan',
+        ]);
 
         return Functions::getDataSession('form');
     }
@@ -42,23 +82,26 @@ class Gis_model extends Database
                 "{$jalan_table}.lebar_rata",
                 "{$koordinat_table}.ori",
                 "{$koordinat_table}.segmented",
-                "{$panjang_table}.perkerasan",
-                "{$panjang_table}.kondisi",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
             ],
             'join' => [
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$jalan_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
             ],
             'sort' => [
                 "{$jalan_table}.kepemilikan ASC",
-                "{$jalan_table}.no_jalan ASC"
+                "{$jalan_table}.no_jalan ASC",
             ],
-            'filter' => [$filter]
+            'filter' => [$filter],
         ];
 
-        $query = $this->getSelectQuery($jalan_table, Functions::getParams($data_query));
+        $query = $this->getSelectQuery(
+            $jalan_table,
+            Functions::getParams($data_query),
+        );
         $this->execute($query, $bindVar);
-        list($jalan,) = $this->singlearray();
+        [$jalan] = $this->singlearray();
 
         $data_query = [
             'select' => [
@@ -67,6 +110,10 @@ class Gis_model extends Database
                 "{$jalan_table}.kepemilikan",
                 "{$jalan_table}.lebar_rata",
                 "{$jalan_table}.segmentasi",
+                "{$jalan_table}.panjang",
+                "{$jalan_table}.lebar_rata",
+                "{$panjang_table}.perkerasan as perkerasan_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang",
                 "{$detail_table}.no_detail",
                 "{$detail_table}.latitude",
                 "{$detail_table}.longitude",
@@ -74,23 +121,27 @@ class Gis_model extends Database
                 "{$detail_table}.kondisi",
                 "{$detail_table}.segment",
                 "{$detail_table}.koordinat",
-                "{$detail_table}.data"
+                "{$detail_table}.data",
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$detail_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
             ],
             'sort' => [
                 "{$detail_table}.no_jalan ASC",
                 // "{$detail_table}.no_detail ASC",
                 // "{$detail_table}.perkerasan ASC",
                 // "{$detail_table}.kondisi ASC",
-                "{$detail_table}.segment ASC"
+                "{$detail_table}.segment ASC",
             ],
-            'filter' => [$filter]
+            'filter' => [$filter],
         ];
-        $query = $this->getSelectQuery($detail_table, Functions::getParams($data_query));
+        $query = $this->getSelectQuery(
+            $detail_table,
+            Functions::getParams($data_query),
+        );
         $this->execute($query, $bindVar);
-        list($detail,) = $this->multiarray();
+        [$detail] = $this->multiarray();
 
         $data_query = [
             'select' => [
@@ -125,11 +176,14 @@ class Gis_model extends Database
                 "{$jembatan_table}.no_jalan ASC",
                 "{$jembatan_table}.no_jembatan ASC",
             ],
-            'filter' => [$filter]
+            'filter' => [$filter],
         ];
-        $query = $this->getSelectQuery($jembatan_table, Functions::getParams($data_query));
+        $query = $this->getSelectQuery(
+            $jembatan_table,
+            Functions::getParams($data_query),
+        );
         $this->execute($query, $bindVar);
-        list($jembatan,) = $this->multiarray();
+        [$jembatan] = $this->multiarray();
 
         return [$jalan, $detail, $jembatan];
     }
