@@ -58,6 +58,7 @@ class DataJalan extends Controller
         foreach ($list as $idx => $row) {
             $row['kepemilikan'] = $kepemilikan_opt[$row['kepemilikan']];
             $row['row'] = Functions::getSearch()['offset'] + $idx + 1;
+            $row['panjang'] = number_format($row['panjang'] / 1000, 2);
             $row['survei_date'] = !is_null($row['survei_date'])
                 ? Functions::formatDatetime($row['survei_date'], 'd/m/Y')
                 : $row['survei_date'];

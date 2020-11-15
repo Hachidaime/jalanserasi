@@ -25,7 +25,7 @@ class DataJalan_model extends Database
         Functions::setDataSession('thead', [
             '0',
             'panjang',
-            'Panjang<br>(m)',
+            'Panjang<br>(km)',
             'data-halign="center" data-align="left" data-width="120"',
         ]);
         Functions::setDataSession('thead', [
