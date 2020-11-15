@@ -276,22 +276,535 @@ class DataJalan extends Controller
         $data['detail'] = $detail;
 
         $data['url'] =
-            BASE_URL . "/Jalan/Koordinat/search/{$detail['no_jalan']}";
+            BASE_URL . "/DataJalan/Koordinat/search/{$detail['no_jalan']}";
         $this->perawatanForm($data);
     }
 
     private function perawatanSubmit()
     {
-        # code...
+        $error = $this->perawatanValidate();
+
+        if (!$error) {
+            echo json_encode($this->perawatanProcess());
+        } else {
+            echo json_encode($error);
+        }
+        exit();
+    }
+
+    private function perawatanValidate()
+    {
+        $form = $this->my_model->getJalanForm();
+        foreach ($form as $row) {
+            $this->validate($_POST, $row, 'Jalan_model', 'jalan');
+        }
+
+        return Functions::getDataSession('alert');
+    }
+    private function perawatanProcess()
+    {
+        $form = $this->my_model->getJalanForm();
+
+        if ($_POST['id'] > 0) {
+            $result = $this->my_model->updateJalan();
+            $tag = 'Edit';
+        } else {
+            $result = $this->my_model->createJalan();
+            $tag = 'Tambah';
+        }
+
+        if ($result) {
+            // TODO: Pindah file dari temporary directory ke direktory Jalan
+            foreach ($form as $row) {
+                switch ($row['type']) {
+                    case 'pdf':
+                        if (!empty($_POST[$row['name']])) {
+                            FileHandler::MoveFromTemp(
+                                "pdf/jalan/{$_POST['no_jalan']}",
+                                $_POST[$row['name']],
+                            );
+                        }
+                        break;
+                    case 'video':
+                        if (!empty($_POST[$row['name']])) {
+                            FileHandler::MoveFromTemp(
+                                "video/jalan/{$_POST['no_jalan']}",
+                                $_POST[$row['name']],
+                            );
+                        }
+                        break;
+                    case 'kml':
+                        if (!empty($_POST[$row['name']])) {
+                            FileHandler::MoveFromTemp(
+                                "kml/jalan/{$_POST['no_jalan']}",
+                                $_POST[$row['name']],
+                                true,
+                            );
+                        }
+                        break;
+                }
+            }
+
+            $result = $this->KoordinatProcess();
+
+            if (!$result) {
+                Functions::setDataSession('alert', [
+                    "{$tag} Koordinat gagal.",
+                    'danger',
+                ]);
+                Functions::setDataSession('alert', [
+                    "{$tag} Jalan success.",
+                    'success',
+                ]);
+            } else {
+                $result = $this->DetailProcess();
+                if (!$result) {
+                    Functions::setDataSession('alert', [
+                        "{$tag} Detail Jalan gagal.",
+                        'danger',
+                    ]);
+                    Functions::setDataSession('alert', [
+                        "{$tag} Koordinat success.",
+                        'success',
+                    ]);
+                    Functions::setDataSession('alert', [
+                        "{$tag} Jalan success.",
+                        'success',
+                    ]);
+                } else {
+                    Functions::setDataSession('alert', [
+                        "{$tag} Jalan success.",
+                        'success',
+                    ]);
+                    $coord = Functions::getDataSession('coordinates', false);
+
+                    // var_dump($coord['final']);
+                    // var_dump($coord[1]);
+                    foreach ($coord[1] as $idx => $row) {
+                        $row['row'] = $idx + 1;
+                        if (!empty($row['foto'])) {
+                            FileHandler::MoveFromTemp(
+                                "img/jalan/{$_POST['no_jalan']}/{$row['row']}",
+                                $row['foto'],
+                                false,
+                                true,
+                            );
+                        }
+                    }
+                }
+            }
+            $this->model('Data_model')->generateData();
+        } else {
+            Functions::setDataSession('alert', [
+                "{$tag} Jalan failed.",
+                'danger',
+            ]);
+        }
+
+        return Functions::getDataSession('alert');
     }
 
     private function perawatanRemove()
     {
-        # code...
+        $id = $_POST['id'];
+
+        $result = $this->my_model->deleteJalan($id);
+        $tag = 'Remove';
+        if ($result) {
+            Functions::setDataSession('alert', [
+                "{$tag} Jalan success.",
+                'success',
+            ]);
+        } else {
+            Functions::setDataSession('alert', [
+                "{$tag} Jalan failed.",
+                'danger',
+            ]);
+        }
+
+        return Functions::getDataSession('alert');
     }
 
     private function perawatanDetail($id)
     {
         return $this->my_model->getJalanDetail($id);
     }
+
+    /**
+     * * End Jalan
+     */
+
+    /**
+     * * Start Koordinat
+     */
+    public function Koordinat(string $param1 = null, string $param2 = null)
+    {
+        $this->my_model = $this->model('Jalan_model');
+        $this->no_jalan = $param2;
+
+        switch ($param1) {
+            case 'search':
+                $this->KoordinatSearch();
+                break;
+            case 'searchori':
+                $this->KoordinatOri();
+                break;
+            case 'searchsegmented':
+                $this->KoordinatSegmented();
+                break;
+            case 'setsession':
+                $this->KoordinatSetSesion();
+                break;
+            case 'form':
+                $this->KoordinatForm();
+                break;
+            case 'detail':
+                $this->DetailSearch();
+                break;
+            case 'submit':
+                $this->KoordinatSubmit();
+                break;
+        }
+    }
+
+    private function KoordinatSearch()
+    {
+        $this->KoordinatSetSesion();
+        $final = Functions::getDataSession('coordinates', false)[1];
+        $segmentasi = Functions::getDataSession('segmentasi', false);
+
+        $perkerasan_opt = $this->options('perkerasan_opt');
+        $kondisi_opt = $this->options('kondisi_opt');
+
+        $search = Functions::getSearch();
+        $list_koordinat = [];
+        foreach ($final as $idx => $row) {
+            // var_dump($row);
+            $row['row'] = $idx + 1;
+            $row['perkerasan_text'] = $perkerasan_opt[$row['perkerasan']];
+            $row['kondisi_text'] = $kondisi_opt[$row['kondisi']];
+
+            $file = "img/jalan/{$this->no_jalan}/{$row['row']}/{$row['foto']}";
+            $row['foto_file'] = '';
+            if (!empty($row['foto'])) {
+                [$fileurl] = FileHandler::checkFileExist($file);
+                $filedir = Functions::getStringBetween(
+                    $fileurl,
+                    UPLOAD_URL,
+                    $row['foto'],
+                );
+
+                $row['foto_file'] = Functions::getPopupLink(
+                    $filedir,
+                    $row['foto'],
+                    null,
+                    null,
+                    'fas fa-image',
+                );
+            }
+
+            if ($row['segment'] > 0) {
+                $row['segment'] = Functions::formatSegment(
+                    $row['segment'],
+                    $segmentasi,
+                );
+            }
+
+            if (
+                $idx >= $search['offset'] &&
+                $idx <= $search['offset'] + $search['limit'] - 1
+            ) {
+                $list_koordinat[] = $row;
+            } elseif (empty($search['offset']) && empty($search['limit'])) {
+                $list_koordinat[] = $row;
+            }
+        }
+        Functions::setDataTable($list_koordinat, count($final), count($final));
+        exit();
+    }
+
+    private function KoordinatOri()
+    {
+        [$list] = $this->KoordinatJalanSearch($this->no_jalan);
+        echo $list['ori'];
+        exit();
+    }
+
+    private function KoordinatSegmented()
+    {
+        [$list] = $this->KoordinatJalanSearch($this->no_jalan);
+        echo !empty($list['segmented']) ? $list['segmented'] : $list['ori'];
+        exit();
+    }
+
+    private function KoordinatJalanSearch()
+    {
+        return $this->my_model->getKoordinatJalan($this->no_jalan);
+    }
+
+    private function KoordinatBuild(array $coordinates = [], bool $raw = false)
+    {
+        $coord = Functions::getDataSession('coordinates', false);
+        $old = [];
+        if (!empty($coord)) {
+            foreach ($coord[1] as $row) {
+                $old["{$row['longitude']},{$row['latitude']}"] = $row;
+            }
+            // var_dump($old);
+        }
+
+        $awal = [];
+        $final = [];
+        $ori = [];
+        $segmented = [];
+        foreach ($coordinates as $row) {
+            if ($raw) {
+                $latitude = number_format($row[1], 8);
+                $longitude = number_format($row[0], 8);
+                $segment = $row[3];
+                $rows = $this->my_model->populateKoordinatDetail($row);
+                $rows[0] = $latitude;
+                $rows[1] = $longitude;
+                $rows[5] = $segment;
+                $rows[3] = '';
+            } else {
+                $rows = $row;
+                $row = Functions::buildGeo($row, false);
+            }
+            $rows = $this->my_model->makeKoordinatDetail($rows);
+
+            $rows_old = $old["{$rows['longitude']},{$rows['latitude']}"];
+
+            $rows['new'] = false;
+            if (!empty($rows_old)) {
+                $rows = $rows_old;
+            } else {
+                $rows['new'] = !empty($old) ? true : false;
+            }
+
+            if ($rows['segment'] <= 0) {
+                $awal[] = $rows;
+                $ori[] = $row;
+            }
+            $final[] = $rows;
+            $segmented[] = $row;
+        }
+
+        return [$awal, $final, $ori, $segmented];
+    }
+
+    private function KoordinatSetSesion()
+    {
+        $coord = [];
+
+        foreach ($_REQUEST as $key => $value) {
+            $$key = $value;
+        }
+
+        if (isset($segmentasi)) {
+            Functions::setDataSession('segmentasi', $segmentasi);
+        } else {
+            if (!empty($this->no_jalan)) {
+                [$jalan] = $this->perawatanDetail($this->no_jalan);
+                $segmentasi = $jalan['segmentasi'];
+                Functions::setDataSession('segmentasi', $segmentasi);
+            }
+        }
+
+        if (isset($filename)) {
+            $filepath = TEMP_UPLOAD_DIR . $filename;
+            $kml = Functions::readKML($filepath);
+            if (isset($segment)) {
+                foreach ($segment as $idx => $value) {
+                    array_splice($kml, $segPosition[$idx], 0, [$value]);
+                }
+            }
+
+            if (isset($newCoord)) {
+                foreach ($newCoord as $idx => $value) {
+                    array_splice($kml, $newPosition[$idx], 0, [$value]);
+                }
+            }
+
+            if (isset($updateCoord)) {
+                foreach ($updateCoord as $idx => $value) {
+                    array_splice($kml, $updatePosition[$idx], 0, [$value]);
+                }
+            }
+
+            $coord = $this->KoordinatBuild($kml, true);
+        } else {
+            $coord = Functions::getDataSession('coordinates', false);
+            if (empty($coord)) {
+                [$detail, $detail_count] = $this->DetailJalanSearch(
+                    $this->no_jalan,
+                );
+                if ($detail_count > 0) {
+                    $coordinates = [];
+                    foreach ($detail as $row) {
+                        if (!empty($row['data'])) {
+                            foreach (json_decode($row['data']) as $value) {
+                                $coordinates[] = $value;
+                            }
+                        }
+                    }
+
+                    $coord = $this->KoordinatBuild($coordinates);
+                } else {
+                    [$coord] = $this->KoordinatJalanSearch($this->no_jalan);
+                    $coordinates = !empty($coord['segmented'])
+                        ? $coord['segmented']
+                        : $coord['ori'];
+                    $coordinates = json_decode($coordinates, true);
+                    $coord = $this->KoordinatBuild($coordinates, true);
+                }
+            } else {
+                $coordinates = $coord['3'];
+                if (isset($newCoord)) {
+                    foreach ($newCoord as $idx => $value) {
+                        array_splice($coordinates, $newPosition[$idx], 0, [
+                            $value,
+                        ]);
+                    }
+                }
+
+                $coord = $this->KoordinatBuild($coordinates, true);
+            }
+        }
+
+        Functions::setDataSession('coordinates', $coord);
+    }
+
+    private function KoordinatProcess()
+    {
+        [$detail] = $this->my_model->getKoordinatJalan($_POST['no_jalan']);
+        if ($detail['no_jalan']) {
+            return $this->my_model->updateKoordinat($detail['id']);
+        } else {
+            return $this->my_model->createKoordinat();
+        }
+    }
+
+    private function KoordinatForm()
+    {
+        $data = [
+            'main' => [
+                $this->dofetch('Layout/Form', [
+                    'detail' => $_POST,
+                    'formId' => 'koordinatForm',
+                    'form' => $this->my_model->getKoordinatForm(),
+                ]),
+            ],
+        ];
+        echo json_encode($this->dofetch('Layout/Default', $data));
+        exit();
+    }
+
+    private function KoordinatSubmit()
+    {
+        $error = $this->KoordinatValidate();
+
+        if (!$error) {
+            echo json_encode($this->KoordinatSet());
+        } else {
+            echo json_encode($error);
+        }
+        exit();
+    }
+
+    private function KoordinatValidate()
+    {
+        $form = $this->my_model->getKoordinatForm();
+        foreach ($form as $row) {
+            $this->validate($_POST, $row, 'Jalan_model', 'koordinat');
+        }
+
+        return Functions::getDataSession('alert');
+    }
+
+    private function KoordinatSet()
+    {
+        // var_dump($_POST);
+        $values = [];
+        foreach ($this->my_model->getKoordinatForm() as $row) {
+            if (in_array($row['id'], ['index', 'tag'])) {
+                continue;
+            }
+            $values[$row['id']] = null;
+        }
+        // var_dump($form);
+
+        foreach ($_POST as $key => $value) {
+            $$key = $value;
+            if (in_array($key, ['index', 'tag'])) {
+                continue;
+            }
+            $value = !empty($value) ? $value : null;
+            if (in_array($key, ['lebar', 'segment'])) {
+                $value = $value > 0 ? $value : null;
+            }
+            $values[$key] = $value;
+        }
+
+        // var_dump($values);
+
+        if ($tag == 'edit') {
+            $_SESSION['coordinates'][1][$index] = $values;
+        }
+
+        Functions::setDataSession('alert', [
+            'Set Koordinat berhasil.',
+            'success',
+        ]);
+        return Functions::getDataSession('alert');
+    }
+    /**
+     * * End Koordiat
+     */
+
+    /**
+     * * Start Detail Jalan
+     */
+    private function DetailJalanSearch($no_jalan)
+    {
+        return $this->my_model->getDetailJalan($no_jalan);
+    }
+
+    private function DetailProcess()
+    {
+        $this->DetailOld();
+        $result = $this->my_model->createDetail();
+        if ($result) {
+            $this->DetailClear();
+        }
+        return $result;
+    }
+
+    private function DetailOld()
+    {
+        $this->old_detail = $this->my_model->getOldDetail();
+    }
+
+    private function DetailClear()
+    {
+        if (!empty($this->old_detail)) {
+            $this->my_model->clearDetail($this->old_detail);
+        }
+    }
+
+    private function DetailSearch()
+    {
+        $final = Functions::getDataSession('coordinates', false)[1];
+        $result = [];
+
+        foreach (['perkerasan', 'kondisi'] as $value) {
+            $result[$value] = Functions::buildLine($final, $value);
+        }
+
+        echo json_encode($result);
+        exit();
+    }
+    /**
+     * * End Detail Jalan
+     */
 }
