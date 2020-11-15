@@ -474,6 +474,7 @@ let jalandir = `${server_base}/upload/img/jalan/`
 
 let getFeatureInfo = (param, jenis) => {
   let jml_jembatan = param.feature.getProperty('jml_jembatan')
+  jml_jembatan = jml_jembatan != undefined ? jml_jembatan : 0
 
   let html = [
     /*html*/ `<div style="width:600px;">`,
