@@ -867,17 +867,15 @@ class Functions
 
     public static function buildGeo(array $coordinate, bool $raw)
     {
-        $result = [];
-        array_push($result, (float) $coordinate[0], (float) $coordinate[1], 0);
+        // $result = [];
+        // array_push($result, (float) $coordinate[0], (float) $coordinate[1], 0);
 
         if (!$raw) {
-            $result = [];
-            array_push(
-                $result,
-                (float) $coordinate[1],
-                (float) $coordinate[0],
-                0
-            );
+            // $result = [];
+            // array_push($result);
+            $result = [(float) $coordinate[1], (float) $coordinate[0], 0];
+        } else {
+            $result = [(float) $coordinate[0], (float) $coordinate[1], 0];
         }
         return $result;
     }
