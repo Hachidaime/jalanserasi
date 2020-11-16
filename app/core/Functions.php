@@ -19,7 +19,7 @@ class Functions
         $encryption_key = base64_decode($key);
         // TODO: Generate an initialization vector
         $iv = openssl_random_pseudo_bytes(
-            openssl_cipher_iv_length('aes-256-cbc'),
+            openssl_cipher_iv_length('aes-256-cbc')
         );
         // TODO: Encrypt the data using AES 256 encryption in CBC mode using our encryption key and initialization vector.
         $encrypted = openssl_encrypt(
@@ -27,7 +27,7 @@ class Functions
             'aes-256-cbc',
             $encryption_key,
             0,
-            $iv,
+            $iv
         );
         // TODO: The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
         return base64_encode($encrypted . '::' . $iv);
@@ -52,7 +52,7 @@ class Functions
             'aes-256-cbc',
             $encryption_key,
             0,
-            $iv,
+            $iv
         );
     }
 
@@ -163,7 +163,7 @@ class Functions
                     $options,
                     $required,
                     $unique,
-                    $helper,
+                    $helper
                 ] = $params;
                 $_SESSION[$type][] = [
                     'type' => $formtype,
@@ -173,7 +173,7 @@ class Functions
                     'options' => $options,
                     'required' => $required,
                     'unique' => $unique,
-                    'helper' => $helper,
+                    'helper' => $helper
                 ];
                 break;
             case 'thead':
@@ -193,7 +193,7 @@ class Functions
                 $_SESSION[$type][$row][] = [
                     'field' => $field,
                     'title' => $title,
-                    'data' => $data,
+                    'data' => $data
                 ];
                 break;
             default:
@@ -363,7 +363,7 @@ class Functions
             'html' => $html,
             'color' => $color,
             'class' => $class,
-            'width' => $width,
+            'width' => $width
         ];
 
         return $array;
@@ -493,7 +493,7 @@ class Functions
             $row['nama_point'] = $row['nama_jembatan'];
             $row['koordinat'] = [
                 (float) $row['longitude'],
-                (float) $row['latitude'],
+                (float) $row['latitude']
             ];
             $point[] = $row;
         }
@@ -565,7 +565,7 @@ class Functions
             // $koordinat = implode(' ', array_map("Functions::makeMapPoint", json_decode($row['koordinat'], true)));
             $koordinat = array_map(
                 'self::makeMapPoint',
-                json_decode($row['koordinat'], true),
+                json_decode($row['koordinat'], true)
             );
             $latitude = $row['latitude'];
             $longitude = $row['longitude'];
@@ -596,7 +596,7 @@ class Functions
                 // $row['row'] = $row['row_id'];
                 $row['segment'] = Functions::formatSegment(
                     $row['segment'],
-                    $row['segmentasi'],
+                    $row['segmentasi']
                 );
                 $segment[$i] = $row;
                 $i++;
@@ -636,7 +636,7 @@ class Functions
                     ) {
                         $complete[$j - 1]['koordinat'] = array_merge(
                             $complete[$j - 1]['koordinat'],
-                            $koordinat,
+                            $koordinat
                         );
                     } else {
                         $row['style'] =
@@ -664,7 +664,7 @@ class Functions
                     if ($row['perkerasan'] == $detail[$idx - 1]['perkerasan']) {
                         $perkerasan[$k - 1]['koordinat'] = array_merge(
                             $perkerasan[$k - 1]['koordinat'],
-                            $koordinat,
+                            $koordinat
                         );
                     } else {
                         $row['style'] =
@@ -690,7 +690,7 @@ class Functions
                     if ($row['kondisi'] == $detail[$idx - 1]['kondisi']) {
                         $kondisi[$l - 1]['koordinat'] = array_merge(
                             $kondisi[$l - 1]['koordinat'],
-                            $koordinat,
+                            $koordinat
                         );
                     } else {
                         $row['style'] =
@@ -717,7 +717,7 @@ class Functions
             $id = "iconstyle{$m}";
             $style[$id] = [
                 'type' => $row['type'],
-                'href' => $row['href'],
+                'href' => $row['href']
             ];
             $iconStyle[$idx] = "#{$id}";
             $m++;
@@ -729,7 +729,7 @@ class Functions
             $style[$id] = [
                 'color' => $row['color'],
                 'opacity' => number_format($row['opacity'] / 100, 2),
-                'weight' => $row['width'],
+                'weight' => $row['width']
             ];
             $lineStyle[$idx][0][0] = "#{$id}";
             $n++;
@@ -743,7 +743,7 @@ class Functions
                     'opacity' => number_format($row['opacity'] / 100, 2),
                     'weight' => !is_null($row['line_width'])
                         ? $row['line_width']
-                        : 0,
+                        : 0
                 ];
                 $lineStyle[$row['kepemilikan']][$row['perkerasan']][
                     $row['kondisi']
@@ -766,7 +766,7 @@ class Functions
             $list['features'][$idx] = self::createFeature(
                 $style,
                 $row,
-                $simbol,
+                $simbol
             );
         }
 
@@ -798,7 +798,7 @@ class Functions
                 ? $data['jml_jembatan']
                 : 0,
             'koordinat_awal' => $data['koordinat_awal'],
-            'koordinat_akhir' => $data['koordinat_akhir'],
+            'koordinat_akhir' => $data['koordinat_akhir']
         ];
         $mystyle = str_replace('#', '', $data['style']);
         switch ($simbol) {
@@ -809,7 +809,7 @@ class Functions
                     'strokeWeight' => $style[$mystyle]['weight'],
                     'strokeOpacity' => $style[$mystyle]['opacity'],
                     'fillColor' => $style[$mystyle]['color'],
-                    'fillOpacity' => $style[$mystyle]['opacity'],
+                    'fillOpacity' => $style[$mystyle]['opacity']
                 ]);
                 break;
             case '2':
@@ -819,7 +819,7 @@ class Functions
                     'nama_point' => $data['nama_point'],
                     'segment' => $data['segment'],
                     'row' => $data['row'],
-                    'foto' => $data['foto'],
+                    'foto' => $data['foto']
                 ]);
                 break;
         }
@@ -828,9 +828,9 @@ class Functions
             'type' => 'Feature',
             'geometry' => [
                 'type' => $type,
-                'coordinates' => $data['koordinat'],
+                'coordinates' => $data['koordinat']
             ],
-            'properties' => $properties,
+            'properties' => $properties
         ];
 
         return $feature;
@@ -876,7 +876,7 @@ class Functions
                 $result,
                 (float) $coordinate[1],
                 (float) $coordinate[0],
-                0,
+                0
             );
         }
         return $result;
@@ -894,7 +894,7 @@ class Functions
                 $point,
                 (float) $row['longitude'],
                 (float) $row['latitude'],
-                0,
+                0
             );
             $data[$idx] = $idx > 0 ? $data[$idx - 1] : 0;
             if ($row[$type] > 0) {
@@ -923,12 +923,12 @@ class Functions
         ) {
             $geo = unserialize(
                 file_get_contents(
-                    "http://www.geoplugin.net/php.gp?ip={$remote_ip}",
-                ),
+                    "http://www.geoplugin.net/php.gp?ip={$remote_ip}"
+                )
             );
             return [
                 (float) $geo['geoplugin_longitude'],
-                (float) $geo['geoplugin_latitude'],
+                (float) $geo['geoplugin_latitude']
             ];
         }
         return [110.4037533, -7.1186337];
@@ -951,7 +951,7 @@ class Functions
             $str = self::getStringBetween(
                 $xmldata,
                 '<coordinates>',
-                '</coordinates>',
+                '</coordinates>'
             );
             $str = trim($str);
 

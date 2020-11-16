@@ -79,7 +79,7 @@ class Database extends Controller
             // TODO: Execute query WITHOUT limit
             $this->stmt_no_limit = $this->db->execute(
                 $query_no_limit,
-                $bindVar,
+                $bindVar
             );
         }
     }
