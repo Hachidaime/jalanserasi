@@ -30,14 +30,14 @@ class DataJalan extends Controller
                 $this->dofetch('Layout/Table', [
                     'data' => Functions::defaultTableData(),
                     'thead' => $this->my_model->getDataJalanThead(),
-                    'url' => BASE_URL . '/DataJalan/index/search',
-                ]),
+                    'url' => BASE_URL . '/DataJalan/index/search'
+                ])
             ],
             'modal' => [
                 [
-                    'modalId' => 'myModal',
-                ],
-            ],
+                    'modalId' => 'myModal'
+                ]
+            ]
         ];
 
         // TODO: Menampilkan Template
@@ -110,15 +110,15 @@ class DataJalan extends Controller
         // TODO: Load template
         $data = [
             'toolbar' => [
-                $this->dofetch('Component/Button', $this->btn_add), // ? Add button
+                $this->dofetch('Component/Button', $this->btn_add) // ? Add button
             ],
             'main' => [
                 $this->dofetch('Layout/Table', [
                     'data' => Functions::defaultTableData(), // ? Table data
                     'thead' => $this->my_model->getJalanThead(), // ? Column name
-                    'url' => BASE_URL . '/DataJalan/perawatan/search', // ? data-url
-                ]),
-            ],
+                    'url' => BASE_URL . '/DataJalan/perawatan/search' // ? data-url
+                ])
+            ]
         ];
 
         $this->view('Layout/Default', $data);
@@ -152,14 +152,14 @@ class DataJalan extends Controller
             'main' => [
                 $this->dofetch('Layout/Form', [
                     'form' => $this->my_model->getJalanForm(),
-                    'detail' => $param['detail'],
+                    'detail' => $param['detail']
                 ]),
                 $this->dofetch('Layout/Table', [
                     'url' => $param['url'],
                     'data' => Functions::defaultTableData(),
                     'thead' => $this->my_model->getKoordinatThead(),
-                    'search' => 'false',
-                ]),
+                    'search' => 'false'
+                ])
             ],
             'toolbar' => [
                 $this->dofetch(
@@ -170,8 +170,8 @@ class DataJalan extends Controller
                         '<i class="fas fa-route"></i>&nbsp;Generate Koordinat',
                         'warning',
                         'btn-gen-coord',
-                        200,
-                    ),
+                        200
+                    )
                 ),
                 $this->dofetch(
                     'Component/Button',
@@ -181,9 +181,9 @@ class DataJalan extends Controller
                         '<i class="fas fa-map-marker-alt"></i>&nbsp;Tambah Koordinat',
                         'success',
                         'btn-add-point',
-                        180,
-                    ),
-                ),
+                        180
+                    )
+                )
             ],
             'modal' => [
                 [
@@ -191,8 +191,8 @@ class DataJalan extends Controller
                     'modalBody' => [
                         $this->dofetch('Layout/Form', [
                             'formClass' => 'koordinatForm',
-                            'form' => $this->my_model->getKoordinatForm(),
-                        ]),
+                            'form' => $this->my_model->getKoordinatForm()
+                        ])
                     ],
                     'modalFoot' => [
                         $this->dofetch(
@@ -202,8 +202,8 @@ class DataJalan extends Controller
                                 'cancel-koordinat',
                                 'Cancel',
                                 'danger',
-                                'btn-cancel-koordinat',
-                            ),
+                                'btn-cancel-koordinat'
+                            )
                         ),
                         $this->dofetch(
                             'Component/Button',
@@ -212,10 +212,10 @@ class DataJalan extends Controller
                                 'submit-koordinat',
                                 'Submit',
                                 'success',
-                                'btn-submit-koordinat',
-                            ),
-                        ),
-                    ],
+                                'btn-submit-koordinat'
+                            )
+                        )
+                    ]
                 ],
                 [
                     'modalId' => 'addKoordinatModal',
@@ -224,8 +224,8 @@ class DataJalan extends Controller
                     'modalBody' => [
                         $this->dofetch('Layout/Form', [
                             'formClass' => 'addKoordinatForm',
-                            'form' => $this->my_model->getAddKoordinatForm(),
-                        ]),
+                            'form' => $this->my_model->getAddKoordinatForm()
+                        ])
                     ],
                     'modalFoot' => [
                         $this->dofetch(
@@ -235,8 +235,8 @@ class DataJalan extends Controller
                                 'cancel-add-point',
                                 'Cancel',
                                 'danger',
-                                'btn-cancel-add-point',
-                            ),
+                                'btn-cancel-add-point'
+                            )
                         ),
                         $this->dofetch(
                             'Component/Button',
@@ -245,12 +245,12 @@ class DataJalan extends Controller
                                 'submit-add-point',
                                 'Submit',
                                 'success',
-                                'btn-submit-add-point',
-                            ),
-                        ),
-                    ],
-                ],
-            ],
+                                'btn-submit-add-point'
+                            )
+                        )
+                    ]
+                ]
+            ]
         ];
         $this->form($data);
     }
@@ -321,7 +321,7 @@ class DataJalan extends Controller
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
                                 "pdf/perawatan/{$_POST['no_jalan']}",
-                                $_POST[$row['name']],
+                                $_POST[$row['name']]
                             );
                         }
                         break;
@@ -329,7 +329,7 @@ class DataJalan extends Controller
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
                                 "video/perawatan/{$_POST['no_jalan']}",
-                                $_POST[$row['name']],
+                                $_POST[$row['name']]
                             );
                         }
                         break;
@@ -338,7 +338,7 @@ class DataJalan extends Controller
                             FileHandler::MoveFromTemp(
                                 "kml/perawatan/{$_POST['no_jalan']}",
                                 $_POST[$row['name']],
-                                true,
+                                true
                             );
                         }
                         break;
@@ -350,31 +350,31 @@ class DataJalan extends Controller
             if (!$result) {
                 Functions::setDataSession('alert', [
                     "{$tag} Koordinat gagal.",
-                    'danger',
+                    'danger'
                 ]);
                 Functions::setDataSession('alert', [
                     "{$tag} Perawatan Jalan success.",
-                    'success',
+                    'success'
                 ]);
             } else {
                 $result = $this->DetailProcess();
                 if (!$result) {
                     Functions::setDataSession('alert', [
                         "{$tag} Detail Perawatan Jalan gagal.",
-                        'danger',
+                        'danger'
                     ]);
                     Functions::setDataSession('alert', [
                         "{$tag} Koordinat success.",
-                        'success',
+                        'success'
                     ]);
                     Functions::setDataSession('alert', [
                         "{$tag} Perawatan Jalan success.",
-                        'success',
+                        'success'
                     ]);
                 } else {
                     Functions::setDataSession('alert', [
                         "{$tag} Perawatan Jalan success.",
-                        'success',
+                        'success'
                     ]);
                     $coord = Functions::getDataSession('coordinates', false);
 
@@ -387,7 +387,7 @@ class DataJalan extends Controller
                                 "img/perawatan/{$_POST['no_jalan']}/{$row['row']}",
                                 $row['foto'],
                                 false,
-                                true,
+                                true
                             );
                         }
                     }
@@ -397,7 +397,7 @@ class DataJalan extends Controller
         } else {
             Functions::setDataSession('alert', [
                 "{$tag} Perawatan Jalan failed.",
-                'danger',
+                'danger'
             ]);
         }
 
@@ -413,12 +413,12 @@ class DataJalan extends Controller
         if ($result) {
             Functions::setDataSession('alert', [
                 "{$tag} Jalan success.",
-                'success',
+                'success'
             ]);
         } else {
             Functions::setDataSession('alert', [
                 "{$tag} Jalan failed.",
-                'danger',
+                'danger'
             ]);
         }
 
@@ -491,7 +491,7 @@ class DataJalan extends Controller
                 $filedir = Functions::getStringBetween(
                     $fileurl,
                     UPLOAD_URL,
-                    $row['foto'],
+                    $row['foto']
                 );
 
                 $row['foto_file'] = Functions::getPopupLink(
@@ -499,14 +499,14 @@ class DataJalan extends Controller
                     $row['foto'],
                     null,
                     null,
-                    'fas fa-image',
+                    'fas fa-image'
                 );
             }
 
             if ($row['segment'] > 0) {
                 $row['segment'] = Functions::formatSegment(
                     $row['segment'],
-                    $segmentasi,
+                    $segmentasi
                 );
             }
 
@@ -637,7 +637,7 @@ class DataJalan extends Controller
             $coord = Functions::getDataSession('coordinates', false);
             if (empty($coord)) {
                 [$detail, $detail_count] = $this->DetailJalanSearch(
-                    $this->no_jalan,
+                    $this->no_jalan
                 );
                 if ($detail_count > 0) {
                     $coordinates = [];
@@ -664,7 +664,7 @@ class DataJalan extends Controller
                 if (isset($newCoord)) {
                     foreach ($newCoord as $idx => $value) {
                         array_splice($coordinates, $newPosition[$idx], 0, [
-                            $value,
+                            $value
                         ]);
                     }
                 }
@@ -693,9 +693,9 @@ class DataJalan extends Controller
                 $this->dofetch('Layout/Form', [
                     'detail' => $_POST,
                     'formId' => 'koordinatForm',
-                    'form' => $this->my_model->getKoordinatForm(),
-                ]),
-            ],
+                    'form' => $this->my_model->getKoordinatForm()
+                ])
+            ]
         ];
         echo json_encode($this->dofetch('Layout/Default', $data));
         exit();
@@ -755,7 +755,7 @@ class DataJalan extends Controller
 
         Functions::setDataSession('alert', [
             'Set Koordinat berhasil.',
-            'success',
+            'success'
         ]);
         return Functions::getDataSession('alert');
     }
