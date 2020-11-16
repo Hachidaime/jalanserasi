@@ -61,20 +61,20 @@ class Jalan extends Controller
         Functions::clearDataSession('coordinates');
 
         // TODO: Set title
-        Functions::setTitle('Jalan');
+        Functions::setTitle('Perawatan Jalan');
 
         // TODO: Load template
         $data = [
             'toolbar' => [
-                $this->dofetch('Component/Button', $this->btn_add), // ? Add button
+                $this->dofetch('Component/Button', $this->btn_add) // ? Add button
             ],
             'main' => [
                 $this->dofetch('Layout/Table', [
                     'data' => Functions::defaultTableData(), // ? Table data
                     'thead' => $this->my_model->getJalanThead(), // ? Column name
-                    'url' => BASE_URL . '/Jalan/index/search', // ? data-url
-                ]),
-            ],
+                    'url' => BASE_URL . '/Jalan/index/search' // ? data-url
+                ])
+            ]
         ];
 
         $this->view('Layout/Default', $data);
@@ -112,14 +112,14 @@ class Jalan extends Controller
             'main' => [
                 $this->dofetch('Layout/Form', [
                     'form' => $this->my_model->getJalanForm(),
-                    'detail' => $param['detail'],
+                    'detail' => $param['detail']
                 ]),
                 $this->dofetch('Layout/Table', [
                     'url' => $param['url'],
                     'data' => Functions::defaultTableData(),
                     'thead' => $this->my_model->getKoordinatThead(),
-                    'search' => 'false',
-                ]),
+                    'search' => 'false'
+                ])
             ],
             'toolbar' => [
                 $this->dofetch(
@@ -130,8 +130,8 @@ class Jalan extends Controller
                         '<i class="fas fa-route"></i>&nbsp;Generate Koordinat',
                         'warning',
                         'btn-gen-coord',
-                        200,
-                    ),
+                        200
+                    )
                 ),
                 $this->dofetch(
                     'Component/Button',
@@ -141,9 +141,9 @@ class Jalan extends Controller
                         '<i class="fas fa-map-marker-alt"></i>&nbsp;Tambah Koordinat',
                         'success',
                         'btn-add-point',
-                        180,
-                    ),
-                ),
+                        180
+                    )
+                )
             ],
             'modal' => [
                 [
@@ -151,8 +151,8 @@ class Jalan extends Controller
                     'modalBody' => [
                         $this->dofetch('Layout/Form', [
                             'formClass' => 'koordinatForm',
-                            'form' => $this->my_model->getKoordinatForm(),
-                        ]),
+                            'form' => $this->my_model->getKoordinatForm()
+                        ])
                     ],
                     'modalFoot' => [
                         $this->dofetch(
@@ -162,8 +162,8 @@ class Jalan extends Controller
                                 'cancel-koordinat',
                                 'Cancel',
                                 'danger',
-                                'btn-cancel-koordinat',
-                            ),
+                                'btn-cancel-koordinat'
+                            )
                         ),
                         $this->dofetch(
                             'Component/Button',
@@ -172,10 +172,10 @@ class Jalan extends Controller
                                 'submit-koordinat',
                                 'Submit',
                                 'success',
-                                'btn-submit-koordinat',
-                            ),
-                        ),
-                    ],
+                                'btn-submit-koordinat'
+                            )
+                        )
+                    ]
                 ],
                 [
                     'modalId' => 'addKoordinatModal',
@@ -184,8 +184,8 @@ class Jalan extends Controller
                     'modalBody' => [
                         $this->dofetch('Layout/Form', [
                             'formClass' => 'addKoordinatForm',
-                            'form' => $this->my_model->getAddKoordinatForm(),
-                        ]),
+                            'form' => $this->my_model->getAddKoordinatForm()
+                        ])
                     ],
                     'modalFoot' => [
                         $this->dofetch(
@@ -195,8 +195,8 @@ class Jalan extends Controller
                                 'cancel-add-point',
                                 'Cancel',
                                 'danger',
-                                'btn-cancel-add-point',
-                            ),
+                                'btn-cancel-add-point'
+                            )
                         ),
                         $this->dofetch(
                             'Component/Button',
@@ -205,12 +205,12 @@ class Jalan extends Controller
                                 'submit-add-point',
                                 'Submit',
                                 'success',
-                                'btn-submit-add-point',
-                            ),
-                        ),
-                    ],
-                ],
-            ],
+                                'btn-submit-add-point'
+                            )
+                        )
+                    ]
+                ]
+            ]
         ];
         $this->form($data);
     }
@@ -221,7 +221,7 @@ class Jalan extends Controller
     private function JalanAdd()
     {
         Functions::clearDataSession('coordinates');
-        Functions::setTitle('Tambah Jalan');
+        Functions::setTitle('Tambah Perawatan Jalan');
 
         $data['url'] = BASE_URL . '/Jalan/Koordinat/search';
         $this->JalanForm($data);
@@ -230,7 +230,7 @@ class Jalan extends Controller
     private function JalanEdit($id)
     {
         Functions::clearDataSession('coordinates');
-        Functions::setTitle('Edit Jalan');
+        Functions::setTitle('Edit Perawatan Jalan');
 
         [$detail, $count] = $this->JalanDetail($id);
         if ($count <= 0) {
@@ -285,7 +285,7 @@ class Jalan extends Controller
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
                                 "pdf/jalan/{$_POST['no_jalan']}",
-                                $_POST[$row['name']],
+                                $_POST[$row['name']]
                             );
                         }
                         break;
@@ -293,7 +293,7 @@ class Jalan extends Controller
                         if (!empty($_POST[$row['name']])) {
                             FileHandler::MoveFromTemp(
                                 "video/jalan/{$_POST['no_jalan']}",
-                                $_POST[$row['name']],
+                                $_POST[$row['name']]
                             );
                         }
                         break;
@@ -302,7 +302,7 @@ class Jalan extends Controller
                             FileHandler::MoveFromTemp(
                                 "kml/jalan/{$_POST['no_jalan']}",
                                 $_POST[$row['name']],
-                                true,
+                                true
                             );
                         }
                         break;
@@ -314,31 +314,31 @@ class Jalan extends Controller
             if (!$result) {
                 Functions::setDataSession('alert', [
                     "{$tag} Koordinat gagal.",
-                    'danger',
+                    'danger'
                 ]);
                 Functions::setDataSession('alert', [
                     "{$tag} Jalan success.",
-                    'success',
+                    'success'
                 ]);
             } else {
                 $result = $this->DetailProcess();
                 if (!$result) {
                     Functions::setDataSession('alert', [
                         "{$tag} Detail Jalan gagal.",
-                        'danger',
+                        'danger'
                     ]);
                     Functions::setDataSession('alert', [
                         "{$tag} Koordinat success.",
-                        'success',
+                        'success'
                     ]);
                     Functions::setDataSession('alert', [
                         "{$tag} Jalan success.",
-                        'success',
+                        'success'
                     ]);
                 } else {
                     Functions::setDataSession('alert', [
                         "{$tag} Jalan success.",
-                        'success',
+                        'success'
                     ]);
                     $coord = Functions::getDataSession('coordinates', false);
 
@@ -351,7 +351,7 @@ class Jalan extends Controller
                                 "img/jalan/{$_POST['no_jalan']}/{$row['row']}",
                                 $row['foto'],
                                 false,
-                                true,
+                                true
                             );
                         }
                     }
@@ -361,7 +361,7 @@ class Jalan extends Controller
         } else {
             Functions::setDataSession('alert', [
                 "{$tag} Jalan failed.",
-                'danger',
+                'danger'
             ]);
         }
 
@@ -382,12 +382,12 @@ class Jalan extends Controller
         if ($result) {
             Functions::setDataSession('alert', [
                 "{$tag} Jalan success.",
-                'success',
+                'success'
             ]);
         } else {
             Functions::setDataSession('alert', [
                 "{$tag} Jalan failed.",
-                'danger',
+                'danger'
             ]);
         }
 
@@ -455,7 +455,7 @@ class Jalan extends Controller
                 $filedir = Functions::getStringBetween(
                     $fileurl,
                     UPLOAD_URL,
-                    $row['foto'],
+                    $row['foto']
                 );
 
                 $row['foto_file'] = Functions::getPopupLink(
@@ -463,14 +463,14 @@ class Jalan extends Controller
                     $row['foto'],
                     null,
                     null,
-                    'fas fa-image',
+                    'fas fa-image'
                 );
             }
 
             if ($row['segment'] > 0) {
                 $row['segment'] = Functions::formatSegment(
                     $row['segment'],
-                    $segmentasi,
+                    $segmentasi
                 );
             }
 
@@ -601,7 +601,7 @@ class Jalan extends Controller
             $coord = Functions::getDataSession('coordinates', false);
             if (empty($coord)) {
                 [$detail, $detail_count] = $this->DetailJalanSearch(
-                    $this->no_jalan,
+                    $this->no_jalan
                 );
                 if ($detail_count > 0) {
                     $coordinates = [];
@@ -627,7 +627,7 @@ class Jalan extends Controller
                 if (isset($newCoord)) {
                     foreach ($newCoord as $idx => $value) {
                         array_splice($coordinates, $newPosition[$idx], 0, [
-                            $value,
+                            $value
                         ]);
                     }
                 }
@@ -656,9 +656,9 @@ class Jalan extends Controller
                 $this->dofetch('Layout/Form', [
                     'detail' => $_POST,
                     'formId' => 'koordinatForm',
-                    'form' => $this->my_model->getKoordinatForm(),
-                ]),
-            ],
+                    'form' => $this->my_model->getKoordinatForm()
+                ])
+            ]
         ];
         echo json_encode($this->dofetch('Layout/Default', $data));
         exit();
@@ -718,7 +718,7 @@ class Jalan extends Controller
 
         Functions::setDataSession('alert', [
             'Set Koordinat berhasil.',
-            'success',
+            'success'
         ]);
         return Functions::getDataSession('alert');
     }
@@ -771,4 +771,70 @@ class Jalan extends Controller
     /**
      * * End Detail Jalan
      */
+
+    public function DataJalan(string $param1 = null, string $param2 = null)
+    {
+        $this->my_model = $this->model('DataJalan_model');
+        $this->jalan_model = $this->model('Jalan_model');
+
+        switch ($param1) {
+            case 'search':
+                $this->DataSearch();
+                break;
+
+            default:
+                $this->DataJalanDefault();
+                break;
+        }
+    }
+
+    private function DataJalanDefault()
+    {
+        Functions::setTitle('Data Jalan');
+
+        $data = [
+            'main' => [
+                $this->dofetch('Layout/Table', [
+                    'data' => Functions::defaultTableData(),
+                    'thead' => $this->my_model->getDataJalanThead(),
+                    'url' => BASE_URL . '/DataJalan/index/search'
+                ])
+            ],
+            'modal' => [
+                [
+                    'modalId' => 'myModal'
+                ]
+            ]
+        ];
+
+        // TODO: Menampilkan Template
+        $this->view('Layout/Default', $data);
+    }
+
+    private function DataSearch()
+    {
+        // TODO: Search Jalan on database: list & total
+        [$list, $count] = $this->jalan_model->getJalan();
+        $total = $this->jalan_model->totalJalan();
+
+        // TODO: Load Kepemilikan Options
+        $kepemilikan_opt = $this->options('kepemilikan_opt');
+
+        // TODO: Prepare data to load on template
+        $rows = [];
+        foreach ($list as $idx => $row) {
+            $row['kepemilikan'] = $kepemilikan_opt[$row['kepemilikan']];
+            $row['row'] = Functions::getSearch()['offset'] + $idx + 1;
+            $row['panjang'] = number_format($row['panjang'] / 1000, 2);
+            $row['survei_date'] = !is_null($row['survei_date'])
+                ? Functions::formatDatetime($row['survei_date'], 'd/m/Y')
+                : $row['survei_date'];
+
+            array_push($rows, $row);
+        }
+
+        // TODO: Echoing data as JSON
+        Functions::setDataTable($rows, $count, $total);
+        exit();
+    }
 }
