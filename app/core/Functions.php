@@ -155,7 +155,7 @@ class Functions
                  * @param string helper
                  * ? Input helper
                  */
-                [
+                list(
                     $formtype,
                     $id,
                     $name,
@@ -164,7 +164,7 @@ class Functions
                     $required,
                     $unique,
                     $helper
-                ] = $params;
+                ) = $params;
                 $_SESSION[$type][] = [
                     'type' => $formtype,
                     'id' => $id,
