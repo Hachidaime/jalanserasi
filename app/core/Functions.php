@@ -46,7 +46,7 @@ class Functions
         // TODO: Remove the base64 encoding from our key
         $encryption_key = base64_decode($key);
         // TODO: To decrypt, split the encrypted data from our IV - our unique separator used was "::"
-        [$encrypted_data, $iv] = explode('::', base64_decode($data), 2);
+        list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
         return openssl_decrypt(
             $encrypted_data,
             'aes-256-cbc',
@@ -105,7 +105,7 @@ class Functions
         // TODO: Format parameter
         $rows = [];
         foreach (explode('&', $params) as $idx => $row) {
-            [$key, $val] = explode('=', $row);
+            list($key, $val) = explode('=', $row);
             $rows[$key] = urldecode($val);
         }
 
@@ -133,7 +133,7 @@ class Functions
                  * @param string alert
                  * ? Alert Type: Primary, Success, Danger, Warning, Secondary, Info
                  */
-                [$message, $alert] = $params;
+                list($message, $alert) = $params;
                 $_SESSION[$type][$alert][] = $message;
                 break;
             case 'form':
@@ -189,7 +189,7 @@ class Functions
                  * @param string data
                  * ? Column properties
                  */
-                [$row, $field, $title, $data] = $params;
+                list($row, $field, $title, $data) = $params;
                 $_SESSION[$type][$row][] = [
                     'field' => $field,
                     'title' => $title,
