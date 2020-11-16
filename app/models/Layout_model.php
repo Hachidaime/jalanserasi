@@ -12,7 +12,7 @@ class Layout_model extends Database
             ORDER BY tsystem.sort ASC
         ";
 
-        $this->execute($query, array($user_group_id));
+        $this->execute($query, [$user_group_id]);
         list($list, $count) = $this->multiarray();
 
         $menu = [];
@@ -45,7 +45,7 @@ class Layout_model extends Database
             ORDER BY tmodule.sort ASC, taction.sort ASC
         ";
 
-        $bindVar = array($user_group_id, $menu_id);
+        $bindVar = [$user_group_id, $menu_id];
         $this->execute($query, $bindVar);
         list($list, $count) = $this->multiarray();
 
@@ -55,9 +55,15 @@ class Layout_model extends Database
                 $module[$row['module_id']]['module_id'] = $row['module_id'];
                 $module[$row['module_id']]['module_name'] = $row['module_name'];
                 $module[$row['module_id']]['controller'] = $row['controller'];
-                $module[$row['module_id']]['action'][$row['action_id']]['action_id'] = $row['action_id'];
-                $module[$row['module_id']]['action'][$row['action_id']]['action_name'] = $row['action_name'];
-                $module[$row['module_id']]['action'][$row['action_id']]['method'] = $row['method'];
+                $module[$row['module_id']]['action'][$row['action_id']][
+                    'action_id'
+                ] = $row['action_id'];
+                $module[$row['module_id']]['action'][$row['action_id']][
+                    'action_name'
+                ] = $row['action_name'];
+                $module[$row['module_id']]['action'][$row['action_id']][
+                    'method'
+                ] = $row['method'];
             }
         }
         return $module;
@@ -68,13 +74,13 @@ class Layout_model extends Database
         $params = [];
         $bindVar = [];
         if (isset($_SESSION['admin']) && isset($_SESSION['USER'])) {
-            $params['filter'] = "show_admin = ?";
+            $params['filter'] = 'show_admin = ?';
         } else {
-            $params['filter'] = "show_website = ?";
+            $params['filter'] = 'show_website = ?';
         }
         $bindVar[] = 1;
 
-        $params['sort'] = "tmenu.sort ASC";
+        $params['sort'] = 'tmenu.sort ASC';
 
         $query = $this->getSelectQuery('tmenu', $params);
         $this->execute($query, $bindVar);
@@ -82,8 +88,15 @@ class Layout_model extends Database
 
         $menu = [];
         foreach ($list as $row) {
-            if (is_null($row['parent'])) $menu[$row['id']] = $row;
-            else $menu[$row['parent']]['child'][$row['id']] = $row;
+            if (is_null($row['parent'])) {
+                $menu[$row['id']] = $row;
+            }
+        }
+
+        foreach ($list as $row) {
+            if (!is_null($row['parent'])) {
+                $menu[$row['parent']]['child'][$row['id']] = $row;
+            }
         }
 
         return $menu;
