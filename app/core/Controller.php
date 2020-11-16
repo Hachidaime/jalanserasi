@@ -32,10 +32,12 @@ class Controller
         $this->smarty = &$smarty;
 
         // TODO: Check Admin & User Session
-        if (isset($_SESSION['admin']) && isset($_SESSION['USER'])) { // ? Admin & User Session Exist
+        if (isset($_SESSION['admin']) && isset($_SESSION['USER'])) {
+            // ? Admin & User Session Exist
             // TODO: Set SERVER_BASE_ADMIN as BASE_URL
             define('BASE_URL', SERVER_BASE_ADMIN);
-        } else { // ! Admin & User Session NOT exist
+        } else {
+            // ! Admin & User Session NOT exist
             // TODO: Set SERVER_BASE as BASE_URL
             define('BASE_URL', SERVER_BASE);
         }
@@ -45,15 +47,33 @@ class Controller
         $this->login_id = Auth::User('id');
         $this->user_group_id = Auth::User('user_group_id');
 
-        $this->btn_add      = Functions::makeButton("button", "add", "Tambah Data", "success", "btn-add");
-        $this->btn_back     = Functions::makeButton("button", "back", "Back", "danger", "btn-back");
-        $this->btn_submit   = Functions::makeButton("button", "submit", "Submit", "success", "btn-submit");
+        $this->btn_add = Functions::makeButton(
+            'button',
+            'add',
+            'Tambah Data',
+            'success',
+            'btn-add'
+        );
+        $this->btn_back = Functions::makeButton(
+            'button',
+            'back',
+            'Back',
+            'danger',
+            'btn-back'
+        );
+        $this->btn_submit = Functions::makeButton(
+            'button',
+            'submit',
+            'Submit',
+            'success',
+            'btn-submit'
+        );
     }
 
     /**
      * * Controller::view
      * ? Load full web page
-     * @param string $view 
+     * @param string $view
      * ? Template file's path on app/view/ folder
      * @param array $data
      * ? Value that will be assigned on template
@@ -61,7 +81,9 @@ class Controller
     public function view(string $view, array $data = [])
     {
         // TODO: Check user permission, will be redirected to Error page if user no have permission
-        if (!$this->permission()) Header("Location: " . BASE_URL . "/StaticPage/Error403");
+        if (!$this->permission()) {
+            Header('Location: ' . BASE_URL . '/StaticPage/Error403');
+        }
 
         // TODO: Set active Controller & Method into data
         list($data['controller'], $data['method']) = $this->currentPage();
@@ -104,7 +126,9 @@ class Controller
     public function view2(string $view, array $data = [])
     {
         // TODO: Check user permission, will be redirected to Error page if user no have permission
-        if (!$this->permission()) Header("Location: " . BASE_URL . "/StaticPage/Error403");
+        if (!$this->permission()) {
+            Header('Location: ' . BASE_URL . '/StaticPage/Error403');
+        }
 
         // TODO: Set active Controller & Method into data
         list($data['controller'], $data['method']) = $this->currentPage();
@@ -171,7 +195,7 @@ class Controller
         require_once 'app/models/' . $model . '.php';
 
         // TODO: Model class initiation
-        return new $model;
+        return new $model();
     }
 
     /**
@@ -184,11 +208,11 @@ class Controller
         list($controller, $method) = Functions::parseUrl();
 
         // TODO: Check & Set Controller & Method from URL. If empty, use default.
-        $controller = (!empty($controller)) ? $controller : DEFAULT_CONTROLLER;
-        $method = (!empty($method)) ? $method : DEFAULT_METHOD;
+        $controller = !empty($controller) ? $controller : DEFAULT_CONTROLLER;
+        $method = !empty($method) ? $method : DEFAULT_METHOD;
 
         // TODO: Return Controller & Method value
-        return array($controller, $method);
+        return [$controller, $method];
     }
 
     /**
@@ -206,19 +230,31 @@ class Controller
         array_push($menu, 'StaticPage', 'Login');
 
         // TODO: Check non-menu Controller
-        if (!in_array($controller, $menu)) { // ? Controller is non-menu
+        if (!in_array($controller, $menu)) {
+            // ? Controller is non-menu
             // TODO: Check Admin & User Session
-            if (isset($_SESSION['admin']) && isset($_SESSION['USER'])) { // ? Admin & User session exist
+            if (isset($_SESSION['admin']) && isset($_SESSION['USER'])) {
+                // ? Admin & User session exist
                 // TODO: Check allowed method
-                $ok = $this->model('Session_model')->checkPermission($this->user_group_id, $method);
+                $ok = $this->model('Session_model')->checkPermission(
+                    $this->user_group_id,
+                    $method
+                );
 
                 // TODO: Check result
-                if ($ok) return 1; // ? Return TRUE
-                else return 0; // ! Return FALSE
-            } else { // ! Admin & User Session NOT exist
+                if ($ok) {
+                    return 1;
+                }
+                // ? Return TRUE
+                else {
+                    return 0;
+                } // ! Return FALSE
+            } else {
+                // ! Admin & User Session NOT exist
                 return 0; // ! Return FALSE
             }
-        } else { // ? Controller Menu
+        } else {
+            // ? Controller Menu
             return 1; // ? Return TRUE
         }
     }
@@ -232,15 +268,19 @@ class Controller
     protected function options(string $select_code, bool $is_all = false)
     {
         // TODO: Get select options
-        $select_options = $this->model('Select_model')->getOptions($select_code);
+        $select_options = $this->model('Select_model')->getOptions(
+            $select_code
+        );
         $options = [];
         if ($is_all === true) {
-            $options['all'] = "Semua";
+            $options['all'] = 'Semua';
         }
 
         foreach (explode(PHP_EOL, trim($select_options)) as $val) {
-            list($value, $label, $display) = explode(",", $val);
-            if (trim($display) == 'show') $options[$value] = $label;
+            list($value, $label, $display) = explode(',', $val);
+            if (trim($display) == 'show') {
+                $options[$value] = $label;
+            }
         }
         return $options;
     }
@@ -257,32 +297,63 @@ class Controller
      * @param string $checker_type
      * ? Type Checker
      */
-    protected function validate(array $data, array $input, string $model, string $checker_type = null)
-    {
+    protected function validate(
+        array $data,
+        array $input,
+        string $model,
+        string $checker_type = null
+    ) {
         // TODO: Call model
         $my_model = $this->model($model);
 
         // TODO: Check input required
-        if ($input['required']) { // ? Input is required
+        if ($input['required']) {
+            // ? Input is required
             // TODO: Check empty input
-            if (empty($data[$input['name']])) { // ! Input is empty
+            if (empty($data[$input['name']])) {
+                // ! Input is empty
                 // TODO: Display message based on input type
                 switch ($input['type']) {
                     case 'select': // ? SELECT Input type
-                        Functions::setDataSession('alert', ["<strong>{$input['label']}</strong> harus dipilih.", 'danger']);
+                        Functions::setDataSession('alert', [
+                            "<strong>{$input['label']}</strong> harus dipilih.",
+                            'danger'
+                        ]);
                         break;
                     case 'password': // ? PASSWORD Input type
-                        if ($data['id'] <= 0) Functions::setDataSession('alert', ["<strong>{$input['label']}</strong> tidak boleh kosong.", 'danger']);
+                        if ($data['id'] <= 0) {
+                            Functions::setDataSession('alert', [
+                                "<strong>{$input['label']}</strong> tidak boleh kosong.",
+                                'danger'
+                            ]);
+                        }
                         break;
-                    default: // ? Input default
-                        Functions::setDataSession('alert', ["<strong>{$input['label']}</strong> tidak boleh kosong.", 'danger']);
+                    default:
+                        // ? Input default
+                        Functions::setDataSession('alert', [
+                            "<strong>{$input['label']}</strong> tidak boleh kosong.",
+                            'danger'
+                        ]);
                 }
-            } else { // ? Input not empty
+            } else {
+                // ? Input not empty
                 // TODO: Check input is unique
-                if ($input['unique']) { // ? Input is unique
+                if ($input['unique']) {
+                    // ? Input is unique
                     // TODO: Check unique value from database
-                    if ($my_model->checkUnique($my_model->getTable($checker_type), (int) $data['id'], $input['name'], $data[$input['name']])) { // ! Value is already exist in database
-                        Functions::setDataSession('alert', ["<strong>{$input['label']}</strong> sudah ada di database.", 'danger']);
+                    if (
+                        $my_model->checkUnique(
+                            $my_model->getTable($checker_type),
+                            (int) $data['id'],
+                            $input['name'],
+                            $data[$input['name']]
+                        )
+                    ) {
+                        // ! Value is already exist in database
+                        Functions::setDataSession('alert', [
+                            "<strong>{$input['label']}</strong> sudah ada di database.",
+                            'danger'
+                        ]);
                     }
                 }
             }
@@ -292,9 +363,15 @@ class Controller
         switch ($input['type']) {
             case 'number': // ? Input value is number
                 // TODO: Check input is not empty
-                if (!empty($data[$input['name']])) { // ? Input is not empty
+                if (!empty($data[$input['name']])) {
+                    // ? Input is not empty
                     // TODO: Check value is numeric
-                    if (!is_numeric($data[$input['name']])) Functions::setDataSession('alert', ["<strong>{$input['label']}</strong> harus dalam angka.", 'danger']);
+                    if (!is_numeric($data[$input['name']])) {
+                        Functions::setDataSession('alert', [
+                            "<strong>{$input['label']}</strong> harus dalam angka.",
+                            'danger'
+                        ]);
+                    }
                 } else {
                     $_POST[$input['name']] = 0;
                 }
@@ -315,7 +392,8 @@ class Controller
         $data['foot'][] = $this->dofetch('Component/Button', $this->btn_submit);
 
         // TODO: Check main content
-        if (!isset($data['main'])) { // ! Main content NOT found
+        if (!isset($data['main'])) {
+            // ! Main content NOT found
             // TODO: Menampilkan Form
             $data['main'][] = $this->dofetch('Layout/Form', $data);
         }
@@ -362,13 +440,17 @@ class Controller
     {
         $helper = new Sample();
         if ($helper->isCli()) {
-            $helper->log('This example should only be run from a Web Browser' . PHP_EOL);
+            $helper->log(
+                'This example should only be run from a Web Browser' . PHP_EOL
+            );
 
             return;
         }
 
         // Redirect output to a client’s web browser (Xls)
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header(
+            'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
@@ -382,12 +464,11 @@ class Controller
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
-        exit;
+        exit();
     }
 
     public function spreadsheetContent($data, $baseRow = 0, $template = false)
     {
-
         // Create new Spreadsheet object
         $spreadsheet = new Spreadsheet();
 
@@ -406,21 +487,33 @@ class Controller
             if (isset($value['absolute'])) {
                 unset($value['absolute']);
                 foreach ($value as $column => $val) {
-                    $cell = explode("|", $val);
+                    $cell = explode('|', $val);
                     $cellName = $column;
-                    $spreadsheet->getActiveSheet()->setCellValue($cellName, $val);
+                    $spreadsheet
+                        ->getActiveSheet()
+                        ->setCellValue($cellName, $val);
                 }
             } else {
                 foreach ($value as $column => $val) {
-                    $cell = explode("|", $val);
+                    $cell = explode('|', $val);
                     $cellName = $column . $row;
 
-                    $spreadsheet->getActiveSheet()->setCellValue($cellName, $cell[0]);
+                    $spreadsheet
+                        ->getActiveSheet()
+                        ->setCellValue($cellName, $cell[0]);
                     // var_dump($cell);
                     if (in_array('strong', $cell) || in_array('b', $cell)) {
-                        $spreadsheet->getActiveSheet()->getStyle($cellName)->getFont()->setBold(true);
+                        $spreadsheet
+                            ->getActiveSheet()
+                            ->getStyle($cellName)
+                            ->getFont()
+                            ->setBold(true);
                     } else {
-                        $spreadsheet->getActiveSheet()->getStyle($cellName)->getFont()->setBold(false);
+                        $spreadsheet
+                            ->getActiveSheet()
+                            ->getStyle($cellName)
+                            ->getFont()
+                            ->setBold(false);
                     }
                 }
             }
