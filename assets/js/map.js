@@ -699,7 +699,7 @@ let DataJalan
 let JalanLines
 let loadDataJalan = (no_jalan) => {
   map_center = default_center
-  clearJalan()
+  // clearJalan()
   DataJalan = getAJAX(`${base_url}/Gis/index/datajalan/${no_jalan}`)
   if (DataJalan.length > 0) {
     DataJalan = JSON.parse(DataJalan)
@@ -741,6 +741,7 @@ let clearComplete = () => {
 }
 
 let loadPerkerasan = () => {
+  JalanLines.setMap(null)
   PerkerasanLines = loadData(DataJalan.perkerasan, 'lines', 'jalan')
 }
 
@@ -751,6 +752,7 @@ let clearPerkerasan = () => {
 }
 
 let loadKondisi = () => {
+  JalanLines.setMap(null)
   KondisiLines = loadData(DataJalan.kondisi, 'lines', 'jalan')
 }
 

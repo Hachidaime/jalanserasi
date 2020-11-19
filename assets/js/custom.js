@@ -9,58 +9,58 @@
 $(document)
   .ready(function () {
     // TODO: Clear localStorage
-    localStorage.clear();
+    localStorage.clear()
 
     /**
      * TODO: Submit Log In while press ENTER button
      */
-    $("#loginForm input").keypress(function (e) {
+    $('#loginForm input').keypress(function (e) {
       if (e.which == 13) {
-        login();
+        login()
       }
-    });
+    })
 
-    $(".btn-login").click(function () {
-      login();
-    });
+    $('.btn-login').click(function () {
+      login()
+    })
 
-    $(".btn-logout").click(function () {
-      logout();
-    });
+    $('.btn-logout').click(function () {
+      logout()
+    })
 
-    $(".btn-menu").click(function () {
-      let menu_id = $(this).data("id");
-      setMenu(menu_id);
-    });
+    $('.btn-menu').click(function () {
+      let menu_id = $(this).data('id')
+      setMenu(menu_id)
+    })
 
-    $(".btn-add").click(function () {
-      window.location.href = `${base_url}/${controller}/${method}/add`;
-    });
+    $('.btn-add').click(function () {
+      window.location.href = `${base_url}/${controller}/${method}/add`
+    })
 
-    $(".btn-back").click(function () {
-      window.history.back();
-    });
+    $('.btn-back').click(function () {
+      window.history.back()
+    })
 
     /**
      * * Submit Form Input while submit button clicked
      */
-    $(".btn-submit").click(function () {
+    $('.btn-submit').click(function () {
       // * Mendefinisikan variable
-      let params = $(".myForm").serialize();
+      let params = $('.myForm').serialize()
 
       // TODO: Cek #mySwitch exist
-      let mySwitch = $("#mySwitch");
+      let mySwitch = $('#mySwitch')
       if (mySwitch.length) {
         // TODO: Set parameter dari nilai #mySwitch
-        params += "&" + mySwitch.serialize();
+        params += '&' + mySwitch.serialize()
       }
 
-      if (controller == "Jalan" && method == "index") {
-        let panjang = $.param(getPanjangJalan());
-        params += `&${panjang}`;
+      if (controller == 'Jalan' && method == 'index') {
+        let panjang = $.param(getPanjangJalan())
+        params += `&${panjang}`
       }
 
-      console.log("submit");
+      console.log('submit')
 
       // TODO: Post Form Input Data dengan Ajax Request
       $.post(
@@ -68,460 +68,467 @@ $(document)
         params,
         (data) => {
           // TODO: Menampilkan Alert
-          makeAlert(data);
+          makeAlert(data)
 
           // TODO: Cek success
-          if (Object.keys(data)[0] == "success") {
+          if (Object.keys(data)[0] == 'success') {
             // TODO: Redirect ke halaman utama Controller
             setTimeout(() => {
-              window.location.href = `${base_url}/${controller}/${method}`;
-            }, 3000);
+              window.location.href = `${base_url}/${controller}/${method}`
+            }, 3000)
           }
         },
-        "json"
-      );
-    });
+        'json'
+      )
+    })
 
     // TODO: Menjalankan jQuery Datepicker melalui button
-    $(".date-trigger").click(() => {
-      let id = $(this).data("id");
-      let picker = $(`#${id}.datepicker`);
-      if (picker.datepicker("widget").is(":visible")) {
-        picker.datepicker("hide");
+    $('.date-trigger').click(() => {
+      let id = $(this).data('id')
+      let picker = $(`#${id}.datepicker`)
+      if (picker.datepicker('widget').is(':visible')) {
+        picker.datepicker('hide')
       } else {
-        picker.datepicker("show");
+        picker.datepicker('show')
       }
-    });
+    })
 
     /**
      * * File Upload
      */
-    $(".file-upload").change(function () {
+    $('.file-upload').change(function () {
       /**
        * * Mendefinisikan variable
        */
-      let input = $(this);
-      let id = input.data("id");
-      let preview = $(`#preview${id}`);
-      let file_action = $(`#file-action${id}`);
-      let files = input[0].files[0];
-      let accept = input.attr("accept");
-      let url = `${base_url}/FileHandler/Upload`;
+      let input = $(this)
+      let id = input.data('id')
+      let preview = $(`#preview${id}`)
+      let file_action = $(`#file-action${id}`)
+      let files = input[0].files[0]
+      let accept = input.attr('accept')
+      let url = `${base_url}/FileHandler/Upload`
 
       /**
        * * Mendefinisikan Input Data
        */
-      let fd = new FormData();
-      fd.append("file", files);
-      fd.append("accept", accept);
+      let fd = new FormData()
+      fd.append('file', files)
+      fd.append('accept', accept)
 
       // ToDO: Ajax Request
       $.ajax({
         url: url,
-        type: "post",
+        type: 'post',
         data: fd,
-        dataType: "json",
+        dataType: 'json',
         contentType: false,
         processData: false,
         success: function (data) {
           // TODO: Menampilkan Alert
-          makeAlert(data.alert);
+          makeAlert(data.alert)
 
           // TODO: Cek Status Upload
-          if (Object.keys(data.alert)[0] == "warning") {
+          if (Object.keys(data.alert)[0] == 'warning') {
             // ? Upload Berhasil
 
             // TODO: Menampilkan preview gambar
-            preview.show();
-            preview.find("img").attr({
+            preview.show()
+            preview.find('img').attr({
               src: data.source,
               alt: data.filename,
-            });
-            preview.find("a").attr({
+            })
+            preview.find('a').attr({
               href: data.source,
-            });
+            })
 
             // TODO: Menampilkan link download dari file yang diupload
-            file_action.show();
-            file_action.find(".filename").text(data.filename);
-            file_action.find("a").attr("href", data.source);
+            file_action.show()
+            file_action.find('.filename').text(data.filename)
+            file_action.find('a').attr('href', data.source)
 
             // TODO: Set input value untuk file upload
-            $(`#${id}`).val(data.filename);
+            $(`#${id}`).val(data.filename)
           }
         },
-      });
-    });
+      })
+    })
 
     /**
      * * Menampilkan Preview & Link Download Tersimpan
      */
-    $(".input-file").each(function (idx, row) {
-      let id = $(this).data("id");
-      let preview = $(`#preview${id}`);
-      let file_action = $(`#file-action${id}`);
+    $('.input-file').each(function (idx, row) {
+      let id = $(this).data('id')
+      let preview = $(`#preview${id}`)
+      let file_action = $(`#file-action${id}`)
 
       // TODO: Cek file exist
-      if ($(this).val() != "") {
+      if ($(this).val() != '') {
         // TODO: Menampilkan Preview & Link Download
-        preview.show();
-        file_action.show();
+        preview.show()
+        file_action.show()
       } else {
         // ! Sembunyikan Preview & Link Download
-        preview.hide();
-        file_action.hide();
+        preview.hide()
+        file_action.hide()
       }
-    });
+    })
 
-    $(".btn-gallery-page").click(function () {
-      $(".page-item").removeClass("active");
-      let page = $(this).data("page");
-      $(this).parent().addClass("active");
-      loadGallery(page);
-    });
+    $('.btn-gallery-page').click(function () {
+      $('.page-item').removeClass('active')
+      let page = $(this).data('page')
+      $(this).parent().addClass('active')
+      loadGallery(page)
+    })
 
     /**
      * * Mendefinisikan jQuery Datepicker
      */
-    $(".datepicker").datepicker({
-      dateFormat: "dd/mm/yy",
-      showAnim: "slideDown",
-    });
+    $('.datepicker').datepicker({
+      dateFormat: 'dd/mm/yy',
+      showAnim: 'slideDown',
+    })
 
     /**
      * * Mendefinisikan ColorPickerSliders
      */
-    $(".colorpicker").ColorPickerSliders({
+    $('.colorpicker').ColorPickerSliders({
       flat: true,
       swatches: [
-        "#007bff",
-        "#6c757d",
-        "#28a745",
-        "#dc3545",
-        "#ffc107",
-        "#17a2b8",
-        "#f8f9fa",
-        "#343a40",
-        "#ffffff",
+        '#007bff',
+        '#6c757d',
+        '#28a745',
+        '#dc3545',
+        '#ffc107',
+        '#17a2b8',
+        '#f8f9fa',
+        '#343a40',
+        '#ffffff',
       ],
       customswatches: false,
-      previewformat: "hex",
+      previewformat: 'hex',
       order: {},
-    });
+    })
 
     /**
      * * Mendefinisikan Bootstrap Tagsinput
      */
-    $(".tags").tagsinput({
+    $('.tags').tagsinput({
       tagClass: function (item) {
-        return "badge badge-info mr-1";
+        return 'badge badge-info mr-1'
       },
-    });
+    })
 
     /**
      * * Menambahkan Tag pada Bootstrap Tagsinput
      * * saat select change
      */
-    $("select")
+    $('select')
       .change(function () {
         /**
          * * Mendefinisikan variable
          */
-        let selected_opt = $(this).find("option:selected").text();
-        let id = $(this).attr("id");
-        let old_tag = localStorage.getItem(id);
-        let tags = $(".tags");
+        let selected_opt = $(this).find('option:selected').text()
+        let id = $(this).attr('id')
+        let old_tag = localStorage.getItem(id)
+        let tags = $('.tags')
 
         // TODO: Cek old tag
         if (old_tag != null) {
           // TODO: Remove old tag
-          tags.tagsinput("remove", old_tag);
+          tags.tagsinput('remove', old_tag)
         }
 
         // TODO: Add new tag
-        localStorage.setItem(id, selected_opt);
-        tags.tagsinput("add", selected_opt);
+        localStorage.setItem(id, selected_opt)
+        tags.tagsinput('add', selected_opt)
       })
-      .change();
+      .change()
 
-    $(".token-trigger")
+    $('.token-trigger')
       .click(function () {
-        let url = `${base_url}/Otentifikasi/getKey`;
-        let id = $(this).data("id");
+        let url = `${base_url}/Otentifikasi/getKey`
+        let id = $(this).data('id')
 
         $.post(
           url,
           function (data) {
-            $(`#${id}`).val(data);
+            $(`#${id}`).val(data)
           },
-          "json"
-        );
+          'json'
+        )
       })
-      .click();
+      .click()
 
     /**
      * * Menampilkan Lightbox Modal
      */
-    $("#lightboxModal").on("show.bs.modal", function (event) {
-      let button = $(event.relatedTarget); // ? Button that triggered the modal
-      let recipient = button.data("whatever"); // ? Extract info from data-* attributes
+    $('#lightboxModal').on('show.bs.modal', function (event) {
+      let button = $(event.relatedTarget) // ? Button that triggered the modal
+      let recipient = button.data('whatever') // ? Extract info from data-* attributes
       // ? If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
       // ? Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-      let modal = $(this);
-      modal.find(".modal-title").text(`New message to ${recipient}`);
-      modal.find(".modal-body input").val(recipient);
-    });
+      let modal = $(this)
+      modal.find('.modal-title').text(`New message to ${recipient}`)
+      modal.find('.modal-body input').val(recipient)
+    })
 
-    $(".btn-gen-coord").click(function () {
+    $('.btn-gen-coord').click(function () {
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-          confirmButton: "btn btn-success mx-1",
-          cancelButton: "btn btn-danger mx-1",
+          confirmButton: 'btn btn-success mx-1',
+          cancelButton: 'btn btn-danger mx-1',
         },
         buttonsStyling: false,
-      });
+      })
 
       swalWithBootstrapButtons
         .fire({
-          title: "Are you sure?",
-          icon: "warning",
-          text: "This action will reset segmentation.",
+          title: 'Are you sure?',
+          icon: 'warning',
+          text: 'This action will reset segmentation.',
           showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
           reverseButtons: true,
           allowOutsideClick: false,
         })
         .then((result) => {
           if (result.value) {
-            genSegment();
+            genSegment()
           }
-        });
-    });
+        })
+    })
 
-    $("#panjang_text").val($("#panjang").val());
+    $('#panjang_text').val($('#panjang').val())
 
-    $("#koordinatModal").on("hidden.bs.modal", function () {
-      let modal = $("#koordinatModal");
-      modal.find(".modal-body").html();
-      clearKoordinatModal();
-    });
+    $('#koordinatModal').on('hidden.bs.modal', function () {
+      let modal = $('#koordinatModal')
+      modal.find('.modal-body').html()
+      clearKoordinatModal()
+    })
 
-    $(".btn-cancel-koordinat").click(function () {
-      let modal = $("#koordinatModal");
-      modal.modal("hide");
-    });
+    $('.btn-cancel-koordinat').click(function () {
+      let modal = $('#koordinatModal')
+      modal.modal('hide')
+    })
 
-    $(".btn-submit-koordinat").click(function () {
-      let params = $(".koordinatForm").serialize();
-      let url = `${base_url}/${controller}/Koordinat/submit`;
-      let modal = $("#koordinatModal");
+    $('.btn-submit-koordinat').click(function () {
+      let params = $('.koordinatForm').serialize()
+      let url = `${base_url}/${controller}/Koordinat/submit`
+      let modal = $('#koordinatModal')
 
       $.post(
         url,
         params,
         function (data) {
-          makeAlert(data);
-          if (Object.keys(data)[0] == "success") {
-            modal.modal("hide");
-            $table.bootstrapTable("refresh");
+          makeAlert(data)
+          if (Object.keys(data)[0] == 'success') {
+            modal.modal('hide')
+            $table.bootstrapTable('refresh')
           }
         },
-        "json"
-      );
-    });
+        'json'
+      )
+    })
 
-    $(".btn-add-point").click(() => {
-      let modal = $("#addKoordinatModal");
-      modal.modal("show");
-    });
-    $("#distance").keydown(function (event) {
+    $('.btn-add-point').click(() => {
+      let modal = $('#addKoordinatModal')
+      modal.modal('show')
+    })
+    $('#distance').keydown(function (event) {
       if (event.keyCode == 13) {
-        event.preventDefault();
-        return false;
+        event.preventDefault()
+        return false
       }
-    });
+    })
 
-    $("#addKoordinatModal").on("hidden.bs.modal", function () {
-      let modal = $("#addKoordinatModal");
-      modal.find(".modal-body").html();
-      clearAddKoordinatModal();
-    });
+    $('#addKoordinatModal').on('hidden.bs.modal', function () {
+      let modal = $('#addKoordinatModal')
+      modal.find('.modal-body').html()
+      clearAddKoordinatModal()
+    })
 
-    $(".btn-cancel-add-point").click(function () {
-      let modal = $("#addKoordinatModal");
-      modal.modal("hide");
-    });
+    $('.btn-cancel-add-point').click(function () {
+      let modal = $('#addKoordinatModal')
+      modal.modal('hide')
+    })
 
-    $(".btn-submit-add-point").click(() => {
-      let distance = document.querySelector("#distance").value;
-      if (!isNaN(distance)) addPoint(distance);
+    $('.btn-submit-add-point').click(() => {
+      let distance = document.querySelector('#distance').value
+      if (!isNaN(distance)) addPoint(distance)
       else {
-        makeAlert(JSON.parse('{"danger":["Jarak harus dalam bentuk angka."]}'));
+        makeAlert(JSON.parse('{"danger":["Jarak harus dalam bentuk angka."]}'))
       }
-    });
+    })
 
-    $(".btn-sidebar-open").click(function () {
-      openNav();
-    });
+    $('.btn-sidebar-open').click(function () {
+      openNav()
+    })
 
-    $(".btn-sidebar-close").click(function () {
-      closeNav();
-    });
+    $('.btn-sidebar-close').click(function () {
+      closeNav()
+    })
 
-    $(".nav-tabs a").click(function (e) {
-      e.preventDefault();
-      $(this).tab("show");
-    });
+    $('.nav-tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
 
-    const searchGisForm = $(".searchGisForm");
-    let searchCheckbox = searchGisForm.find("input[type=checkbox]");
+    const searchGisForm = $('.searchGisForm')
+    let searchCheckbox = searchGisForm.find('input[type=checkbox]')
 
-    const trackingGisForm = $(".trackingGisForm");
+    const trackingGisForm = $('.trackingGisForm')
 
-    searchGisForm.find("select#kepemilikan").change(function () {
-      searchCheckbox.attr("disabled", true);
+    searchGisForm.find('select#kepemilikan').change(function () {
+      searchCheckbox.attr('disabled', true)
 
-      let kepemilikan = this.value;
-      let url = `${base_url}/Gis/index/jalan`;
-      let params = {};
-      params["kepemilikan"] = kepemilikan;
+      let kepemilikan = this.value
+      let url = `${base_url}/Gis/index/jalan`
+      let params = {}
+      params['kepemilikan'] = kepemilikan
 
-      clearLines();
+      clearLines()
 
       $.post(
         url,
         $.param(params),
         function (data) {
           if (Object.keys(data).length > 0) {
-            loadLines();
-            searchCheckbox.removeAttr("disabled");
+            loadLines()
+            searchCheckbox.removeAttr('disabled')
           } else {
-            makeAlert(JSON.parse('{"danger":["Data tidak ditemukan."]}'));
+            makeAlert(JSON.parse('{"danger":["Data tidak ditemukan."]}'))
           }
         },
-        "json"
-      );
-    });
+        'json'
+      )
+    })
 
-    searchGisForm.find("select#no_jalan").change(function () {
-      trackingGisForm.find("select#no_jalan").selectpicker("val", 0);
+    searchGisForm.find('select#no_jalan').change(function () {
+      trackingGisForm.find('select#no_jalan').selectpicker('val', 0)
 
-      document.querySelectorAll("input[type=checkbox").forEach((CheckBox) => {
-        CheckBox.checked = false;
-      });
-      searchCheckbox.attr("disabled", true);
+      document.querySelectorAll('input[type=checkbox').forEach((CheckBox) => {
+        CheckBox.checked = false
+      })
+      searchCheckbox.attr('disabled', true)
 
-      clearRoute();
-      $("#routeLocation").prop("disabled", true);
+      clearRoute()
+      $('#routeLocation').prop('disabled', true)
       // $("#trackingLocation").prop("disabled", true);
-      if (this.value != "semua") $("#routeLocation").prop("disabled", false);
+      if (this.value != 'semua') $('#routeLocation').prop('disabled', false)
       // else $("#routeLocation").prop("disabled", true);
 
+      clearJalan()
       if (loadDataJalan(this.value) == true)
-        searchCheckbox.removeAttr("disabled");
-    });
+        searchCheckbox.removeAttr('disabled')
+    })
 
-    searchCheckbox.attr("disabled", true);
+    searchCheckbox.attr('disabled', true)
 
-    $("input[type=checkbox]#perkerasan").change(function () {
+    $('input[type=checkbox]#perkerasan').change(function () {
       if (this.checked) {
-        clearKondisi();
-        document.querySelector("input[type=checkbox]#kondisi").checked = false;
-        loadPerkerasan();
-      } else clearPerkerasan();
-    });
+        clearKondisi()
+        document.querySelector('input[type=checkbox]#kondisi').checked = false
+        loadPerkerasan()
+      } else {
+        clearPerkerasan()
+        searchGisForm.find('select#no_jalan').change()
+      }
+    })
 
-    $("input[type=checkbox]#kondisi").change(function () {
+    $('input[type=checkbox]#kondisi').change(function () {
       if (this.checked) {
-        clearPerkerasan();
+        clearPerkerasan()
         document.querySelector(
-          "input[type=checkbox]#perkerasan"
-        ).checked = false;
-        loadKondisi();
-      } else clearKondisi();
-    });
+          'input[type=checkbox]#perkerasan'
+        ).checked = false
+        loadKondisi()
+      } else {
+        clearKondisi()
+        searchGisForm.find('select#no_jalan').change()
+      }
+    })
 
-    $("input[type=checkbox]#segmentasi").change(function () {
-      if (this.checked) loadSegment();
-      else clearSegment();
-    });
+    $('input[type=checkbox]#segmentasi').change(function () {
+      if (this.checked) loadSegment()
+      else clearSegment()
+    })
 
-    $("input[type=checkbox]#awal").change(function () {
-      if (this.checked) loadAwal();
-      else clearAwal();
-    });
+    $('input[type=checkbox]#awal').change(function () {
+      if (this.checked) loadAwal()
+      else clearAwal()
+    })
 
-    $("input[type=checkbox]#akhir").change(function () {
-      if (this.checked) loadAkhir();
-      else clearAkhir();
-    });
+    $('input[type=checkbox]#akhir').change(function () {
+      if (this.checked) loadAkhir()
+      else clearAkhir()
+    })
 
-    $("input[type=checkbox]#jembatan").change(function () {
-      if (this.checked) loadJembatan();
-      else clearJembatan();
-    });
+    $('input[type=checkbox]#jembatan').change(function () {
+      if (this.checked) loadJembatan()
+      else clearJembatan()
+    })
 
-    $(".btn-search-gis").click(function () {
-      let params = searchGisForm.serialize();
-    });
+    $('.btn-search-gis').click(function () {
+      let params = searchGisForm.serialize()
+    })
 
-    $("#routeLocation").prop("disabled", true);
+    $('#routeLocation').prop('disabled', true)
     // $("#trackingLocation").prop("disabled", true);
 
-    $("#yourLocation").click(() => {
-      clearRoute();
-      loadPosition();
-    });
+    $('#yourLocation').click(() => {
+      clearRoute()
+      loadPosition()
+    })
 
-    $("#routeLocation").click(() => {
-      clearRoute();
-      calcRoute();
+    $('#routeLocation').click(() => {
+      clearRoute()
+      calcRoute()
       // $("#trackingLocation").prop("disabled", false);
-    });
+    })
 
-    $("#trackingLocation").click(() => {
+    $('#trackingLocation').click(() => {
       // startAnimation();
-      getLocation();
-    });
+      getLocation()
+    })
 
     $('<span class="ml-2" id="on_site_answer">Tidak</span>').insertAfter(
-      $("#on_site").siblings("label")
-    );
+      $('#on_site').siblings('label')
+    )
 
-    $("input[type=checkbox]#on_site").change(function () {
-      $("#latitude").val("");
-      $("#longitude").val("");
+    $('input[type=checkbox]#on_site').change(function () {
+      $('#latitude').val('')
+      $('#longitude').val('')
       if (this.checked) {
-        $("#on_site_answer").text("Ya");
+        $('#on_site_answer').text('Ya')
         userPosition({
           onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
-            $("#latitude").val(lat);
-            $("#longitude").val(lng);
+            $('#latitude').val(lat)
+            $('#longitude').val(lng)
           },
           onError: (err) => {
-            getPositionErrorMessage(err.code) || err.message;
+            getPositionErrorMessage(err.code) || err.message
           },
-        });
-      } else $("#on_site_answer").text("Tidak");
-    });
+        })
+      } else $('#on_site_answer').text('Tidak')
+    })
   })
   .ajaxStart(function () {
     // TODO: Menampilkan loading spinner
-    $(".loading").show();
+    $('.loading').show()
   })
   .ajaxStop(function () {
     // TODO: Menyembunyikan loading spinner
-    $(".loading").hide();
-  });
+    $('.loading').hide()
+  })
 
-$(document).on("click", '[data-toggle="lightbox"]', function (event) {
-  event.preventDefault();
-  $(this).ekkoLightbox();
-});
+$(document).on('click', '[data-toggle="lightbox"]', function (event) {
+  event.preventDefault()
+  $(this).ekkoLightbox()
+})
 
 window.onscroll = function () {
   // scrollFunction();
-};
+}
 
-let cur_time = getTime();
+let cur_time = getTime()
