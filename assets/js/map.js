@@ -579,23 +579,23 @@ let jalanInfo = (param) => {
     `,
     /*html*/ `
       <tr>
-          <td align="center" width="25%">ASPAL (km)</td>
-          <td align="center" width="25%">BETON (km)</td>
-          <td align="center" width="25%">KERIKIL (km)</td>
-          <td align="center" width="25%">TANAH (km)</td>
+        <td align="center" width="25%">ASPAL (km)</td>
+        <td align="center" width="25%">BETON (km)</td>
+        <td align="center" width="25%">KERIKIL (km)</td>
+        <td align="center" width="25%">TANAH (km)</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td align="center" width="25%">${perkerasan[1]}</td>
-          <td align="center" width="25%">${perkerasan[2]}</td>
-          <td align="center" width="25%">${perkerasan[3]}</td>
-          <td align="center" width="25%">${perkerasan[4]}</td>
+        <td align="center" width="25%">${perkerasan[2]}</td>
+        <td align="center" width="25%">${perkerasan[1]}</td>
+        <td align="center" width="25%">${perkerasan[3]}</td>
+        <td align="center" width="25%">${perkerasan[4]}</td>
       </tr>
     `,
     /*html*/ `
       <tr>
-          <td align="center" colspan="4">KONDISI</td>
+        <td align="center" colspan="4">KONDISI</td>
       </tr>
     `,
     /*html*/ `
@@ -607,12 +607,12 @@ let jalanInfo = (param) => {
       </tr>
     `,
     /*html*/ `
-    <tr>
+      <tr>
         <td align="center" width="25%">${kondisi[1]}</td>
         <td align="center" width="25%">${kondisi[2]}</td>
         <td align="center" width="25%">${kondisi[3]}</td>
         <td align="center" width="25%">${kondisi[4]}</td>
-    </tr>
+      </tr>
     `,
   ]
 }

@@ -318,8 +318,8 @@ let setDataJalanModal = (row, modal) => {
       <td colspan="3">Lat: ${jalan.koordinat_akhir[1]} Long: ${jalan.koordinat_akhir[0]} </td>
       `
   rowPermukaanValue.innerHTML = /* html */ `
-      <td align="center" width="25%">${jalan.perkerasan[1]}</td>
       <td align="center" width="25%">${jalan.perkerasan[2]}</td>
+      <td align="center" width="25%">${jalan.perkerasan[1]}</td>
       <td align="center" width="25%">${jalan.perkerasan[3]}</td>
       <td align="center" width="25%">${jalan.perkerasan[4]}</td>
       `

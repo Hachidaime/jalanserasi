@@ -47,7 +47,7 @@ class Laporan extends Controller
         $data = [
             'thead' => $this->my_model->getDd1Thead(),
             'data' => $searchData['data'],
-            'panjang' => $searchData['panjang'],
+            'panjang' => $searchData['panjang']
         ];
         // var_dump($this->Dd1SearchData());
         // var_dump($this->my_model->getDd1Thead());
@@ -64,7 +64,7 @@ class Laporan extends Controller
             'data' => $searchData['data'],
             'panjang' => $searchData['panjang'],
             'download' => true,
-            'format' => 'pdf',
+            'format' => 'pdf'
         ];
 
         $options = new Options();
@@ -115,7 +115,7 @@ class Laporan extends Controller
                 's' => $row['lhr'],
                 't' => $row['npk'],
                 'u' => $row['keterangan'],
-                'newline' => '',
+                'newline' => ''
             ];
         }
 
@@ -131,24 +131,24 @@ class Laporan extends Controller
                 'k' => $searchData['panjang']['kondisi'][1],
                 'm' => $searchData['panjang']['kondisi'][2],
                 'o' => $searchData['panjang']['kondisi'][3],
-                'q' => $searchData['panjang']['kondisi'][4],
+                'q' => $searchData['panjang']['kondisi'][4]
             ],
             [
                 'l' => $searchData['panjang']['kondisi_percent'][1],
                 'n' => $searchData['panjang']['kondisi_percent'][2],
                 'p' => $searchData['panjang']['kondisi_percent'][3],
-                'r' => $searchData['panjang']['kondisi_percent'][4],
+                'r' => $searchData['panjang']['kondisi_percent'][4]
             ],
             [
-                'k' => $searchData['panjang']['mantap'],
+                'k' => $searchData['panjang']['mantap']
             ],
             [
-                'o' => $searchData['panjang']['tidak_mantap'],
+                'o' => $searchData['panjang']['tidak_mantap']
             ],
             [
                 'c5' => ': ' . date('Y'),
-                'absolute' => '',
-            ],
+                'absolute' => ''
+            ]
         );
 
         $spreadsheet = $this->spreadsheetContent($data, 12, 'Laporan/dd1.xls');
@@ -195,7 +195,7 @@ class Laporan extends Controller
         }
 
         $panjang = [
-            'jalan' => 0,
+            'jalan' => 0
         ];
 
         $n = [];
@@ -213,7 +213,7 @@ class Laporan extends Controller
                     if ($key != 'kondisi_percent') {
                         $panjang[$key][$k] += number_format(
                             $row["{$key}_{$k}"],
-                            2,
+                            2
                         );
                     }
                 }
@@ -223,7 +223,7 @@ class Laporan extends Controller
         foreach ($panjang['kondisi_percent'] as $key => $value) {
             $panjang['kondisi_percent'][$key] = number_format(
                 ($panjang['kondisi'][$key] / $panjang['jalan']) * 100,
-                2,
+                2
             );
 
             if (in_array($key, [1, 2])) {
@@ -237,7 +237,7 @@ class Laporan extends Controller
 
         return [
             'data' => $data,
-            'panjang' => $panjang,
+            'panjang' => $panjang
         ];
     }
 
