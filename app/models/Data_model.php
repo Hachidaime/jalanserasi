@@ -165,6 +165,11 @@ class Data_model extends Database
             $iconStyle
         );
 
+        $jembatanCount = [];
+        foreach ($jembatan as $row) {
+            $jembatanCount[$row['no_jalan']] += 1;
+        }
+
         list(
             $segment,
             $complete,
@@ -188,48 +193,76 @@ class Data_model extends Database
             $akhirOpt[$row['no_jalan']] = $row['koordinat'];
         }
 
-        $koordinatAwalAkhir = [
-            'koordinat_awal' => $awalOpt[$row['no_jalan']],
-            'koordinat_akhir' => $akhirOpt[$row['no_jalan']]
-        ];
-
         foreach ($jalan as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            // var_dump($jembatanCount[$row['no_jalan']]);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $jalan[$idx] = $row;
         }
 
         foreach ($jembatan as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $jembatan[$idx] = $row;
         }
 
         foreach ($segment as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $segment[$idx] = $row;
         }
 
         foreach ($complete as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $complete[$idx] = $row;
         }
 
         foreach ($perkerasan as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $perkerasan[$idx] = $row;
         }
 
         foreach ($kondisi as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $kondisi[$idx] = $row;
         }
 
         foreach ($awal as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $awal[$idx] = $row;
         }
 
         foreach ($akhir as $idx => $row) {
-            $row = array_merge($row, $koordinatAwalAkhir);
+            $row = array_merge($row, [
+                'koordinat_awal' => $awalOpt[$row['no_jalan']],
+                'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+            ]);
             $akhir[$idx] = $row;
         }
 
