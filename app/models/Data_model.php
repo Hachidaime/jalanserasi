@@ -27,22 +27,22 @@ class Data_model extends Database
                 "{$koordinat_table}.ori",
                 "{$koordinat_table}.segmented",
                 "{$panjang_table}.perkerasan as perkerasan_panjang",
-                "{$panjang_table}.kondisi as kondisi_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang"
             ],
             'join' => [
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$jalan_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
             ],
             'sort' => [
                 "{$jalan_table}.kepemilikan ASC",
-                "{$jalan_table}.no_jalan ASC",
+                "{$jalan_table}.no_jalan ASC"
             ],
-            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"],
+            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"]
         ];
 
         $query = $this->getSelectQuery(
             $jalan_table,
-            Functions::getParams($plain),
+            Functions::getParams($plain)
         );
         $this->execute($query);
         [$data['jalan']] = $this->multiarray();
@@ -65,12 +65,12 @@ class Data_model extends Database
                 "{$detail_table}.segment",
                 "{$detail_table}.koordinat",
                 "{$detail_table}.data",
-                "{$koordinat_table}.jml_segmented",
+                "{$koordinat_table}.jml_segmented"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$detail_table}.no_jalan",
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$detail_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
                 // "LEFT JOIN {$foto_table} ON ({$foto_table}.latitude = {$detail_table}.latitude AND {$foto_table}.longitude = {$detail_table}.longitude)"
             ],
             'sort' => [
@@ -78,13 +78,13 @@ class Data_model extends Database
                 // "{$detail_table}.no_detail ASC",
                 // "{$detail_table}.perkerasan ASC",
                 // "{$detail_table}.kondisi ASC",
-                "{$detail_table}.segment ASC",
+                "{$detail_table}.segment ASC"
             ],
-            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"],
+            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"]
         ];
         $query = $this->getSelectQuery(
             $detail_table,
-            Functions::getParams($detail),
+            Functions::getParams($detail)
         );
         $this->execute($query);
         [$data['detail']] = $this->multiarray();
@@ -117,21 +117,21 @@ class Data_model extends Database
                 "{$jembatan_table}.foto_bangunan_atas",
                 "{$jembatan_table}.foto_bangunan_bawah",
                 "{$jembatan_table}.foto_fondasi",
-                "{$jembatan_table}.foto_lantai",
+                "{$jembatan_table}.foto_lantai"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
             ],
             'sort' => [
                 "{$jembatan_table}.no_jalan ASC",
-                "{$jembatan_table}.no_jembatan ASC",
+                "{$jembatan_table}.no_jembatan ASC"
             ],
-            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"],
+            'filter' => ["{$jalan_table}.nama_jalan NOT LIKE '%test%'"]
         ];
         $query = $this->getSelectQuery(
             $jembatan_table,
-            Functions::getParams($jembatan),
+            Functions::getParams($jembatan)
         );
         $this->execute($query);
         [$data['jembatan']] = $this->multiarray();
@@ -159,23 +159,79 @@ class Data_model extends Database
         $list = $this->getAllDataJalan();
 
         $jalan = Functions::getLineFromJalan($list['jalan'], $lineStyle);
+
         $jembatan = Functions::getPointFromJembatan(
             $list['jembatan'],
-            $iconStyle,
+            $iconStyle
         );
 
-        [
+        list(
             $segment,
             $complete,
             $perkerasan,
             $kondisi,
             $awal,
-            $akhir,
-        ] = Functions::getLineFromDetail(
+            $akhir
+        ) = Functions::getLineFromDetail(
             $list['detail'],
             $lineStyle,
-            $iconStyle,
+            $iconStyle
         );
+
+        $awalOpt = [];
+        foreach ($awal as $row) {
+            $awalOpt[$row['no_jalan']] = $row['koordinat'];
+        }
+
+        $akhirOpt = [];
+        foreach ($akhir as $row) {
+            $akhirOpt[$row['no_jalan']] = $row['koordinat'];
+        }
+
+        $koordinatAwalAkhir = [
+            'koordinat_awal' => $awalOpt[$row['no_jalan']],
+            'koordinat_akhir' => $akhirOpt[$row['no_jalan']]
+        ];
+
+        foreach ($jalan as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $jalan[$idx] = $row;
+        }
+
+        foreach ($jembatan as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $jembatan[$idx] = $row;
+        }
+
+        foreach ($segment as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $segment[$idx] = $row;
+        }
+
+        foreach ($complete as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $complete[$idx] = $row;
+        }
+
+        foreach ($perkerasan as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $perkerasan[$idx] = $row;
+        }
+
+        foreach ($kondisi as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $kondisi[$idx] = $row;
+        }
+
+        foreach ($awal as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $awal[$idx] = $row;
+        }
+
+        foreach ($akhir as $idx => $row) {
+            $row = array_merge($row, $koordinatAwalAkhir);
+            $akhir[$idx] = $row;
+        }
 
         $dd1 = $this->generateDataLaporanDd1($list['jalan']);
         $dd2 = $this->generateDataLaporanDd2($list['jembatan']);
@@ -187,19 +243,19 @@ class Data_model extends Database
                 ['Jalan', $jalan],
                 ['Complete', $complete],
                 ['Perkerasan', $perkerasan],
-                ['Kondisi', $kondisi],
+                ['Kondisi', $kondisi]
             ],
             'points' => [
                 ['Segment', $segment],
                 ['Awal', $awal],
                 ['Akhir', $akhir],
-                ['Jembatan', $jembatan],
+                ['Jembatan', $jembatan]
             ],
             'other' => [
                 ['LaporanDD1', $dd1],
                 ['LaporanDD2', $dd2],
-                ['Info', $info],
-            ],
+                ['Info', $info]
+            ]
         ];
         $this->generateDataFile($data, $style);
     }
@@ -238,7 +294,7 @@ class Data_model extends Database
                 $row["kondisi_{$key}"] = number_format($value / 1000, 2);
                 $row["kondisi_{$key}_percent"] = number_format(
                     ($value / $row['panjang']) * 100,
-                    2,
+                    2
                 );
             }
 
@@ -300,7 +356,7 @@ class Data_model extends Database
             $kepemilikan = preg_replace(
                 '/[^A-Za-z0-9]/',
                 '',
-                $kepemilikan_opt[$row['kepemilikan']],
+                $kepemilikan_opt[$row['kepemilikan']]
             );
             $panjang[$kepemilikan]['total'] += $row['panjang'];
             foreach (json_decode($row['perkerasan'], true) as $key => $value) {
@@ -319,7 +375,7 @@ class Data_model extends Database
             $kepemilikan = preg_replace(
                 '/[^A-Za-z0-9]/',
                 '',
-                $kepemilikan_opt[$row['kepemilikan']],
+                $kepemilikan_opt[$row['kepemilikan']]
             );
             $jembatan[$kepemilikan]['total'] += 1;
         }
@@ -341,7 +397,7 @@ class Data_model extends Database
                                 "{$filename}.json",
                                 $style,
                                 $value,
-                                1,
+                                1
                             );
                         } else {
                             Functions::saveJSON("{$filename}.json", $value);
@@ -353,7 +409,7 @@ class Data_model extends Database
                                 "{$filename}.json",
                                 $style,
                                 $value,
-                                2,
+                                2
                             );
                         } else {
                             Functions::saveJSON("{$filename}.json", $value);

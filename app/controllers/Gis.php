@@ -41,7 +41,7 @@ class Gis extends Controller
         $data['searchform'] = $this->dofetch('Layout/Form', [
             'formClass' => 'searchGisForm',
             'form' => $this->my_model->getGisForm(),
-            'mini' => true,
+            'mini' => true
         ]);
         $this->view('Gis/index', $data);
     }
@@ -54,7 +54,7 @@ class Gis extends Controller
                 $cond[] = "kepemilikan = {$_POST['kepemilikan']}";
             }
             $jalan_options = $this->model('Jalan_model')->getJalanOptions(
-                $cond,
+                $cond
             );
 
             echo json_encode($jalan_options);
@@ -80,11 +80,11 @@ class Gis extends Controller
 
             // TODO: Formating setup as JSON
             [$style, $lineStyle, $iconStyle] = Functions::getStyle(
-                $setup_jalan,
+                $setup_jalan
             );
 
             [$jalan, $detail, $jembatan] = $this->my_model->getDetailJalan(
-                $this->no_jalan,
+                $this->no_jalan
             );
 
             $jalan['kepemilikan_text'] =
@@ -118,7 +118,7 @@ class Gis extends Controller
                 $perkerasan,
                 $kondisi,
                 $awal,
-                $akhir,
+                $akhir
             ] = Functions::getLineFromDetail($detail, $lineStyle, $iconStyle);
             $jembatan = Functions::getPointFromJembatan($jembatan, $iconStyle);
             // var_dump($segment);
@@ -154,7 +154,7 @@ class Gis extends Controller
             }
 
             $position = [
-                'koordinat' => $this->GetGeo(),
+                'koordinat' => $this->GetGeo()
             ];
 
             $result = [
@@ -162,35 +162,35 @@ class Gis extends Controller
                 'segment' => Functions::createFeatureCollection(
                     $style,
                     $segment,
-                    2,
+                    2
                 ),
                 'complete' => Functions::createFeatureCollection(
                     $style,
                     $complete,
-                    1,
+                    1
                 ),
                 'perkerasan' => Functions::createFeatureCollection(
                     $style,
                     $perkerasan,
-                    1,
+                    1
                 ),
                 'kondisi' => Functions::createFeatureCollection(
                     $style,
                     $kondisi,
-                    1,
+                    1
                 ),
                 'awal' => Functions::createFeatureCollection($style, $awal, 2),
                 'akhir' => Functions::createFeatureCollection(
                     $style,
                     $akhir,
-                    2,
+                    2
                 ),
                 'jembatan' => Functions::createFeatureCollection(
                     $style,
                     $jembatan,
-                    2,
+                    2
                 ),
-                'position' => Functions::createFeature($style, $position, 2),
+                'position' => Functions::createFeature($style, $position, 2)
             ];
             echo json_encode($result);
             exit();
@@ -209,7 +209,7 @@ class Gis extends Controller
             'kondisi',
             'awal',
             'akhir',
-            'jembatan',
+            'jembatan'
         ];
 
         $result = [];

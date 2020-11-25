@@ -4,7 +4,7 @@ class Gis_model extends Database
     public function getGisForm()
     {
         $jalan_opt = $this->model('Jalan_model')->getJalanOptions([
-            "nama_jalan NOT LIKE '%test%'",
+            "nama_jalan NOT LIKE '%test%'"
         ]);
         $jalan_opt['semua'] = 'Semua';
 
@@ -16,44 +16,44 @@ class Gis_model extends Database
             'Ruas Jalan',
             $jalan_opt,
             true,
-            true,
+            true
         ]);
         // Functions::setDataSession('form', ['switch', 'jalan_provinsi', 'jalan_provinsi', 'Jalan Provinsi']);
         Functions::setDataSession('form', [
             'switch',
             'perkerasan',
             'perkerasan',
-            'Perkerasan',
+            'Perkerasan'
         ]);
         Functions::setDataSession('form', [
             'switch',
             'kondisi',
             'kondisi',
-            'Kondisi',
+            'Kondisi'
         ]);
         Functions::setDataSession('form', [
             'switch',
             'segmentasi',
             'segmentasi',
-            'Segmentasi',
+            'Segmentasi'
         ]);
         Functions::setDataSession('form', [
             'switch',
             'awal',
             'awal',
-            'Awal Ruas Jalan',
+            'Awal Ruas Jalan'
         ]);
         Functions::setDataSession('form', [
             'switch',
             'akhir',
             'akhir',
-            'Akhir Ruas Jalan',
+            'Akhir Ruas Jalan'
         ]);
         Functions::setDataSession('form', [
             'switch',
             'jembatan',
             'jembatan',
-            'Jembatan',
+            'Jembatan'
         ]);
 
         return Functions::getDataSession('form');
@@ -83,22 +83,22 @@ class Gis_model extends Database
                 "{$koordinat_table}.ori",
                 "{$koordinat_table}.segmented",
                 "{$panjang_table}.perkerasan as perkerasan_panjang",
-                "{$panjang_table}.kondisi as kondisi_panjang",
+                "{$panjang_table}.kondisi as kondisi_panjang"
             ],
             'join' => [
                 "LEFT JOIN {$koordinat_table} ON {$koordinat_table}.no_jalan = {$jalan_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
             ],
             'sort' => [
                 "{$jalan_table}.kepemilikan ASC",
-                "{$jalan_table}.no_jalan ASC",
+                "{$jalan_table}.no_jalan ASC"
             ],
-            'filter' => [$filter],
+            'filter' => [$filter]
         ];
 
         $query = $this->getSelectQuery(
             $jalan_table,
-            Functions::getParams($data_query),
+            Functions::getParams($data_query)
         );
         $this->execute($query, $bindVar);
 
@@ -122,24 +122,24 @@ class Gis_model extends Database
                 "{$detail_table}.kondisi",
                 "{$detail_table}.segment",
                 "{$detail_table}.koordinat",
-                "{$detail_table}.data",
+                "{$detail_table}.data"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$detail_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
             ],
             'sort' => [
                 "{$detail_table}.no_jalan ASC",
                 // "{$detail_table}.no_detail ASC",
                 // "{$detail_table}.perkerasan ASC",
                 // "{$detail_table}.kondisi ASC",
-                "{$detail_table}.segment ASC",
+                "{$detail_table}.segment ASC"
             ],
-            'filter' => [$filter],
+            'filter' => [$filter]
         ];
         $query = $this->getSelectQuery(
             $detail_table,
-            Functions::getParams($data_query),
+            Functions::getParams($data_query)
         );
         $this->execute($query, $bindVar);
         [$detail] = $this->multiarray();
@@ -172,21 +172,21 @@ class Gis_model extends Database
                 "{$jembatan_table}.foto_bangunan_atas",
                 "{$jembatan_table}.foto_bangunan_bawah",
                 "{$jembatan_table}.foto_fondasi",
-                "{$jembatan_table}.foto_lantai",
+                "{$jembatan_table}.foto_lantai"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",
-                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan",
+                "LEFT JOIN {$panjang_table} ON {$panjang_table}.no_jalan = {$jalan_table}.no_jalan"
             ],
             'sort' => [
                 "{$jembatan_table}.no_jalan ASC",
-                "{$jembatan_table}.no_jembatan ASC",
+                "{$jembatan_table}.no_jembatan ASC"
             ],
-            'filter' => [$filter],
+            'filter' => [$filter]
         ];
         $query = $this->getSelectQuery(
             $jembatan_table,
-            Functions::getParams($data_query),
+            Functions::getParams($data_query)
         );
         $this->execute($query, $bindVar);
         [$jembatan, $jembatan_count] = $this->multiarray();
