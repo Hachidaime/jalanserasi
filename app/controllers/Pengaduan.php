@@ -133,18 +133,18 @@ class Pengaduan extends Controller
         if (!empty($_POST['token'])) {
             if ($_POST['token'] == $_POST['my_token']) {
                 $check_token = $this->model('Otentifikasi_model')->checkToken(
-                    $_POST['token'],
+                    $_POST['token']
                 );
                 if (!$check_token) {
                     Functions::setDataSession('alert', [
                         '<strong>Token</strong> expired.',
-                        'danger',
+                        'danger'
                     ]);
                 }
             } else {
                 Functions::setDataSession('alert', [
                     '<strong>Token</strong> tidak cocok',
-                    'danger',
+                    'danger'
                 ]);
             }
         }
@@ -195,12 +195,12 @@ class Pengaduan extends Controller
             if ($tag == 'Edit') {
                 Functions::setDataSession('alert', [
                     "{$tag} Pengaduan Berhasil.",
-                    'success',
+                    'success'
                 ]);
             } elseif ($tag == 'Add') {
                 Functions::setDataSession('alert', [
                     'Pengaduan Anda Berhasil.',
-                    'success',
+                    'success'
                 ]);
             }
 
@@ -210,7 +210,7 @@ class Pengaduan extends Controller
                     if (!empty($_POST[$row['name']])) {
                         FileHandler::MoveFromTemp(
                             "img/pengaduan/{$id}",
-                            $_POST[$row['name']],
+                            $_POST[$row['name']]
                         );
                     }
                 }
@@ -220,12 +220,12 @@ class Pengaduan extends Controller
             if ($tag == 'Edit') {
                 Functions::setDataSession('alert', [
                     "{$tag} Pengaduan Gagal.",
-                    'danger',
+                    'danger'
                 ]);
             } elseif ($tag == 'Add') {
                 Functions::setDataSession('alert', [
                     'Pengaduan Anda Gagal.',
-                    'danger',
+                    'danger'
                 ]);
             }
         }
@@ -246,14 +246,14 @@ class Pengaduan extends Controller
                 $this->dofetch('Layout/Table', [
                     'data' => Functions::defaultTableData(),
                     'thead' => $this->my_model->getPengaduanThead(),
-                    'url' => BASE_URL . '/Pengaduan/index/search',
-                ]),
+                    'url' => BASE_URL . '/Pengaduan/index/search'
+                ])
             ],
             'modal' => [
                 [
-                    'modalId' => 'myModal',
-                ],
-            ],
+                    'modalId' => 'myModal'
+                ]
+            ]
         ];
 
         // TODO: Menampilkan Template
@@ -276,7 +276,7 @@ class Pengaduan extends Controller
         foreach ($list as $idx => $row) {
             $row['tanggal'] = Functions::formatDatetime(
                 $row['insert_dt'],
-                'd/m/Y H:i',
+                'd/m/Y H:i'
             );
             $row['nama_jalan'] = $this->jalan_options[$row['no_jalan']];
             $row['koordinat'] = $row['latitude']
@@ -373,16 +373,16 @@ class Pengaduan extends Controller
                 $this->dofetch('Layout/Table', [
                     'data' => Functions::defaultTableData(),
                     'thead' => $this->model(
-                        'Pengaduan_model',
+                        'Pengaduan_model'
                     )->getResponThead(),
-                    'url' => BASE_URL . '/Pengaduan/index/respon',
-                ]),
+                    'url' => BASE_URL . '/Pengaduan/index/respon'
+                ])
             ],
             'modal' => [
                 [
-                    'modalId' => 'myModal',
-                ],
-            ],
+                    'modalId' => 'myModal'
+                ]
+            ]
         ];
 
         // TODO: Menampilkan Template
@@ -401,7 +401,7 @@ class Pengaduan extends Controller
         foreach ($list as $idx => $row) {
             $newRow['tanggal'] = Functions::formatDatetime(
                 $row['insert_dt'],
-                'd/m/Y H:i',
+                'd/m/Y H:i'
             );
             $newRow['nama'] = $row['nama'];
             $newRow['alamat'] = $row['alamat'];
