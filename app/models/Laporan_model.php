@@ -378,7 +378,7 @@ class Laporan_model extends Database
         Functions::setDataSession('thead', [
             '1',
             null,
-            'Jumlah Bentang',
+            'Jumlah<br>Bentang',
             'data-halign="center" data-rowspan="2"'
         ]);
         Functions::setDataSession('thead', [

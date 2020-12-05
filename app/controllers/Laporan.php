@@ -271,6 +271,7 @@ class Laporan extends Controller
     private function Dd2Search()
     {
         $kepemilikan_opt = $this->options('kepemilikan_opt'); // TODO: Get Kepemilikan Options
+        $kondisi_opt = $this->options('kondisi_opt'); // TODO: Get Kepemilikan Options
         $list = $this->my_model->getLaporanDd2();
         $data = $list;
 
@@ -291,6 +292,17 @@ class Laporan extends Controller
                 array_splice($data, $idx + $start, 0, [$field]);
                 $start++;
             }
+        }
+
+        foreach ($data as $idx => $row) {
+            $data[$idx] = array_merge($row, [
+                'kondisi_bangunan_atas' =>
+                    $kondisi_opt[$row['kondisi_bangunan_atas']],
+                'kondisi_bangunan_bawah' =>
+                    $kondisi_opt[$row['kondisi_bangunan_bawah']],
+                'kondisi_fondasi' => $kondisi_opt[$row['kondisi_fondasi']],
+                'kondisi_lantai' => $kondisi_opt[$row['kondisi_lantai']]
+            ]);
         }
 
         echo json_encode($data);
