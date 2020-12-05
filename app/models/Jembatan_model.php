@@ -138,6 +138,24 @@ class Jembatan_model extends Database
         ]);
         Functions::setDataSession('form', [
             'select',
+            'bms_bangunan_atas',
+            'bms_bangunan_atas',
+            'BMS Bangunan Atas',
+            [0, 1, 2, 3, 4, 5],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'textarea',
+            'keterangan_bangunan_atas',
+            'keterangan_bangunan_atas',
+            'Keterangan Bangunan Atas',
+            [],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'select',
             'kondisi_bangunan_atas',
             'kondisi_bangunan_atas',
             'Kondisi Bangunan Atas',
@@ -159,6 +177,24 @@ class Jembatan_model extends Database
             'tipe_bangunan_bawah',
             'tipe_bangunan_bawah',
             'Tipe Bangunan Bawah',
+            [],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'select',
+            'bms_bangunan_bawah',
+            'bms_bangunan_bawah',
+            'BMS Bangunan Bawah',
+            [0, 1, 2, 3, 4, 5],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'textarea',
+            'keterangan_bangunan_bawah',
+            'keterangan_bangunan_bawah',
+            'Keterangan Bangunan Bawah',
             [],
             false,
             false
@@ -192,6 +228,24 @@ class Jembatan_model extends Database
         ]);
         Functions::setDataSession('form', [
             'select',
+            'bms_fondasi',
+            'bms_fondasi',
+            'BMS Fondasi',
+            [0, 1, 2, 3, 4, 5],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'textarea',
+            'keterangan_fondasi',
+            'keterangan_fondasi',
+            'Keterangan Fondasi',
+            [],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'select',
             'kondisi_fondasi',
             'kondisi_fondasi',
             'Kondisi Fondasi',
@@ -213,6 +267,24 @@ class Jembatan_model extends Database
             'tipe_lantai',
             'tipe_lantai',
             'Tipe Lantai',
+            [],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'select',
+            'bms_lantai',
+            'bms_lantai',
+            'BMS Lantai',
+            [0, 1, 2, 3, 4, 5],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
+            'textarea',
+            'keterangan_lantai',
+            'keterangan_lantai',
+            'Keterangan Lantai',
             [],
             false,
             false

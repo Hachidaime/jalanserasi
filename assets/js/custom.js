@@ -517,11 +517,45 @@ $(document)
       } else $('#on_site_answer').text('Tidak')
     })
 
-    $('#bms').change(function () {
-      let ket = getBms(this.value)
-      console.log(ket)
-      $('#keterangan').val(ket)
-    })
+    $('#bms')
+      .change(function () {
+        let ket = getBms(this.value)
+
+        $('#keterangan').val(ket)
+      })
+      .change()
+
+    $('#bms_bangunan_atas')
+      .change(function () {
+        let ket = getBms(this.value)
+
+        $('#keterangan_bangunan_atas').val(ket)
+      })
+      .change()
+
+    $('#bms_bangunan_bawah')
+      .change(function () {
+        let ket = getBms(this.value)
+
+        $('#keterangan_bangunan_bawah').val(ket)
+      })
+      .change()
+
+    $('#bms_fondasi')
+      .change(function () {
+        let ket = getBms(this.value)
+
+        $('#keterangan_fondasi').val(ket)
+      })
+      .change()
+
+    $('#bms_lantai')
+      .change(function () {
+        let ket = getBms(this.value)
+
+        $('#keterangan_lantai').val(ket)
+      })
+      .change()
   })
   .ajaxStart(function () {
     // TODO: Menampilkan loading spinner
