@@ -516,6 +516,12 @@ $(document)
         })
       } else $('#on_site_answer').text('Tidak')
     })
+
+    $('#bms').change(function () {
+      let ket = getBms(this.value)
+      console.log(ket)
+      $('#keterangan').val(ket)
+    })
   })
   .ajaxStart(function () {
     // TODO: Menampilkan loading spinner

@@ -326,3 +326,29 @@ let setKondisi = (sdi) => {
     : myForm.find('#kondisi').val(0)
   myForm.find('#kondisi').selectpicker('refresh')
 }
+
+let getBms = (bms) => {
+  switch (bms) {
+    case '0':
+      return 'Jembatan baru tanpa rusak'
+      break
+    case '1':
+      return 'Kerusakan kecil'
+      break
+    case '2':
+      return 'Kerusakan yang memerlukan pemantauan atau pemeliharan diwaktu mendatang'
+      break
+    case '3':
+      return 'Kerusakan yang memerlukan tindakan secepatnya'
+      break
+    case '4':
+      return 'Kondisi kritis'
+      break
+    case '5':
+      return 'Elemen jembatan tidak berfungsi lagi'
+      break
+    default:
+      return ''
+      break
+  }
+}
