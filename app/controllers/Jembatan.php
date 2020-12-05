@@ -208,13 +208,23 @@ class Jembatan extends Controller
                 'success'
             ]);
             foreach ($form as $row) {
-                if ($row['type'] == 'img') {
-                    if (!empty($_POST[$row['name']])) {
-                        FileHandler::MoveFromTemp(
-                            "img/jembatan/{$id}",
-                            $_POST[$row['name']]
-                        );
-                    }
+                switch ($row['type']) {
+                    case 'pdf':
+                        if (!empty($_POST[$row['name']])) {
+                            FileHandler::MoveFromTemp(
+                                "pdf/jembatan/{$id}",
+                                $_POST[$row['name']]
+                            );
+                        }
+                        break;
+                    case 'img':
+                        if (!empty($_POST[$row['name']])) {
+                            FileHandler::MoveFromTemp(
+                                "img/jembatan/{$id}",
+                                $_POST[$row['name']]
+                            );
+                        }
+                        break;
                 }
             }
             $this->model('Data_model')->generateData();

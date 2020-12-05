@@ -128,6 +128,15 @@ class Jembatan_model extends Database
             false
         ]);
         Functions::setDataSession('form', [
+            'pdf',
+            'survei',
+            'survei',
+            'Upload Data Survei',
+            [],
+            false,
+            false
+        ]);
+        Functions::setDataSession('form', [
             'text',
             'tipe_bangunan_atas',
             'tipe_bangunan_atas',
