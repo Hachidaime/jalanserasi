@@ -6,7 +6,7 @@ class Jalan_model extends Database
         'detail' => 'tdetail_jalan',
         'koordinat' => 'tkoordinat_jalan',
         'foto' => 'tfoto_jalan',
-        'panjang' => 'tpanjang_jalan',
+        'panjang' => 'tpanjang_jalan'
     ];
 
     public function getTable(string $type = null)
@@ -22,7 +22,7 @@ class Jalan_model extends Database
             'panjang',
             'panjang',
             '',
-            [],
+            []
         ]);
         Functions::setDataSession('form', [
             'text',
@@ -31,7 +31,7 @@ class Jalan_model extends Database
             'Nomor Ruas Jalan',
             [],
             true,
-            true,
+            true
         ]);
         Functions::setDataSession('form', [
             'text',
@@ -40,22 +40,22 @@ class Jalan_model extends Database
             'Nama Ruas Jalan',
             [],
             true,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'select',
             'kepemilikan',
             'kepemilikan',
-            'Kepemilikan',
+            'Status',
             $this->options('kepemilikan_opt'),
             true,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'plain-text',
             'panjang_text',
             'pajang_text',
-            'Panjang (m)',
+            'Panjang (m)'
         ]);
         Functions::setDataSession('form', [
             'number',
@@ -64,7 +64,7 @@ class Jalan_model extends Database
             'Lebar Rata-Rata (m)',
             [],
             true,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'video',
@@ -73,7 +73,7 @@ class Jalan_model extends Database
             'Video',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'date',
@@ -82,7 +82,7 @@ class Jalan_model extends Database
             'Tanggal Video',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'pdf',
@@ -91,7 +91,7 @@ class Jalan_model extends Database
             'Dokumen Survei',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'date',
@@ -100,7 +100,7 @@ class Jalan_model extends Database
             'Tanggal Survei',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'kml',
@@ -110,7 +110,7 @@ class Jalan_model extends Database
             [],
             false,
             false,
-            'Format file yang diperbolehkan KML.',
+            'Format file yang diperbolehkan KML.'
         ]);
         Functions::setDataSession('form', [
             'number',
@@ -119,7 +119,7 @@ class Jalan_model extends Database
             'Segmentasi (m)',
             [],
             false,
-            false,
+            false
         ]);
 
         return Functions::getDataSession('form');
@@ -132,19 +132,19 @@ class Jalan_model extends Database
             '0',
             'no_jalan',
             'Nomor Ruas Jalan',
-            'data-halign="center" data-align="center" data-width="150"',
+            'data-halign="center" data-align="center" data-width="150"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'nama_jalan',
             'Nama Ruas Jalan',
-            'data-halign="center" data-align="left"',
+            'data-halign="center" data-align="left"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'kepemilikan',
-            'Status Kepemilikan',
-            'data-halign="center" data-align="left" data-width="200"',
+            'Status',
+            'data-halign="center" data-align="left" data-width="200"'
         ]);
         Functions::setDataSession('thead', ['0', 'operate']);
         return Functions::getDataSession('thead');
@@ -157,49 +157,49 @@ class Jalan_model extends Database
             '0',
             'latitude',
             'Latitude',
-            'data-halign="center" data-align="center" data-width="100"',
+            'data-halign="center" data-align="center" data-width="100"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'longitude',
             'Longitude',
-            'data-halign="center" data-align="center" data-width="100"',
+            'data-halign="center" data-align="center" data-width="100"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'lebar',
             'Lebar (m)',
-            'data-halign="center" data-align="right" data-width="100"',
+            'data-halign="center" data-align="right" data-width="100"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'perkerasan_text',
             'Perkerasan',
-            'data-halign="center" data-align="left" data-width="150"',
+            'data-halign="center" data-align="left" data-width="150"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'kondisi_text',
             'Kondisi',
-            'data-halign="center" data-align="left" data-width="150"',
+            'data-halign="center" data-align="left" data-width="150"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'foto_file',
             'Foto',
-            'data-halign="center" data-align="left" data-width="100"',
+            'data-halign="center" data-align="left" data-width="100"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'segment',
             'Segment',
-            'data-halign="center" data-align="center" data-width="100"',
+            'data-halign="center" data-align="center" data-width="100"'
         ]);
         Functions::setDataSession('thead', [
             '0',
             'iri',
             'SDI',
-            'data-halign="center" data-align="left" data-width="80"',
+            'data-halign="center" data-align="left" data-width="80"'
         ]);
         Functions::setDataSession('thead', ['0', 'coord']);
 
@@ -217,7 +217,7 @@ class Jalan_model extends Database
             'Latitude',
             [],
             true,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'text',
@@ -226,7 +226,7 @@ class Jalan_model extends Database
             'Longitude',
             [],
             true,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'number',
@@ -235,7 +235,7 @@ class Jalan_model extends Database
             'Lebar',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'select',
@@ -244,7 +244,7 @@ class Jalan_model extends Database
             'Perkerasan',
             $this->options('perkerasan_opt'),
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'select',
@@ -253,7 +253,7 @@ class Jalan_model extends Database
             'Kondisi',
             $this->options('kondisi_opt'),
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'number',
@@ -262,7 +262,7 @@ class Jalan_model extends Database
             'segment',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
             'img',
@@ -271,16 +271,16 @@ class Jalan_model extends Database
             'Foto',
             [],
             false,
-            false,
+            false
         ]);
         Functions::setDataSession('form', [
-            'text',
+            'number',
             'iri',
             'iri',
             'SDI',
             [],
             false,
-            false,
+            false
         ]);
         return Functions::getDataSession('form');
     }
@@ -294,7 +294,7 @@ class Jalan_model extends Database
             'Jarak (m)',
             [],
             true,
-            false,
+            false
         ]);
         return Functions::getDataSession('form');
     }
@@ -348,7 +348,7 @@ class Jalan_model extends Database
                     'id',
                     'upload_koordinat',
                     'perkerasan',
-                    'kondisi',
+                    'kondisi'
                 ])
             ) {
                 continue;
@@ -447,7 +447,7 @@ class Jalan_model extends Database
             $data[$n] = !empty($data[$n]) || $data[$n] != 0 ? $data[$n] : null;
             $detail[$row['name']] = in_array($row['name'], [
                 'latitude',
-                'longitude',
+                'longitude'
             ])
                 ? number_format($data[$n], 8)
                 : $data[$n];
@@ -469,7 +469,7 @@ class Jalan_model extends Database
     {
         [$awal, $final, $ori, $segmented] = Functions::getDataSession(
             'coordinates',
-            false,
+            false
         );
 
         // $ori = array_map("Functions::buildGeo", $ori);
@@ -492,7 +492,7 @@ class Jalan_model extends Database
             count($ori),
             count($segmented),
             Auth::User('id'),
-            $_SERVER['REMOTE_ADDR'],
+            $_SERVER['REMOTE_ADDR']
         ];
 
         // exit;
@@ -629,7 +629,7 @@ class Jalan_model extends Database
             'data',
             'update_dt',
             'login_id',
-            'remote_ip',
+            'remote_ip'
         ];
         foreach ($data as $segment => $x) {
             foreach ($x as $perkerasan => $y) {
@@ -668,7 +668,7 @@ class Jalan_model extends Database
                         $f,
                         'NOW()',
                         Auth::User('id'),
-                        $_SERVER['REMOTE_ADDR'],
+                        $_SERVER['REMOTE_ADDR']
                     );
                     foreach ($field as $k => $v) {
                         $value[$n][$v] = $val[$k];
@@ -683,7 +683,7 @@ class Jalan_model extends Database
             if (isset($latitude[$idx + 1]) && isset($longitude[$idx + 1])) {
                 array_push($row['koordinat'], [
                     $latitude[$idx + 1],
-                    $longitude[$idx + 1],
+                    $longitude[$idx + 1]
                 ]);
             }
 
@@ -724,7 +724,7 @@ class Jalan_model extends Database
             'foto',
             'update_dt',
             'login_id',
-            'remote_ip',
+            'remote_ip'
         ];
         $values = [];
         foreach ($foto as $row) {
@@ -736,7 +736,7 @@ class Jalan_model extends Database
                 $value,
                 'NOW()',
                 Auth::User('id'),
-                "'{$_SERVER['REMOTE_ADDR']}'",
+                "'{$_SERVER['REMOTE_ADDR']}'"
             );
 
             $values[] = '(' . implode(',', $value) . ')';
@@ -770,7 +770,7 @@ class Jalan_model extends Database
             'kondisi',
             'update_dt',
             'login_id',
-            'remote_ip',
+            'remote_ip'
         ]);
         $values = implode(',', [
             "'{$no_jalan}'",
@@ -778,7 +778,7 @@ class Jalan_model extends Database
             "'{$kondisi}'",
             'NOW()',
             Auth::User('id'),
-            "'{$_SERVER['REMOTE_ADDR']}'",
+            "'{$_SERVER['REMOTE_ADDR']}'"
         ]);
 
         $query = "INSERT INTO {$this->my_tables['panjang']} ({$field}) VALUES ({$values})";

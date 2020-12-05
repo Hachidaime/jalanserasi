@@ -301,6 +301,10 @@ $(document)
 
     $('#panjang_text').val($('#panjang').val())
 
+    $('#iri').keyup(function () {
+      setKondisi(this.value)
+    })
+
     $('#koordinatModal').on('hidden.bs.modal', function () {
       let modal = $('#koordinatModal')
       modal.find('.modal-body').html()

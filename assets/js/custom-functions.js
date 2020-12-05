@@ -7,17 +7,17 @@ let showImage = (param) => {
   /**
    * * Mendefinisikan variable
    */
-  let data = $(param);
-  let img_source = data.attr("src");
-  let judul = data.data("judul");
-  let tanggal = data.data("tanggal");
-  let lightboxModal = $("#lightboxModal");
+  let data = $(param)
+  let img_source = data.attr('src')
+  let judul = data.data('judul')
+  let tanggal = data.data('tanggal')
+  let lightboxModal = $('#lightboxModal')
 
   // TODO: Set variable
-  lightboxModal.find("img").attr("src", img_source);
-  lightboxModal.find("#data-judul").text(judul);
-  lightboxModal.find("#data-tanggal").text(tanggal);
-};
+  lightboxModal.find('img').attr('src', img_source)
+  lightboxModal.find('#data-judul').text(judul)
+  lightboxModal.find('#data-tanggal').text(tanggal)
+}
 
 /**
  * * Menampilkan Alert
@@ -29,44 +29,44 @@ let showImage = (param) => {
  * ? Pesan Alert
  */
 let makeAlert = (data) => {
-  let totalAlert = Object.keys(data).length;
+  let totalAlert = Object.keys(data).length
 
   if (totalAlert > 1) {
-    let queue = [];
-    let steps = [];
-    let n = 1;
+    let queue = []
+    let steps = []
+    let n = 1
     $.each(data, (type, message) => {
-      let icon = type.replace("danger", "error");
-      let msg = {};
-      msg.icon = icon;
-      msg.html = message.join("<br>");
-      msg.customClass = { content: `text-${type}` };
+      let icon = type.replace('danger', 'error')
+      let msg = {}
+      msg.icon = icon
+      msg.html = message.join('<br>')
+      msg.customClass = { content: `text-${type}` }
 
-      queue.push(msg);
-      steps.push(n);
-      n++;
-    });
+      queue.push(msg)
+      steps.push(n)
+      n++
+    })
 
     Swal.mixin({
-      confirmButtonText: "Next &rarr;",
+      confirmButtonText: 'Next &rarr;',
       showCancelButton: true,
       progressSteps: steps,
-    }).queue(queue);
+    }).queue(queue)
   } else {
     $.each(data, (type, message) => {
-      let icon = type.replace("danger", "error");
+      let icon = type.replace('danger', 'error')
       Swal.fire({
-        position: "center",
+        position: 'center',
         icon: icon,
-        html: message.join("<br>"),
+        html: message.join('<br>'),
         customClass: {
           content: `text-${type}`,
         },
         showConfirmButton: false,
-      });
-    });
+      })
+    })
   }
-};
+}
 
 /**
  * * Snackbar
@@ -77,16 +77,16 @@ let snackbar = (param = null) => {
   /**
    * * Mendefinisikan variable
    */
-  let snack = $(".snackbar");
+  let snack = $('.snackbar')
 
   // TODO: Menampilkan Snackbar
-  snack.fadeIn().html(param);
+  snack.fadeIn().html(param)
 
   // TODO: Menyembunyikan Snackbar
   setTimeout(() => {
-    snack.hide().html("");
-  }, 3000);
-};
+    snack.hide().html('')
+  }, 3000)
+}
 
 /**
  * * Gallery Pagination
@@ -94,40 +94,40 @@ let snackbar = (param = null) => {
  * ? page
  */
 let loadGallery = (page = 1) => {
-  let url = `${base_url}/Gallery/index/search`;
-  let params = {};
-  params["page"] = page;
+  let url = `${base_url}/Gallery/index/search`
+  let params = {}
+  params['page'] = page
 
   $.post(
     url,
     $.param(params),
     (data) => {
-      $("#gallery-item").html(data.item);
+      $('#gallery-item').html(data.item)
     },
-    "json"
-  );
-};
+    'json'
+  )
+}
 
 let scrollFunction = () => {
-  let title_wrapper = $(".title-wrapper");
-  let header_height = $("#header-img").height();
+  let title_wrapper = $('.title-wrapper')
+  let header_height = $('#header-img').height()
   if (
     document.body.scrollTop > header_height ||
     document.documentElement.scrollTop > header_height
   ) {
-    title_wrapper.removeClass("h1").addClass("h3");
+    title_wrapper.removeClass('h1').addClass('h3')
     title_wrapper
       .parent()
-      .addClass("bg-primary text-light")
-      .removeClass("bg-light");
+      .addClass('bg-primary text-light')
+      .removeClass('bg-light')
   } else {
-    title_wrapper.removeClass("h3").addClass("h1");
+    title_wrapper.removeClass('h3').addClass('h1')
     title_wrapper
       .parent()
-      .removeClass("bg-primary text-light")
-      .addClass("bg-light");
+      .removeClass('bg-primary text-light')
+      .addClass('bg-light')
   }
-};
+}
 
 /**
  * * Submit Login Form
@@ -136,8 +136,8 @@ let login = () => {
   /**
    * * Mendefinisikan variable
    */
-  let params = $("#loginForm").serialize();
-  let url = `${base_url}/Session/login`;
+  let params = $('#loginForm').serialize()
+  let url = `${base_url}/Session/login`
 
   // TODO: Ajax Request
   $.post(
@@ -145,19 +145,19 @@ let login = () => {
     params,
     (data) => {
       // TODO: Menampilkan Alert
-      makeAlert(data);
+      makeAlert(data)
 
       // TODO: Cek login success
-      if (Object.keys(data)[0] == "success") {
+      if (Object.keys(data)[0] == 'success') {
         // TODO: Redirect ke halaman Admin
         setTimeout(() => {
-          window.location.href = `${base_url}/Admin`;
-        }, 3000);
+          window.location.href = `${base_url}/Admin`
+        }, 3000)
       }
     },
-    "json"
-  );
-};
+    'json'
+  )
+}
 
 /**
  * * Log Out
@@ -166,26 +166,26 @@ let logout = () => {
   /**
    * * Mendefinisikan variable
    */
-  let url = `${base_url}/Session/logout`;
+  let url = `${base_url}/Session/logout`
 
   // TODO: Ajax Request
   $.post(
     url,
     (data) => {
       // TODO: Menampilkan Alert
-      makeAlert(data);
+      makeAlert(data)
 
       // TODO: Cek logout success
-      if (Object.keys(data)[0] == "success") {
+      if (Object.keys(data)[0] == 'success') {
         // TODO: Redirect ke halaman Log In
         setTimeout(() => {
-          window.location.href = server_base;
-        }, 3000);
+          window.location.href = server_base
+        }, 3000)
       }
     },
-    "json"
-  );
-};
+    'json'
+  )
+}
 
 /**
  * * Set Active System
@@ -193,95 +193,95 @@ let logout = () => {
  * ? system_id
  */
 let setMenu = (id) => {
-  let params = "id=" + id;
-  let url = `${base_url}/Session/setMenu`;
+  let params = 'id=' + id
+  let url = `${base_url}/Session/setMenu`
   $.post(
     url,
     params,
     (data) => {
-      if (data == 1) window.location.href = base_url;
+      if (data == 1) window.location.href = base_url
     },
-    "json"
-  );
-};
+    'json'
+  )
+}
 
 let clearKoordinatModal = () => {
-  let myForm = $(".koordinatForm");
-  myForm[0].reset();
-  myForm.find(".selectpicker").val(0);
-  myForm.find(".selectpicker").selectpicker("refresh");
-  myForm.find("input").val("");
+  let myForm = $('.koordinatForm')
+  myForm[0].reset()
+  myForm.find('.selectpicker').val(0)
+  myForm.find('.selectpicker').selectpicker('refresh')
+  myForm.find('input').val('')
 
-  let preview = myForm.find("#previewfoto");
-  preview.hide();
-  preview.find("a").attr("href", "");
-  preview.find("img").attr("src", "");
+  let preview = myForm.find('#previewfoto')
+  preview.hide()
+  preview.find('a').attr('href', '')
+  preview.find('img').attr('src', '')
 
-  let file_action = myForm.find("#file-actionfoto");
-  file_action.hide();
-  file_action.find("span.filename").text("");
-  file_action.find("img").attr("href", "");
-};
+  let file_action = myForm.find('#file-actionfoto')
+  file_action.hide()
+  file_action.find('span.filename').text('')
+  file_action.find('img').attr('href', '')
+}
 
 let clearAddKoordinatModal = () => {
-  let myForm = $(".addKoordinatForm");
-  myForm[0].reset();
-};
+  let myForm = $('.addKoordinatForm')
+  myForm[0].reset()
+}
 
-let width = () => $(window).width();
+let width = () => $(window).width()
 
-let openNav = () => $("#mySidepanel").show();
+let openNav = () => $('#mySidepanel').show()
 
-let closeNav = () => $("#mySidepanel").hide();
+let closeNav = () => $('#mySidepanel').hide()
 
 let getAJAX = (url) => {
-  var request = new XMLHttpRequest();
-  request.open("GET", url, false);
-  request.send(null);
-  return request.responseText;
-};
+  var request = new XMLHttpRequest()
+  request.open('GET', url, false)
+  request.send(null)
+  return request.responseText
+}
 
 let getPanjangJalan = () => {
-  let url = $table.bootstrapTable("getOptions").url;
-  url = url.replace("search", "detail");
-  let coordinates = JSON.parse(getAJAX(url));
+  let url = $table.bootstrapTable('getOptions').url
+  url = url.replace('search', 'detail')
+  let coordinates = JSON.parse(getAJAX(url))
 
-  let perkerasan = [0, 0, 0, 0, 0];
-  let kondisi = [0, 0, 0, 0, 0];
+  let perkerasan = [0, 0, 0, 0, 0]
+  let kondisi = [0, 0, 0, 0, 0]
 
   for (const [type, value] of Object.entries(coordinates)) {
     for (const [val, row] of Object.entries(value)) {
       for (const [idx, points] of Object.entries(row)) {
         switch (type) {
-          case "perkerasan":
-            perkerasan[val] += countLength(makePath(points));
-            break;
-          case "kondisi":
-            kondisi[val] += countLength(makePath(points));
-            break;
+          case 'perkerasan':
+            perkerasan[val] += countLength(makePath(points))
+            break
+          case 'kondisi':
+            kondisi[val] += countLength(makePath(points))
+            break
         }
       }
     }
   }
 
-  let result = [];
-  result["perkerasan"] = perkerasan;
-  result["kondisi"] = kondisi;
-  result = Object.assign({}, result);
-  return result;
-};
+  let result = []
+  result['perkerasan'] = perkerasan
+  result['kondisi'] = kondisi
+  result = Object.assign({}, result)
+  return result
+}
 
 let getTime = () => {
-  let d = new Date();
-  return d.getTime();
-};
+  let d = new Date()
+  return d.getTime()
+}
 
 let downloadXlsx = () => {
-  var FormatsTable = document.getElementById("laporan-table");
+  var FormatsTable = document.getElementById('laporan-table')
   $(FormatsTable).tableExport({
-    formats: ["xlsx"],
-  });
-};
+    formats: ['xlsx'],
+  })
+}
 
 const userPosition = ({ onSuccess, onError = () => {} }) => {
   // Omitted for brevity
@@ -289,25 +289,40 @@ const userPosition = ({ onSuccess, onError = () => {} }) => {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0,
-  });
-};
+  })
+}
 
 const getPositionErrorMessage = (code) => {
-  let msg;
+  let msg
   switch (code) {
     case 1:
-      msg = "Permission denied.";
-      break;
+      msg = 'Permission denied.'
+      break
     case 2:
-      msg = "Position unavailable.";
-      break;
+      msg = 'Position unavailable.'
+      break
     case 3:
-      msg = "Timeout reached.";
-      break;
+      msg = 'Timeout reached.'
+      break
   }
 
-  msg += "\nPlease check your browser location permission.";
-  msg += "\nTry again later.";
+  msg += '\nPlease check your browser location permission.'
+  msg += '\nTry again later.'
 
-  return msg;
-};
+  return msg
+}
+
+let setKondisi = (sdi) => {
+  let myForm = $('.koordinatForm')
+
+  sdi < 50
+    ? myForm.find('#kondisi').val(1)
+    : sdi >= 50 && sdi <= 100
+    ? myForm.find('#kondisi').val(2)
+    : sdi >= 101 && sdi <= 150
+    ? myForm.find('#kondisi').val(3)
+    : sdi > 150
+    ? myForm.find('#kondisi').val(4)
+    : myForm.find('#kondisi').val(0)
+  myForm.find('#kondisi').selectpicker('refresh')
+}
