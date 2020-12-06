@@ -389,7 +389,9 @@ let setDataJembatanModal = (row, modal) => {
   rowSurvei = document.createElement('tr')
   rowSurvei.innerHTML = /*html*/ `
     <td>Dokumen Survei</td>
-    <td><a href="${server_base}/upload/pdf/jembatan/${row.id}/${row.survei}" target="_blank">${row.survei}</a></td>
+    <td><a href="${server_base}/upload/pdf/jembatan/${row.id}/${
+    row.survei
+  }" target="_blank">${row.survei ?? '-'}</a></td>
   `
 
   table.append(
@@ -426,32 +428,32 @@ let setDataJembatanModal = (row, modal) => {
 
   let menus = [
     {
-      tipe: row.tipe_bangunan_atas,
-      bms: row.bms_bangunan_atas,
-      keterangan: row.keterangan_bangunan_atas,
-      kondisi: row.kondisi_bangunan_atas,
-      foto: row.foto_bangunan_atas,
+      tipe: row.tipe_bangunan_atas ?? '-',
+      bms: row.bms_bangunan_atas ?? '-',
+      keterangan: row.keterangan_bangunan_atas ?? '-',
+      kondisi: row.kondisi_bangunan_atas ?? '-',
+      foto: row.foto_bangunan_atas ?? '-',
     },
     {
-      tipe: row.tipe_bangunan_bawah,
-      bms: row.bms_bangunan_bawah,
-      keterangan: row.keterangan_bangunan_bawah,
-      kondisi: row.kondisi_bangunan_bawah,
-      foto: row.foto_bangunan_bawah,
+      tipe: row.tipe_bangunan_bawah ?? '-',
+      bms: row.bms_bangunan_bawah ?? '-',
+      keterangan: row.keterangan_bangunan_bawah ?? '-',
+      kondisi: row.kondisi_bangunan_bawah ?? '-',
+      foto: row.foto_bangunan_bawah ?? '-',
     },
     {
-      tipe: row.tipe_fondasi,
-      bms: row.bms_fondasi,
-      keterangan: row.keterangan_fondasi,
-      kondisi: row.kondisi_fondasi,
-      foto: row.foto_fondasi,
+      tipe: row.tipe_fondasi ?? '-',
+      bms: row.bms_fondasi ?? '-',
+      keterangan: row.keterangan_fondasi ?? '-',
+      kondisi: row.kondisi_fondasi ?? '-',
+      foto: row.foto_fondasi ?? '-',
     },
     {
-      tipe: row.tipe_lantai,
-      bms: row.bms_lantai,
-      keterangan: row.keterangan_lantai,
-      kondisi: row.kondisi_lantai,
-      foto: row.foto_lantai,
+      tipe: row.tipe_lantai ?? '-',
+      bms: row.bms_lantai ?? '-',
+      keterangan: row.keterangan_lantai ?? '-',
+      kondisi: row.kondisi_lantai ?? '-',
+      foto: row.foto_lantai ?? '-',
     },
   ]
 
