@@ -389,7 +389,7 @@ let setDataJembatanModal = (row, modal) => {
   rowSurvei = document.createElement('tr')
   rowSurvei.innerHTML = /*html*/ `
     <td>Dokumen Survei</td>
-    <td>${row.survei}</td>
+    <td><a href="${server_base}/upload/pdf/jembatan/${row.id}/${row.survei}" target="_blank">${row.survei}</a></td>
   `
 
   table.append(
