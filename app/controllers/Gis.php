@@ -153,6 +153,19 @@ class Gis extends Controller
                 $kondisi[$idx] = $row;
             }
 
+            $kondisi_opt = $this->options('kondisi_opt');
+            foreach ($jembatan as $idx => $row) {
+                $row = array_merge($row, [
+                    'kondisi_bangunan_atas' =>
+                        $kondisi_opt[$row['kondisi_bangunan_atas']],
+                    'kondisi_bangunan_bawah' =>
+                        $kondisi_opt[$row['kondisi_bangunan_bawah']],
+                    'kondisi_fondasi' => $kondisi_opt[$row['kondisi_fondasi']],
+                    'kondisi_lantai' => $kondisi_opt[$row['kondisi_lantai']]
+                ]);
+                $jembatan[$idx] = $row;
+            }
+
             $position = [
                 'koordinat' => $this->GetGeo()
             ];

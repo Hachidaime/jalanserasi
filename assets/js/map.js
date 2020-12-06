@@ -476,53 +476,55 @@ let borderStyle = (features) => {
 let jalandir = `${server_base}/upload/img/jalan/`
 
 let getFeatureInfo = (param, jenis) => {
-  let jml_jembatan = param.feature.getProperty('jml_jembatan')
-  jml_jembatan = jml_jembatan != undefined ? jml_jembatan : 0
+  if (jenis == 'jembatan') {
+    return jembatanInfo(param)
+  } else {
+    let jml_jembatan = param.feature.getProperty('jml_jembatan')
+    jml_jembatan = jml_jembatan != undefined ? jml_jembatan : 0
 
-  let html = [
-    /*html*/ `<div style="width:600px;">`,
-    /*html*/ `<table class="table table-bordered table-striped table-sm" width="100%">`,
-  ]
+    let html = [
+      /*html*/ `<div style="width:600px;">`,
+      /*html*/ `<table class="table table-bordered table-striped table-sm" width="100%">`,
+    ]
 
-  switch (jenis) {
-    case 'jalan':
-      html = html.concat(jalanInfo(param))
-      break
-    case 'segment':
-      html = html.concat(jalanInfo(param), segmentInfo(param))
-      break
-    case 'awal':
-      html = html.concat(jalanInfo(param), ujungInfo(param))
-      break
-    case 'akhir':
-      html = html.concat(jalanInfo(param), ujungInfo(param))
-      break
-    case 'jembatan':
-      html = html.concat(jalanInfo(param), jembatanInfo(param))
-      break
-    case 'saluran':
-      type = 'Saluran Air'
-      break
-    case 'gorong':
-      type = 'Gorong-gorong'
-      break
-    case 'position':
-      html = html.concat(positionInfo())
-      break
+    switch (jenis) {
+      case 'jalan':
+        html = html.concat(jalanInfo(param))
+        break
+      case 'segment':
+        html = html.concat(jalanInfo(param), segmentInfo(param))
+        break
+      case 'awal':
+        html = html.concat(jalanInfo(param), ujungInfo(param))
+        break
+      case 'akhir':
+        html = html.concat(jalanInfo(param), ujungInfo(param))
+        break
+
+      case 'saluran':
+        type = 'Saluran Air'
+        break
+      case 'gorong':
+        type = 'Gorong-gorong'
+        break
+      case 'position':
+        html = html.concat(positionInfo())
+        break
+    }
+
+    html = html.concat([
+      /*html*/ `
+      <tr>
+        <td>JML JEMBATAN</td>
+        <td colspan="3">${jml_jembatan}</td>
+      </tr>
+      `,
+      /*html*/ `</table>`,
+      /*html*/ `</div>`,
+    ])
+    // console.log(html);
+    return html.join('')
   }
-
-  html = html.concat([
-    /*html*/ `
-    <tr>
-      <td>JML JEMBATAN</td>
-      <td colspan="3">${jml_jembatan}</td>
-    </tr>
-    `,
-    /*html*/ `</table>`,
-    /*html*/ `</div>`,
-  ])
-  // console.log(html);
-  return html.join('')
 }
 
 let jalanInfo = (param) => {
@@ -657,24 +659,218 @@ let ujungInfo = (param) => {
 }
 
 let jembatanInfo = (param) => {
-  let no_point = param.feature.getProperty('no_point')
-  let nama_point = param.feature.getProperty('nama_point')
-  let foto = param.feature.getProperty('foto')
+  let row = {
+    id: param.feature.getProperty('id') ?? '-',
+    no_jembatan: param.feature.getProperty('no_point') ?? '-',
+    nama_jembatan: param.feature.getProperty('nama_point') ?? '-',
+    nama_jalan: param.feature.getProperty('nama_jalan') ?? '-',
+    nama_sungai: param.feature.getProperty('nama_sungai') ?? '-',
+    panjang: param.feature.getProperty('panjang') ?? '-',
+    lebar: param.feature.getProperty('lebar') ?? '-',
+    bentang: param.feature.getProperty('bentang') ?? '-',
+    latitude: param.feature.getProperty('latitude') ?? '-',
+    longitude: param.feature.getProperty('longitude') ?? '-',
+    survei: param.feature.getProperty('survei') ?? '-',
+    bms: param.feature.getProperty('bms') ?? '-',
+    keterangan: param.feature.getProperty('keterangan') ?? '-',
+    tipe_bangunan_atas: param.feature.getProperty('tipe_bangunan_atas') ?? '-',
+    bms_bangunan_atas: param.feature.getProperty('bms_bangunan_atas') ?? '-',
+    keterangan_bangunan_atas:
+      param.feature.getProperty('keterangan_bangunan_atas') ?? '-',
+    kondisi_bangunan_atas:
+      param.feature.getProperty('kondisi_bangunan_atas') ?? '-',
+    foto_bangunan_atas: param.feature.getProperty('foto_bangunan_atas') ?? '-',
+    tipe_bangunan_bawah:
+      param.feature.getProperty('tipe_bangunan_bawah') ?? '-',
+    bms_bangunan_bawah: param.feature.getProperty('bms_bangunan_bawah') ?? '-',
+    keterangan_bangunan_bawah:
+      param.feature.getProperty('keterangan_bangunan_bawah') ?? '-',
+    kondisi_bangunan_bawah:
+      param.feature.getProperty('kondisi_bangunan_bawah') ?? '-',
+    foto_bangunan_bawah:
+      param.feature.getProperty('foto_bangunan_bawah') ?? '-',
+    tipe_fondasi: param.feature.getProperty('tipe_fondasi') ?? '-',
+    bms_fondasi: param.feature.getProperty('bms_fondasi') ?? '-',
+    keterangan_fondasi: param.feature.getProperty('keterangan_fondasi') ?? '-',
+    kondisi_fondasi: param.feature.getProperty('kondisi_fondasi') ?? '-',
+    foto_fondasi: param.feature.getProperty('foto_fondasi') ?? '-',
+    tipe_lantai: param.feature.getProperty('tipe_lantai') ?? '-',
+    bms_lantai: param.feature.getProperty('bms_lantai') ?? '-',
+    keterangan_lantai: param.feature.getProperty('keterangan_lantai') ?? '-',
+    kondisi_lantai: param.feature.getProperty('kondisi_lantai') ?? '-',
+    foto_lantai: param.feature.getProperty('foto_lantai') ?? '-',
+  }
 
-  return [
-    /*html*/ `
-      <tr>
-          <td>NO. JEMBATAN</td>
-          <td colspan="3">${no_point}</td>
-      </tr>
-      `,
-    /*html*/ `
-      <tr>
-          <td>NAMA JEMBATAN</td>
-          <td colspan="3">${nama_point}</td>
-      </tr>
-      `,
+  let table, rowNoJembatan, rowNamaJembatan, rowUkuran, rowKoordinat, rowSurvei
+
+  table = document.createElement('table')
+  table.setAttribute('width', '100%')
+  table.id = 'detail-content'
+  table.classList.add('table', 'table-bordered', 'table-striped', 'table-sm')
+
+  rowNoJembatan = document.createElement('tr')
+  rowNoJembatan.innerHTML = /*html*/ `
+    <td width="25%">Nomor Jembatan</td>
+    <td width="*">${row.no_jembatan}</td>
+  `
+
+  rowNamaJembatan = document.createElement('tr')
+  rowNamaJembatan.innerHTML = /*html*/ `
+    <td>Nama Jembatan</td>
+    <td>${row.nama_jembatan}</td>
+  `
+  rowUkuran = document.createElement('tr')
+  rowUkuran.innerHTML = /*html*/ `
+    <td>Ukuran</td>
+    <td>Panjang: ${row.panjang} m&nbsp;&nbsp;&nbsp;Lebar: ${row.lebar} m&nbsp;&nbsp;&nbsp;Jml Bentang: ${row.bentang}</td>
+  `
+  rowKoordinat = document.createElement('tr')
+  rowKoordinat.innerHTML = /*html*/ `
+    <td>Koordinat</td>
+    <td>Lat: ${row.latitude}&nbsp;&nbsp;&nbsp;Long: ${row.longitude}</td>
+  `
+  rowSurvei = document.createElement('tr')
+  rowSurvei.innerHTML = /*html*/ `
+    <td>Dokumen Survei</td>
+    <td><a href="${server_base}/upload/pdf/jembatan/${row.id}/${
+    row.survei
+  }" target="_blank">${row.survei ?? '-'}</a></td>
+  `
+
+  table.append(
+    rowNoJembatan,
+    rowNamaJembatan,
+    rowUkuran,
+    rowKoordinat,
+    rowSurvei
+  )
+
+  let tab, tabNav, tabContent
+
+  tab = document.createElement('div')
+
+  tabNav = document.createElement('ul')
+  tabNav.classList.add('nav', 'nav-tabs')
+  tabNav.innerHTML = /*html*/ `
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#menu1">Bangunan Atas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2">Bangunan Bawah</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu3">Fondasi</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu4">Lantai</a>
+    </li>
+  `
+
+  tabContent = document.createElement('div')
+  tabContent.classList.add('tab-content', 'border', 'border-top-0')
+
+  let menus = [
+    {
+      tipe: row.tipe_bangunan_atas ?? '-',
+      bms: row.bms_bangunan_atas ?? '-',
+      keterangan: row.keterangan_bangunan_atas ?? '-',
+      kondisi: row.kondisi_bangunan_atas ?? '-',
+      foto: row.foto_bangunan_atas ?? '-',
+    },
+    {
+      tipe: row.tipe_bangunan_bawah ?? '-',
+      bms: row.bms_bangunan_bawah ?? '-',
+      keterangan: row.keterangan_bangunan_bawah ?? '-',
+      kondisi: row.kondisi_bangunan_bawah ?? '-',
+      foto: row.foto_bangunan_bawah ?? '-',
+    },
+    {
+      tipe: row.tipe_fondasi ?? '-',
+      bms: row.bms_fondasi ?? '-',
+      keterangan: row.keterangan_fondasi ?? '-',
+      kondisi: row.kondisi_fondasi ?? '-',
+      foto: row.foto_fondasi ?? '-',
+    },
+    {
+      tipe: row.tipe_lantai ?? '-',
+      bms: row.bms_lantai ?? '-',
+      keterangan: row.keterangan_lantai ?? '-',
+      kondisi: row.kondisi_lantai ?? '-',
+      foto: row.foto_lantai ?? '-',
+    },
   ]
+
+  let label = {
+    tipe: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Tipe</div>
+        <div>:</div>
+      </div>
+    `,
+    bms: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>BMS</div>
+        <div>:</div>
+      </div>
+    `,
+    keterangan: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Keterangan</div>
+        <div>:</div>
+      </div>
+    `,
+    kondisi: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Kondisi</div>
+        <div>:</div>
+      </div>
+    `,
+  }
+
+  menus.forEach((value, idx) => {
+    let menu
+    menu = document.createElement('div')
+    menu.classList.add('container', 'tab-pane', 'p-3')
+    menu.id = `menu${idx + 1}`
+
+    if (idx == 0) menu.classList.add('active')
+    else menu.classList.add('fade')
+
+    let menuRow
+    for (const key in value) {
+      if (key == 'foto') continue
+
+      menuRow = document.createElement('div')
+      menuRow.classList.add('row')
+      menuRow.innerHTML = /*html*/ `
+        ${label[key]}
+        <div class="col-9">${value[key]}</div>
+      `
+
+      menu.append(menuRow)
+    }
+
+    menuRow = document.createElement('div')
+    menuRow.classList.add('row')
+    menuRow.innerHTML = /*html*/ `
+      <div class="col-12">
+        <div>Foto:</div>
+        <div>
+          <img src="${server_base}/upload/img/jembatan/${row.id}/${value.foto}" style="width: 600px" />
+        </div>
+      </div>
+    `
+    menu.append(menuRow)
+
+    tabContent.append(menu)
+  })
+
+  tab.append(tabNav, tabContent)
+
+  let content = document.createElement('div')
+  content.append(table, tab)
+
+  return content
 }
 
 let positionInfo = () => {

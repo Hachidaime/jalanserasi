@@ -815,11 +815,17 @@ class Functions
             case '2':
                 $type = 'Point';
                 $properties = array_merge($properties, [
+                    'id' => $data['id'],
                     'no_point' => $data['no_point'],
                     'nama_point' => $data['nama_point'],
                     'segment' => $data['segment'],
                     'row' => $data['row'],
                     'foto' => $data['foto'],
+                    'panjang' => $data['panjang'],
+                    'lebar' => $data['lebar'],
+                    'bentang' => $data['bentang'],
+                    'latitude' => $data['latitude'],
+                    'longitude' => $data['longitude'],
                     'nama_sungai' => $data['nama_sungai'],
                     'bms' => $data['bms'],
                     'keterangan' => $data['keterangan'],
