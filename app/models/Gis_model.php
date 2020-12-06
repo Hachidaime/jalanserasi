@@ -172,7 +172,15 @@ class Gis_model extends Database
                 "{$jembatan_table}.foto_bangunan_atas",
                 "{$jembatan_table}.foto_bangunan_bawah",
                 "{$jembatan_table}.foto_fondasi",
-                "{$jembatan_table}.foto_lantai"
+                "{$jembatan_table}.foto_lantai",
+                "{$jembatan_table}.bms_bangunan_atas",
+                "{$jembatan_table}.bms_bangunan_bawah",
+                "{$jembatan_table}.bms_fondasi",
+                "{$jembatan_table}.bms_lantai",
+                "{$jembatan_table}.keterangan_bangunan_atas",
+                "{$jembatan_table}.keterangan_bangunan_bawah",
+                "{$jembatan_table}.keterangan_fondasi",
+                "{$jembatan_table}.keterangan_lantai"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",

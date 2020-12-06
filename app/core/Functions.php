@@ -819,7 +819,33 @@ class Functions
                     'nama_point' => $data['nama_point'],
                     'segment' => $data['segment'],
                     'row' => $data['row'],
-                    'foto' => $data['foto']
+                    'foto' => $data['foto'],
+                    'nama_sungai' => $data['nama_sungai'],
+                    'bms' => $data['bms'],
+                    'keterangan' => $data['keterangan'],
+                    'survei' => $data['survei'],
+                    'tipe_bangunan_atas' => $data['tipe_bangunan_atas'],
+                    'kondisi_bangunan_atas' => $data['kondisi_bangunan_atas'],
+                    'foto_bangunan_atas' => $data['foto_bangunan_atas'],
+                    'bms_bangunan_atas' => $data['bms_bangunan_atas'],
+                    'keterangan_bangunan_atas' =>
+                        $data['keterangan_bangunan_atas'],
+                    'tipe_bangunan_bawah' => $data['tipe_bangunan_bawah'],
+                    'kondisi_bangunan_bawah' => $data['kondisi_bangunan_bawah'],
+                    'foto_bangunan_bawah' => $data['foto_bangunan_bawah'],
+                    'bms_bangunan_bawah' => $data['bms_bangunan_bawah'],
+                    'keterangan_bangunan_bawah' =>
+                        $data['keterangan_bangunan_bawah'],
+                    'tipe_fondasi' => $data['tipe_fondasi'],
+                    'kondisi_fondasi' => $data['kondisi_fondasi'],
+                    'foto_fondasi' => $data['foto_fondasi'],
+                    'bms_fondasi' => $data['bms_fondasi'],
+                    'keterangan_fondasi' => $data['keterangan_fondasi'],
+                    'tipe_lantai' => $data['tipe_lantai'],
+                    'kondisi_lantai' => $data['kondisi_lantai'],
+                    'foto_lantai' => $data['foto_lantai'],
+                    'bms_lantai' => $data['bms_lantai'],
+                    'keterangan_lantai' => $data['keterangan_lantai']
                 ]);
                 break;
         }
