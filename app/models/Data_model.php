@@ -98,6 +98,7 @@ class Data_model extends Database
                 "{$jalan_table}.lebar_rata",
                 "{$panjang_table}.perkerasan as perkerasan_panjang",
                 "{$panjang_table}.kondisi as kondisi_panjang",
+                "{$jembatan_table}.id",
                 "{$jembatan_table}.no_jembatan",
                 "{$jembatan_table}.nama_jembatan",
                 "{$jembatan_table}.latitude",
@@ -105,6 +106,8 @@ class Data_model extends Database
                 "{$jembatan_table}.lebar",
                 "{$jembatan_table}.panjang",
                 "{$jembatan_table}.bentang",
+                "{$jembatan_table}.bms",
+                "{$jembatan_table}.survei",
                 "{$jembatan_table}.keterangan",
                 "{$jembatan_table}.tipe_bangunan_atas",
                 "{$jembatan_table}.tipe_bangunan_bawah",
@@ -117,7 +120,15 @@ class Data_model extends Database
                 "{$jembatan_table}.foto_bangunan_atas",
                 "{$jembatan_table}.foto_bangunan_bawah",
                 "{$jembatan_table}.foto_fondasi",
-                "{$jembatan_table}.foto_lantai"
+                "{$jembatan_table}.foto_lantai",
+                "{$jembatan_table}.bms_bangunan_atas",
+                "{$jembatan_table}.bms_bangunan_bawah",
+                "{$jembatan_table}.bms_fondasi",
+                "{$jembatan_table}.bms_lantai",
+                "{$jembatan_table}.keterangan_bangunan_atas",
+                "{$jembatan_table}.keterangan_bangunan_bawah",
+                "{$jembatan_table}.keterangan_fondasi",
+                "{$jembatan_table}.keterangan_lantai"
             ],
             'join' => [
                 "LEFT JOIN {$jalan_table} ON {$jalan_table}.no_jalan = {$jembatan_table}.no_jalan",
