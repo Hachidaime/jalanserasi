@@ -281,4 +281,75 @@ class Jembatan extends Controller
         // TODO: Mengembalikan hasil proses
         return Functions::getDataSession('alert');
     }
+
+    public function DataJembatan(string $param1 = null, string $param2 = null)
+    {
+        $this->my_model = $this->model('DataJembatan_model');
+        $this->jembatan_model = $this->model('Jembatan_model');
+        $this->jalan_model = $this->model('Jalan_model');
+
+        switch ($param1) {
+            case 'search':
+                $this->DataSearch();
+                break;
+
+            default:
+                $this->DataJembatanDefault();
+                break;
+        }
+    }
+
+    private function DataJembatanDefault()
+    {
+        Functions::setTitle('Data Jembatan');
+
+        $data = [
+            'main' => [
+                $this->dofetch('Layout/Table', [
+                    'data' => Functions::defaultTableData(),
+                    'thead' => $this->my_model->getDataJalanThead(),
+                    'url' => BASE_URL . '/Jembatan/DataJembatan/search'
+                ])
+            ],
+            'modal' => [
+                [
+                    'modalId' => 'myModal'
+                ]
+            ]
+        ];
+
+        // TODO: Menampilkan Template
+        $this->view('Layout/Default', $data);
+    }
+
+    private function DataSearch()
+    {
+        // TODO: Search Jalan on database: list & total
+        [$list, $count] = $this->jembatan_model->getJembatan();
+        $total = $this->jembatan_model->totalJembatan();
+
+        $jalan_opt = $this->jalan_model->getJalanOptions();
+        $kondisi_opt = $this->options('kondisi_opt');
+
+        // TODO: Prepare data to load on template
+        $rows = [];
+        foreach ($list as $idx => $row) {
+            $row = array_merge($row, [
+                'row' => Functions::getSearch()['offset'] + $idx + 1,
+                'nama_jalan' => $jalan_opt[$row['no_jalan']],
+                'kondisi_bangunan_atas' =>
+                    $kondisi_opt[$row['kondisi_bangunan_atas']],
+                'kondisi_bangunan_bawah' =>
+                    $kondisi_opt[$row['kondisi_bangunan_bawah']],
+                'kondisi_fondasi' => $kondisi_opt[$row['kondisi_fondasi']],
+                'kondisi_lantai' => $kondisi_opt[$row['kondisi_lantai']]
+            ]);
+
+            array_push($rows, $row);
+        }
+
+        // TODO: Echoing data as JSON
+        Functions::setDataTable($rows, $count, $total);
+        exit();
+    }
 }

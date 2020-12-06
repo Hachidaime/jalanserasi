@@ -12,6 +12,8 @@
             {assign var=theaddata value='data-halign="center" data-align="center" data-width="50" data-formatter="viewFormatter" data-events="viewEvents"'}
             {elseif $i.field eq 'viewprint'}
             {assign var=theaddata value='data-halign="center" data-align="center" data-width="50" data-formatter="viewPrintFormatter" data-events="viewPrintEvents"'}
+            {elseif $i.field eq 'viewjembatan'}
+            {assign var=theaddata value='data-halign="center" data-align="center" data-width="50" data-formatter="viewJembatanFormatter" data-events="viewJembatanEvents"'}
             {elseif $i.field eq 'viewedit'}
             {assign var=theaddata value='data-halign="center" data-align="center" data-width="50" data-formatter="viewEditFormatter" data-events="viewEditEvents"'}
             {elseif $i.field eq 'coord'}

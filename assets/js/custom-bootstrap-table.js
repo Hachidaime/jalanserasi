@@ -76,6 +76,14 @@ function viewPrintFormatter(value, row, index) {
   ].join('')
 }
 
+function viewJembatanFormatter(value, row, index) {
+  return [
+    /*html*/ `<a class="info" href="javascript:void(0)" title="Info">`,
+    /*html*/ `<i class="fas fa-clipboard text-info"></i>`,
+    /*html*/ `</a>`,
+  ].join('')
+}
+
 function viewEditFormatter(value, row, index) {
   return [
     /*html*/ `<a class="info" href="javascript:void(0)" title="Info">`,
@@ -335,6 +343,151 @@ let setDataJalanModal = (row, modal) => {
       `
 
   infowindow = false
+}
+
+window.viewJembatanEvents = {
+  'click .info': function (e, value, row, index) {
+    let modal = $('#myModal')
+    modal.modal('show')
+
+    let title = $table.data('title')
+    modal.find('.modal-title').text(`Detail ${title}`)
+
+    setDataJembatanModal(row, modal)
+  },
+}
+
+let setDataJembatanModal = (row, modal) => {
+  let table, rowNoJembatan, rowNamaJembatan, rowUkuran, rowKoordinat, rowSurvei
+
+  table = document.createElement('table')
+  table.setAttribute('width', '100%')
+  table.id = 'detail-content'
+  table.classList.add('table', 'table-bordered', 'table-striped', 'table-sm')
+
+  rowNoJembatan = document.createElement('tr')
+  rowNoJembatan.innerHTML = /*html*/ `
+    <td width="25%">Nomor Jembatan</td>
+    <td width="*">${row.no_jembatan}</td>
+  `
+
+  rowNamaJembatan = document.createElement('tr')
+  rowNamaJembatan.innerHTML = /*html*/ `
+    <td>Nama Jembatan</td>
+    <td>${row.nama_jembatan}</td>
+  `
+  rowUkuran = document.createElement('tr')
+  rowUkuran.innerHTML = /*html*/ `
+    <td>Ukuran</td>
+    <td>Panjang: ${row.panjang} m&nbsp;&nbsp;&nbsp;Lebar: ${row.lebar} m&nbsp;&nbsp;&nbsp;Jml Bentang: ${row.bentang}</td>
+  `
+  rowKoordinat = document.createElement('tr')
+  rowKoordinat.innerHTML = /*html*/ `
+    <td>Koordinat</td>
+    <td>Lat: ${row.latitude}&nbsp;&nbsp;&nbsp;Long: ${row.longitude}</td>
+  `
+  rowSurvei = document.createElement('tr')
+  rowSurvei.innerHTML = /*html*/ `
+    <td>Dokumen Survei</td>
+    <td>${row.survei}</td>
+  `
+
+  table.append(
+    rowNoJembatan,
+    rowNamaJembatan,
+    rowUkuran,
+    rowKoordinat,
+    rowSurvei
+  )
+
+  let tab, tabNav, tabContent
+
+  tab = document.createElement('div')
+
+  tabNav = document.createElement('ul')
+  tabNav.classList.add('nav', 'nav-tabs')
+  tabNav.innerHTML = /*html*/ `
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#menu1">Bangunan Atas</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2">Bangunan Bawah</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu3">Fondasi</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu4">Lantai</a>
+    </li>
+  `
+
+  tabContent = document.createElement('div')
+  tabContent.classList.add('tab-content', 'border', 'border-top-0')
+
+  let menus = [
+    {
+      tipe: row.tipe_bangunan_atas,
+      bms: row.bms_bangunan_atas,
+      keterangan: row.keterangan_bangunan_atas,
+      kondisi: row.kondisi_bangunan_atas,
+    },
+    {
+      tipe: row.tipe_bangunan_bawah,
+      bms: row.bms_bangunan_bawah,
+      keterangan: row.keterangan_bangunan_bawah,
+      kondisi: row.kondisi_bangunan_bawah,
+    },
+    {
+      tipe: row.tipe_fondasi,
+      bms: row.bms_fondasi,
+      keterangan: row.keterangan_fondasi,
+      kondisi: row.kondisi_fondasi,
+    },
+    {
+      tipe: row.tipe_lantai,
+      bms: row.bms_lantai,
+      keterangan: row.keterangan_lantai,
+      kondisi: row.kondisi_lantai,
+    },
+  ]
+
+  let label = {
+    tipe: /*html*/ `<div class="col-3">Tipe</div>`,
+    bms: /*html*/ `<div class="col-3">BMS</div>`,
+    keterangan: /*html*/ `<div class="col-3">Keterangan</div>`,
+    kondisi: /*html*/ `<div class="col-3">Kondisi</div>`,
+  }
+
+  menus.forEach((value, idx) => {
+    let menu
+    menu = document.createElement('div')
+    menu.classList.add('container', 'tab-pane', 'p-3')
+    menu.id = `menu${idx + 1}`
+
+    if (idx == 0) menu.classList.add('active')
+    else menu.classList.add('fade')
+
+    for (const key in value) {
+      let menuRow
+      menuRow = document.createElement('div')
+      menuRow.classList.add('row')
+      menuRow.innerHTML = /*html*/ `
+        ${label[key]}
+        <div class="col-9">${value[key]}</div>
+      `
+
+      menu.append(menuRow)
+    }
+
+    tabContent.append(menu)
+  })
+
+  tab.append(tabNav, tabContent)
+
+  let modalContent = document.createElement('div')
+  modalContent.append(table, tab)
+
+  modal.find('.modal-body').html(modalContent)
 }
 
 window.viewEditEvents = {
