@@ -430,32 +430,56 @@ let setDataJembatanModal = (row, modal) => {
       bms: row.bms_bangunan_atas,
       keterangan: row.keterangan_bangunan_atas,
       kondisi: row.kondisi_bangunan_atas,
+      foto: row.foto_bangunan_atas,
     },
     {
       tipe: row.tipe_bangunan_bawah,
       bms: row.bms_bangunan_bawah,
       keterangan: row.keterangan_bangunan_bawah,
       kondisi: row.kondisi_bangunan_bawah,
+      foto: row.foto_bangunan_bawah,
     },
     {
       tipe: row.tipe_fondasi,
       bms: row.bms_fondasi,
       keterangan: row.keterangan_fondasi,
       kondisi: row.kondisi_fondasi,
+      foto: row.foto_fondasi,
     },
     {
       tipe: row.tipe_lantai,
       bms: row.bms_lantai,
       keterangan: row.keterangan_lantai,
       kondisi: row.kondisi_lantai,
+      foto: row.foto_lantai,
     },
   ]
 
   let label = {
-    tipe: /*html*/ `<div class="col-3">Tipe</div>`,
-    bms: /*html*/ `<div class="col-3">BMS</div>`,
-    keterangan: /*html*/ `<div class="col-3">Keterangan</div>`,
-    kondisi: /*html*/ `<div class="col-3">Kondisi</div>`,
+    tipe: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Tipe</div>
+        <div>:</div>
+      </div>
+    `,
+    bms: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>BMS</div>
+        <div>:</div>
+      </div>
+    `,
+    keterangan: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Keterangan</div>
+        <div>:</div>
+      </div>
+    `,
+    kondisi: /*html*/ `
+      <div class="col-3 d-flex justify-content-between">
+        <div>Kondisi</div>
+        <div>:</div>
+      </div>
+    `,
   }
 
   menus.forEach((value, idx) => {
@@ -467,8 +491,10 @@ let setDataJembatanModal = (row, modal) => {
     if (idx == 0) menu.classList.add('active')
     else menu.classList.add('fade')
 
+    let menuRow
     for (const key in value) {
-      let menuRow
+      if (key == 'foto') continue
+
       menuRow = document.createElement('div')
       menuRow.classList.add('row')
       menuRow.innerHTML = /*html*/ `
@@ -478,6 +504,18 @@ let setDataJembatanModal = (row, modal) => {
 
       menu.append(menuRow)
     }
+
+    menuRow = document.createElement('div')
+    menuRow.classList.add('row')
+    menuRow.innerHTML = /*html*/ `
+      <div class="col-12">
+        <div>Foto:</div>
+        <div>
+          <img src="${server_base}/upload/img/jembatan/${row.id}/${value.foto}" style="width: 600px" />
+        </div>
+      </div>
+    `
+    menu.append(menuRow)
 
     tabContent.append(menu)
   })
