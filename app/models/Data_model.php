@@ -214,11 +214,19 @@ class Data_model extends Database
             $jalan[$idx] = $row;
         }
 
+        $kondisi_opt = $this->options('kondisi_opt');
+
         foreach ($jembatan as $idx => $row) {
             $row = array_merge($row, [
                 'koordinat_awal' => $awalOpt[$row['no_jalan']],
                 'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
-                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']],
+                'kondisi_bangunan_atas' =>
+                    $kondisi_opt[$row['kondisi_bangunan_atas']],
+                'kondisi_bangunan_bawah' =>
+                    $kondisi_opt[$row['kondisi_bangunan_bawah']],
+                'kondisi_fondasi' => $kondisi_opt[$row['kondisi_fondasi']],
+                'kondisi_lantai' => $kondisi_opt[$row['kondisi_lantai']]
             ]);
             $jembatan[$idx] = $row;
         }

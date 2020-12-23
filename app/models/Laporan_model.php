@@ -212,13 +212,13 @@ class Laporan_model extends Database
         ]);
         Functions::setDataSession('thead', [
             '3',
-            'perkerasan_2',
+            'perkerasan_1',
             '7',
             'data-halign="center" data-align="right"'
         ]);
         Functions::setDataSession('thead', [
             '3',
-            'perkerasan_1',
+            'perkerasan_2',
             '8',
             'data-halign="center" data-align="right"'
         ]);
