@@ -110,26 +110,83 @@
           {/foreach}
         </thead>
         <tbody>
+          {assign var='nan' value=','|explode:"nan,0.00"}
           {foreach from=$data.data key=k item=$content}
           <tr>
             <td class="text-right">{$content.row}</td>
             <td class="text-center">{$content.no_jalan}</td>
             <td>{$content.nama_jalan}</td>
             <td></td>
-            <td class="text-right">{$content.panjang_km|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.lebar_rata|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.perkerasan_1|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.perkerasan_2|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.perkerasan_3|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.perkerasan_4|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_1|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_1_percent|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_2|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_2_percent|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_3|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_3_percent|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_4|replace:'0.00':'-'}</td>
-            <td class="text-right">{$content.kondisi_4_percent|replace:'0.00':'-'}</td>
+            <td class="text-right">
+              {if !$content.panjang_km|in_array:$nan}
+                {$content.panjang_km}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.lebar_rata|in_array:$nan}
+                {$content.lebar_rata}
+              {else}-{/if}  
+            </td>
+            <td class="text-right">
+              {if !$content.perkerasan_2|in_array:$nan}
+                {$content.perkerasan_2}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.perkerasan_1|in_array:$nan}
+                {$content.perkerasan_1}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.perkerasan_3|in_array:$nan}
+                {$content.perkerasan_3}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.perkerasan_4|in_array:$nan}
+                {$content.perkerasan_4}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_1|in_array:$nan}
+                {$content.kondisi_1}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_1_percent|in_array:$nan}
+                {$content.kondisi_1_percent}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_2|in_array:$nan}
+                {$content.kondisi_2}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_2_percent|in_array:$nan}
+                {$content.kondisi_2_percent}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_3|in_array:$nan}
+                {$content.kondisi_3}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_3_percent|in_array:$nan}
+                {$content.kondisi_3_percent}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_4|in_array:$nan}
+                {$content.kondisi_4}
+              {else}-{/if}
+            </td>
+            <td class="text-right">
+              {if !$content.kondisi_4_percent|in_array:$nan}
+                {$content.kondisi_4_percent}
+              {else}-{/if}
+            </td>
             <td>{$content.lhr}</td>
             <td>{$content.npk}</td>
             <td>{$content.keterangan}</td>

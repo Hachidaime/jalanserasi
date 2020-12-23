@@ -330,25 +330,37 @@ class Data_model extends Database
 
         foreach ($jalan as $idx => $row) {
             $row['row'] = $idx + 1;
-            $row['panjang_km'] = number_format($row['panjang'] / 1000, 2);
+            // $row['panjang_km'] = number_format($row['panjang'] / 1000, 2);
 
-            foreach (
-                json_decode($row['perkerasan_panjang'], true)
-                as $key => $value
-            ) {
-                $row["perkerasan_{$key}"] = number_format($value / 1000, 2);
+            $perkerasanPanjang = json_decode($row['perkerasan_panjang'], true);
+
+            $perkerasanPanjang = array_map(function ($p) {
+                return number_format($p / 1000, 2);
+            }, $perkerasanPanjang);
+
+            foreach ($perkerasanPanjang as $key => $value) {
+                // $row["perkerasan_{$key}"] = number_format($value / 1000, 2);
+                $row["perkerasan_{$key}"] = $value;
             }
 
-            foreach (
-                json_decode($row['kondisi_panjang'], true)
-                as $key => $value
-            ) {
-                $row["kondisi_{$key}"] = number_format($value / 1000, 2);
+            $panjang = array_sum($perkerasanPanjang);
+
+            $kondisiPanjang = json_decode($row['kondisi_panjang'], true);
+            $kondisiPanjang = array_map(function ($p) {
+                return number_format($p / 1000, 2);
+            }, $kondisiPanjang);
+
+            foreach ($kondisiPanjang as $key => $value) {
+                // $row["kondisi_{$key}"] = number_format($value / 1000, 2);
+                $row["kondisi_{$key}"] = $value;
                 $row["kondisi_{$key}_percent"] = number_format(
-                    ($value / $row['panjang']) * 100,
+                    // ($value / $row['panjang']) * 100,
+                    ((float) $value / (float) $panjang) * 100,
                     2
                 );
             }
+
+            $row['panjang_km'] = $panjang;
 
             $laporan[$idx]['kepemilikan'] = $row['kepemilikan'];
             foreach ($field as $value) {
