@@ -323,9 +323,12 @@ class Jalan_model extends Database
             }
         }
 
-        $params['filter'] = implode(' AND ', $filter);
-
-        $params['sort'] = "{$this->my_tables['jalan']}.no_jalan ASC";
+        $params = array_merge($params, [
+            'select' => "{$this->my_tables['jalan']}.*, {$this->my_tables['panjang']}.perkerasan as perkerasan_panjang",
+            'join' => "JOIN {$this->my_tables['panjang']} ON {$this->my_tables['jalan']}.no_jalan = {$this->my_tables['panjang']}.no_jalan",
+            'filter' => implode(' AND ', $filter),
+            'sort' => "{$this->my_tables['jalan']}.no_jalan ASC"
+        ]);
 
         $query = $this->getSelectQuery($this->my_tables['jalan'], $params);
 

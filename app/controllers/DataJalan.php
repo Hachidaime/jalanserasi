@@ -56,9 +56,18 @@ class DataJalan extends Controller
         // TODO: Prepare data to load on template
         $rows = [];
         foreach ($list as $idx => $row) {
+            $perkerasanPanjang = array_map(function ($p) {
+                return number_format($p / 1000, 2);
+            }, json_decode($row['perkerasan_panjang'], true));
+
+            $panjang = array_sum($perkerasanPanjang);
+
+            // var_dump($row);
+
             $row['kepemilikan'] = $kepemilikan_opt[$row['kepemilikan']];
             $row['row'] = Functions::getSearch()['offset'] + $idx + 1;
-            $row['panjang'] = number_format($row['panjang'] / 1000, 2);
+            // $row['panjang'] = number_format($row['panjang'] / 1000, 2);
+            $row['panjang'] = number_format($panjang, 2);
             $row['survei_date'] = !is_null($row['survei_date'])
                 ? Functions::formatDatetime($row['survei_date'], 'd/m/Y')
                 : $row['survei_date'];
