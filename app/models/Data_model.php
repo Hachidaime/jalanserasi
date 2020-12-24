@@ -206,10 +206,15 @@ class Data_model extends Database
 
         foreach ($jalan as $idx => $row) {
             // var_dump($jembatanCount[$row['no_jalan']]);
+            $perkerasanPanjang = array_map(function ($p) {
+                return number_format($p / 1000, 2);
+            }, json_decode($row['perkerasan_panjang'], true));
+
             $row = array_merge($row, [
                 'koordinat_awal' => $awalOpt[$row['no_jalan']],
                 'koordinat_akhir' => $akhirOpt[$row['no_jalan']],
-                'jml_jembatan' => $jembatanCount[$row['no_jalan']]
+                'jml_jembatan' => $jembatanCount[$row['no_jalan']],
+                'panjang' => array_sum($perkerasanPanjang)
             ]);
             $jalan[$idx] = $row;
         }

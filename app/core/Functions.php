@@ -780,9 +780,7 @@ class Functions
             'nama_jalan' => $data['nama_jalan'],
             'kepemilikan' => $data['kepemilikan_text'],
             'panjang' =>
-                $data['panjang'] > 0
-                    ? number_format($data['panjang'] / 1000, 2)
-                    : 0,
+                $data['panjang'] > 0 ? number_format($data['panjang'], 2) : 0,
             'lebar_rata' => $data['lebar_rata'],
             'perkerasan' => array_map(function ($value) {
                 return !is_null($value)

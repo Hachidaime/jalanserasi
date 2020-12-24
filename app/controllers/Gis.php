@@ -87,6 +87,12 @@ class Gis extends Controller
                 $this->no_jalan
             );
 
+            $perkerasanPanjang = array_map(function ($p) {
+                return number_format($p / 1000, 2);
+            }, json_decode($jalan['perkerasan_panjang'], true));
+
+            $jalan['panjang'] = array_sum($perkerasanPanjang);
+
             $jalan['kepemilikan_text'] =
                 $kepemilikan_opt[$jalan['kepemilikan']];
 
