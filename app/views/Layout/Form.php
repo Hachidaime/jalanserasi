@@ -69,7 +69,7 @@
                 <ul id="file-action{$v.id}" class="list-group mt-2" style="display: none">
                     <li class="list-group-item d-flex justify-content-between align-items-center py-1 px2">
                         <span class="filename">{$data.detail[$v.name]}</span>
-                        <a class="badge badge-light badge-pill" title="Download" href="{$smarty.const.UPLOAD_URL}video/{$data.controller|lower}/{$data.detail.id}/{$data.detail[$v.name]}" download><i class="fas fa-download"></i></a>
+                        <a class="badge badge-light badge-pill" title="Download" href="{$smarty.const.UPLOAD_URL}video/{$data.controller|lower}/{$data.detail.no_jalan|default:$data.detail.id}/{$data.detail[$v.name]}" download><i class="fas fa-download"></i></a>
                     </li>
                 </ul>
                 {elseif $v.type eq 'pdf'}
@@ -88,7 +88,7 @@
                 <ul id="file-action{$v.id}" class="list-group mt-2" style="display: none">
                     <li class="list-group-item d-flex justify-content-between align-items-center py-1 px2">
                         <span class="filename">{$data.detail[$v.name]}</span>
-                        <a class="badge badge-light badge-pill" title="Download" href="{$smarty.const.SERVER_BASE}/upload/pdf/{$data.controller|lower}/{$data.detail.id}/{$data.detail[$v.name]}" download><i class="fas fa-download"></i></a>
+                        <a class="badge badge-light badge-pill" title="Download" href="{$smarty.const.SERVER_BASE}/upload/pdf/{$data.controller|lower}/{$data.detail.no_jalan|default:$data.detail.id}/{$data.detail[$v.name]}" download><i class="fas fa-download"></i></a>
                     </li>
                 </ul>
                 {elseif $v.type eq 'kml'}
